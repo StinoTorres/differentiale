@@ -197,6 +197,22 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 .tag{color:var(--faint);font-weight:500;font-size:12px;margin-left:3px}
 .fire{font-size:12px;color:var(--pink);margin-left:6px;font-weight:800}
 .pts{font-weight:800;color:var(--hd)}
+.ptitle{font-size:18px!important;letter-spacing:-.01em!important;text-transform:none!important;margin-bottom:10px}
+.notice{border:1.5px dashed var(--green);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:10px}
+.pool-sub{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);text-align:center;margin:-4px 0 8px}
+table.board th{padding:6px 5px}
+table.board td{padding:10px 5px;vertical-align:middle}
+table.board td.pos{width:28px}
+table.board td.pos.medal{font-size:19px;text-align:center}
+table.board td.nm{font-weight:800;overflow-wrap:anywhere}
+table.board td.nm small{font-weight:600;color:var(--mute)}
+table.board .td{white-space:nowrap;font-size:13.5px}
+table.board .td.wait{color:var(--mute)}
+table.board td.pts{font-size:17px}
+.mini{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--mute)}
+.mini.confirm{color:var(--pink);border-color:var(--pink)}
+.pool-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chips button.add{border-style:dashed}
 
 .devwarn{display:block;background:#fff0f5;border:2px solid var(--pink);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;line-height:1.45;color:var(--ink)}
 .devwarn b{display:block;font-size:15px;color:var(--pink)}
@@ -375,7 +391,7 @@ const S = {
   me:null, leagues:[],
   practice:null,
   loading:true, err:null, busy:false,
-  board:"today", scope:null, rows:null, boardErr:null, boardLoading:false,
+  board:(ls.get("avdd:boardtab")==="total"?"total":"week"), scope:null, rows:null, boardErr:null, boardLoading:false,
   q:"", hi:0, pendingJoin:null
 };
 
@@ -924,7 +940,7 @@ async function handlePendingJoin(){
 async function loadBoard(){
   if(!API || !S.id) return;
   const scope = S.scope;
-  if(!scope) return;
+  if(!scope || scope==="+new") return;
   S.boardLoading = true;
   try{
     const r = await rpc("av_board", {...auth(), p_scope: scope});
@@ -936,52 +952,78 @@ async function loadBoard(){
 function renderBoard(){
   const box = el("div");
   // Alleen poule-klassementen: zonder poule is er geen ranglijst
-  if(!S.leagues.some(l=>l.code===S.scope)){ S.scope = S.leagues.length ? S.leagues[0].code : null; S.rows = null; }
-  const pick = s => { if(S.scope!==s){ S.scope=s; S.rows=null; render(); loadBoard(); } };
-  if(!S.scope){ box.append(pouleForm(true)); return box; }
-  box.append(el("div",{class:"chips"},
-    S.leagues.map(l=>el("button",{class:S.scope===l.code?"on":"", onclick:()=>pick(l.code)}, l.name))));
-  box.append(el("div",{style:"text-align:center"}, el("div",{class:"seg"}, [["today","Vandaag"],["week","Deze week"],["season","Seizoen"]].map(([k,t])=>el("button",{class:S.board===k?"on":"",onclick:()=>{S.board=k;render();}},t)))));
-  const panel = el("div",{class:"panel",style:"padding:6px 8px"});
-  if(!API || !S.id){ panel.append(el("p",{class:"note",style:"padding:10px"}, !API ? "Het klassement is nog niet gekoppeld." : "Kies eerst een managernaam.")); box.append(panel); return box; }
-  if(!S.rows){ panel.append(el("p",{class:"note",style:"padding:10px"}, S.boardErr || "Klassement laden…")); box.append(panel); if(!S.boardLoading) loadBoard(); return box; }
+  if(S.scope !== "+new" && !S.leagues.some(l=>l.code===S.scope)){ S.scope = S.leagues.length ? S.leagues[S.leagues.length-1].code : null; S.rows = null; }
+  if(!S.scope || S.scope==="+new"){
+    if(S.leagues.length) box.append(leagueChips());
+    box.append(pouleForm(!S.leagues.length));
+    return box;
+  }
+  box.append(leagueChips());
+  const panel = el("div",{class:"panel",style:"padding:12px 12px 14px"});
+  box.append(panel);
+  panel.append(el("h3",{class:"ptitle"}, leagueName(S.scope)));
+  if(!S.rows){ panel.append(el("p",{class:"note",style:"padding:6px 0"}, S.boardErr || "Klassement laden…")); if(!S.boardLoading) loadBoard(); return box; }
+
+  const myDone = !!(S.srv && S.srv.done);
+  if(S.rows.length < 2) panel.append(el("div",{class:"notice"},"Je bent nog de enige. Deel de uitnodiging in je groepsapp, dan verschijnen je vrienden hier."));
+  if(!myDone) panel.append(el("div",{class:"notice"},"Speel eerst de puzzel van vandaag. Daarna zie je hoe de rest het deed."));
 
   // weekwinnaar van vorige week
   const lw = Math.max(0, ...S.rows.map(r=>r.last_week_points||0));
   if(lw>0){
     const winners = S.rows.filter(r=>r.last_week_points===lw).map(r=>r.name);
-    box.insertBefore(el("div",{class:"winner"}, el("span",{class:"cup"},"🏆"), el("div",{}, el("b",{},"Weekwinnaar vorige week"), el("span",{}, winners.join(" & ")+" · "+lw+" ptn"))), box.children[1]);
+    panel.append(el("div",{class:"winner"}, el("span",{class:"cup"},"🏆"), el("div",{}, el("b",{},"Weekwinnaar vorige week"), el("span",{}, winners.join(" & ")+" · "+lw+" ptn"))));
   }
-  const key = S.board==="today" ? "today_points" : S.board==="week" ? "week_points" : "season_points";
-  const myDone = !!(S.srv && S.srv.done);
-  let rows = S.rows.slice();
-  if(S.board==="today") rows = rows.filter(r=>r.today_played || r.is_me);
-  rows.sort((a,b)=>(b[key]??-1)-(a[key]??-1) || b.streak-a.streak || String(a.name).localeCompare(String(b.name)));
-  let pos=0; rows.forEach((r,i)=>{ if(i===0 || (r[key]??-1)!==(rows[i-1][key]??-1) || r.streak!==rows[i-1].streak) pos=i+1; r.pos=pos; });
-  if(!rows.length){ panel.append(el("p",{class:"note",style:"padding:12px"}, S.board==="today" ? "Nog niemand heeft vandaag gespeeld. Wees de eerste!" : "Nog geen scores.")); }
-  else {
-    const t = el("table",{}, el("thead",{}, el("tr",{}, el("th",{},"#"), el("th",{},"Manager"), S.board==="today"?el("th",{class:"r"},"Gok"):null, el("th",{class:"r"},"Ptn"))));
-    const tb = el("tbody");
-    rows.forEach(r=>{
-      const val = r[key], medal = val>0 && r.pos<=3 ? ["🥇","🥈","🥉"][r.pos-1] : null;
-      const nameCell = el("td",{}, el("span",{},String(r.name)), el("span",{class:"tag"},"#"+(r.tag||"")),
-        r.cups>0 ? el("span",{class:"cups",title:r.cups+" keer weekwinnaar"},"🏆"+(r.cups>1?r.cups:"")) : null,
-        r.streak>=2 ? el("span",{class:"fire"},"🔥"+r.streak) : null);
-      const gok = S.board==="today" ? el("td",{class:"r num",style:"color:var(--mute)"}, r.today_n!=null ? (r.today_gave_up ? "🏳️" : r.today_won ? r.today_n+"/6" : "X/6") : (r.today_played ? "✓" : "–")) : null;
-      tb.append(el("tr",{class:r.is_me?"me":""}, el("td",{class:"pos num"+(medal?" medal":"")}, medal || String(r.pos)), nameCell, gok,
-        el("td",{class:"r pts num"}, val==null ? (S.board==="today" && !r.today_played ? "–" : "?") : String(val))));
-    });
-    t.append(tb); panel.append(t);
-  }
-  box.append(panel);
-  box.append(el("div",{class:"panel leaguebar"},
-    el("div",{}, el("div",{class:"lbl2"},"Poulecode"), el("div",{class:"code num"},S.scope)),
-    el("div",{class:"row",style:"justify-content:flex-end"}, el("button",{class:"btn",onclick:()=>showInvite(S.scope)},"Nodig uit"), el("button",{class:"btn ghost",onclick:()=>leaveLeague(S.scope)},"Verlaat"))));
-  if(S.board==="today" && !myDone) box.append(el("p",{class:"note",style:"text-align:center"},"De uitslagen van vandaag zie je zodra je zelf klaar bent."));
-  box.append(el("p",{class:"note",style:"text-align:center;margin-top:8px"},"Week = maandag t/m zondag. Wie een week de meeste punten haalt, wint een weekbeker 🏆; gelijk = allebei. Gelijke stand? De langste reeks 🔥 staat hoger."));
 
-  box.append(pouleForm(false));
+  const tab = S.board==="total" ? "total" : "week";
+  panel.append(el("div",{style:"text-align:center"}, el("div",{class:"seg"},
+    [["week","Deze week"],["total","Totaal"]].map(([k,t])=>el("button",{class:tab===k?"on":"", onclick:()=>{ S.board=k; ls.set("avdd:boardtab",k); render(); }},t)))));
+  const today = new Intl.DateTimeFormat("nl-NL",{timeZone:TZ, weekday:"short", day:"numeric", month:"short"}).format(new Date());
+  panel.append(el("p",{class:"pool-sub"}, tab==="total" ? "Totaalstand · sinds de start" : "Weekstand · vandaag "+today));
+
+  const key = tab==="total" ? "season_points" : "week_points";
+  const rows = S.rows.slice().sort((a,b)=>(b[key]||0)-(a[key]||0) || b.streak-a.streak || String(a.name).localeCompare(String(b.name),"nl"));
+  let rank=0, prev=null; rows.forEach((r,i)=>{ if(r[key]!==prev){ rank=i+1; prev=r[key]; } r.pos=rank; });
+  const t = el("table",{class:"board"}, el("thead",{}, el("tr",{}, el("th",{}), el("th",{},"Speler"), el("th",{},"Vandaag"), el("th",{class:"r"},"Reeks"), el("th",{class:"r"},"Ptn"))));
+  const tb = el("tbody");
+  rows.forEach(r=>{
+    const val = r[key]||0, medal = val>0 && r.pos<=3 ? ["🥇","🥈","🥉"][r.pos-1] : null;
+    let td;
+    if(!r.today_played) td = el("span",{class:"td wait"},"nog niet");
+    else if(r.today_n==null) td = el("span",{class:"td",title:"Speel eerst zelf"},"🔒 gespeeld");
+    else if(r.today_won) td = el("span",{class:"td"},"🟩 "+r.today_n+"/6");
+    else if(r.today_gave_up) td = el("span",{class:"td"},"🏳️ opgegeven");
+    else td = el("span",{class:"td"},"❌ niet geraden");
+    tb.append(el("tr",{class:r.is_me?"me":""},
+      el("td",{class:"pos num"+(medal?" medal":"")}, medal || String(r.pos)),
+      el("td",{class:"nm"}, String(r.name), r.cups>0 ? el("span",{class:"cups",title:r.cups+" keer weekwinnaar"},"🏆"+(r.cups>1?"×"+r.cups:"")) : null, r.is_me ? el("small",{}," (jij)") : null),
+      el("td",{}, td),
+      el("td",{class:"r num"}, r.streak>0 ? "🔥 "+r.streak : "–"),
+      el("td",{class:"r pts num"}, String(val))));
+  });
+  t.append(tb); panel.append(t);
+  panel.append(el("p",{class:"note",style:"margin-top:10px"},"Punten: 60 bij de eerste gok, dan 50, 40… tot 10 bij de zesde; elke hintstap kost 5. Niet geraden of opgegeven is 0. De weekstand begint elke maandag opnieuw; het totaal telt door. Wie een week wint, krijgt een 🏆 die blijft staan. Bij een gelijke stand krijgen beide winnaars er een."));
+  panel.append(el("div",{class:"row",style:"margin-top:12px"}, el("button",{class:"btn",onclick:()=>shareInvite(S.scope)},"Nodig vrienden uit")));
+  const lv = el("button",{class:"mini"+(S.confirmLeave?" confirm":""), onclick:()=>{
+    if(!S.confirmLeave){ S.confirmLeave = true; render(); clearTimeout(S.clT); S.clT = setTimeout(()=>{ S.confirmLeave=false; render(); }, 5000); return; }
+    S.confirmLeave = false; doLeave(S.scope); }}, S.confirmLeave ? "Zeker? Tik nog een keer" : "Verlaat poule");
+  panel.append(el("div",{class:"pool-foot"}, el("span",{class:"note"}, "Code ", el("b",{class:"num"},S.scope), S.me ? " · jij bent "+S.me.name : ""), lv));
   return box;
+}
+function leagueChips(){
+  const pick = s => { if(S.scope!==s){ S.scope=s; S.rows=null; render(); loadBoard(); } };
+  return el("div",{class:"chips"},
+    S.leagues.map(l=>el("button",{class:S.scope===l.code?"on":"", onclick:()=>pick(l.code)}, l.name)),
+    el("button",{class:"add"+(S.scope==="+new"?" on":""), onclick:()=>{ S.scope="+new"; render(); }},"＋ Poule"));
+}
+async function shareInvite(code){
+  const text = inviteText(code);
+  if(navigator.share){ try{ await navigator.share({title:"Differentiale", text}); return; }catch(e){ if(e.name==="AbortError") return; } }
+  copyText(text);
+}
+async function doLeave(code){
+  try{ await rpc("av_leave_league", {...auth(), p_code:code}); await refresh(); S.scope=null; S.rows=null; render(); loadBoard(); toast("Je hebt de poule verlaten"); }
+  catch(e){ toast(errText(e)); }
 }
 function pouleForm(first){
   const nameIn = el("input",{placeholder:"Naam, bijv. Snoep PL", maxlength:30});
@@ -992,7 +1034,7 @@ function pouleForm(first){
   const intro = !API || !S.id ? (!API ? "Het klassement is nog niet gekoppeld." : "Kies eerst een managernaam.")
     : first ? "Het klassement is er per poule. Maak een poule en deel de code met je vrienden, of doe mee met de code die je kreeg. Dan zien jullie de onderlinge stand per dag, week en seizoen, met weekbekers 🏆."
     : "Nog een poule maken of erbij? Je kunt in meerdere poules tegelijk zitten.";
-  return el("div",{class:"panel",style:first?"":"margin-top:14px"}, el("h3",{}, first ? "Klassement" : "Poules"),
+  return el("div",{class:"panel"}, el("h3",{}, first ? "Klassement" : "Nog een poule"),
     el("p",{class:"note",style:"margin-bottom:12px"}, intro),
     el("div",{class:"lbl2"},"Nieuwe poule"),
     el("div",{class:"field",style:"margin-bottom:12px"}, nameIn, el("button",{class:"btn",onclick:mk},"Maak aan")),
