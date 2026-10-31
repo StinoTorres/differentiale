@@ -1,4 +1,4 @@
--- Asset van de Dag: alles voor Supabase in één script.
+-- Differentiale: alles voor Supabase in één script.
 -- Plak dit in Supabase → SQL Editor → New query → Run. Daarna seed.sql op dezelfde manier.
 -- Het is veilig om het opnieuw te draaien. Alle namen beginnen met av_, zodat het naast
 -- andere spellen (zoals Transferroute) in hetzelfde Supabase-project kan staan.

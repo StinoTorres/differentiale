@@ -1,4 +1,4 @@
--- Asset van de Dag: startgegevens (FPL na GW8, Snoep PL GW8). Plak in Supabase → SQL Editor → Run, na schema.sql.
+-- Differentiale: startgegevens (FPL na GW8, Snoep PL GW8). Plak in Supabase → SQL Editor → Run, na schema.sql.
 -- Veilig om opnieuw te draaien: bestaande antwoorden worden niet overschreven.
 
 insert into public.av_fpl(code, web, team, pos, price, own, pts, gw) values
