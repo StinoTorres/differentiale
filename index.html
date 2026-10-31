@@ -325,7 +325,7 @@ let DATA, P = {}, LIST = [], TEAM = {}, LEAGUE = LEAGUE0;
 function useData(d){
   DATA = d; P = {}; TEAM = {};
   for(const [id,s,n] of d.teams) TEAM[id] = {s,n};
-  LIST = d.players.map(r => { const p = {code:r[0],web:r[1],full:r[2],team:r[3],pos:r[4],price:r[5],own:r[6],pts:r[7],gw:r[8],g:r[9],a:r[10],cs:r[11],min:r[12]}; p.key = norm(p.web+" "+p.full); P[p.code]=p; return p; });
+  LIST = d.players.map(r => { const p = {code:r[0],web:r[1],full:r[2],team:r[3],pos:r[4],price:r[5],own:r[6],pts:r[7],gw:r[8],g:r[9],a:r[10],cs:r[11],min:r[12],num:r[13]??null}; p.key = norm(p.web+" "+p.full); P[p.code]=p; return p; });
   LIST.sort((a,b)=>b.own-a.own || b.pts-a.pts);
 }
 useData(DATA0);
@@ -739,6 +739,7 @@ function shirtSVG(p){
   const club = teamS(p.team);
   const k = p.pos===1 ? gkKit(club) : (KITS[club] || {b:COLORS[club]||"#888", s:COLORS[club]||"#888", c:"#ffffff", i:"#ffffff"});
   const name = String(p.web||"").toUpperCase();
+  const num = (P[p.code] && P[p.code].num != null) ? P[p.code].num : null;
   const fs = name.length<=6 ? 28 : name.length<=9 ? 24 : name.length<=12 ? 19 : 16;
   const esc = t => t.replace(/[&<>"]/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
   const body = "M70 42 L56 92 L56 164 Q100 174 144 164 L144 92 L130 42 Q118 52 100 52 Q82 52 70 42Z";
@@ -759,7 +760,8 @@ function shirtSVG(p){
     <path d="${body}" fill="none" ${outline}/>
     <path d="M70 42 Q82 52 100 52 Q118 52 130 42" fill="none" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/>
     <g font-family="Plus Jakarta Sans,system-ui" font-weight="800" text-anchor="middle" fill="${k.i}" ${k.st ? 'paint-order="stroke" stroke="'+k.b+'" stroke-width="5" stroke-linejoin="round"' : ""}>
-      <text x="100" y="${112+fs/3}" font-size="${fs}" letter-spacing="1" ${name.length*fs*0.7>80 ? 'textLength="80" lengthAdjust="spacingAndGlyphs"' : ""}>${esc(name)}</text>
+      <text x="100" y="${(num!=null ? 80 : 112)+fs/3}" font-size="${num!=null ? Math.min(fs,22) : fs}" letter-spacing="1" ${name.length*Math.min(fs,num!=null?22:fs)*0.7>80 ? 'textLength="80" lengthAdjust="spacingAndGlyphs"' : ""}>${esc(name)}</text>
+      ${num!=null ? `<text x="100" y="150" font-size="56" letter-spacing="-1">${num}</text>` : ""}
     </g>
   </svg>`;
 }

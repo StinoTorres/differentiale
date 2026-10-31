@@ -39,6 +39,45 @@ def write(name, obj):
     open(path, "w").write(new); print(name, "bijgewerkt")
 
 
+PL_API = "https://footballapi.pulselive.com/football"
+PL_HDR = {"User-Agent": UA["User-Agent"], "Origin": "https://www.premierleague.com", "Referer": "https://www.premierleague.com/"}
+
+
+def pl_get(path):
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(PL_API + path, headers=PL_HDR)
+            with urllib.request.urlopen(req, timeout=40) as r:
+                return json.load(r)
+        except Exception:
+            if attempt == 2:
+                raise
+            time.sleep(3)
+
+
+def shirt_numbers():
+    """Rugnummers per FPL-spelerscode, uit de officiele Premier League-databron (Opta-id = FPL-code)."""
+    nums = {}
+    try:
+        cs = pl_get("/competitions/1/compseasons?page=0&pageSize=1")["content"][0]["id"]
+        cs = int(cs)
+        for t in pl_get(f"/compseasons/{cs}/teams"):
+            try:
+                staff = pl_get(f"/teams/{int(t['id'])}/compseasons/{cs}/staff?altIds=true&type=player")
+            except Exception as e:
+                print("Geen selectie voor", t.get("name"), e); continue
+            for pl in staff.get("players", []):
+                opta = (pl.get("altIds") or {}).get("opta", "")
+                num = (pl.get("info") or {}).get("shirtNum")
+                if opta.startswith("p") and num is not None:
+                    nums[int(opta[1:])] = int(num)
+            time.sleep(0.3)
+    except Exception as e:
+        print("Rugnummers niet beschikbaar:", e)
+    print("Rugnummers gevonden:", len(nums))
+    return nums
+
+
 def supabase_rpc(fn, payload):
     url = os.environ.get("SUPABASE_URL", "").rstrip("/")
     key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
@@ -58,9 +97,11 @@ def main():
     cur = next((e for e in events if e["is_current"]), None)
     nxt = next((e for e in events if e["is_next"]), None)
     keep = [e for e in boot["elements"] if not e.get("removed")]
+    nums = shirt_numbers()
     players = [[e["code"], e["web_name"], (e["first_name"] + " " + e["second_name"]).strip(), e["team"], e["element_type"],
                 e["now_cost"], float(e["selected_by_percent"]), e["total_points"], e["event_points"],
-                e["goals_scored"], e["assists"], e["clean_sheets"], e["minutes"]] for e in keep]
+                e["goals_scored"], e["assists"], e["clean_sheets"], e["minutes"],
+                e.get("squad_number") or nums.get(e["code"])] for e in keep]
     gw = cur["id"] if cur else 0
     write("players.json", {
         "gw": gw,
