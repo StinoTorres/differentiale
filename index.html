@@ -978,6 +978,7 @@ function renderBoard(){
   if(lw>0){
     const winners = S.rows.filter(r=>r.last_week_points===lw).map(r=>r.name);
     panel.append(el("div",{class:"winner"}, el("span",{class:"cup"},"🏆"), el("div",{}, el("b",{},"Weekwinnaar vorige week"), el("span",{}, winners.join(" & ")+" · "+lw+" ptn"))));
+    panel.append(el("div",{class:"row",style:"margin:-4px 0 12px"}, el("button",{class:"btn ghost",onclick:()=>shareWeek(S.scope)},"🏆 Deel de weekuitslag")));
   }
 
   const tab = S.board==="total" ? "total" : "week";
@@ -1020,6 +1021,20 @@ function leagueChips(){
   return el("div",{class:"chips"},
     S.leagues.map(l=>el("button",{class:S.scope===l.code?"on":"", onclick:()=>pick(l.code)}, l.name)),
     el("button",{class:"add"+(S.scope==="+new"?" on":""), onclick:()=>{ S.scope="+new"; render(); }},"＋ Poule"));
+}
+// Weekuitslag van vorige week (ma–zo) als tekst voor de groepsapp: top 3, gelijke stand = zelfde plek
+function weekText(code){
+  const d = dayIndex(S.today), start = d - ((d+5)%7) - 7;
+  const fmt = n => new Intl.DateTimeFormat("nl-NL",{timeZone:"UTC", day:"numeric", month:"short"}).format(new Date(dms(START) + n*DAY)).replace(".","");
+  const rows = (S.rows||[]).filter(r=>(r.last_week_points||0)>0).sort((a,b)=>b.last_week_points-a.last_week_points || String(a.name).localeCompare(String(b.name),"nl"));
+  const lines = []; let rank=0, prev=null;
+  rows.forEach((r,i)=>{ if(r.last_week_points!==prev){ rank=i+1; prev=r.last_week_points; } if(rank<=3) lines.push(["🥇","🥈","🥉"][rank-1]+" "+r.name+" · "+r.last_week_points+" ptn"); });
+  return "🏆 Weekuitslag "+leagueName(code)+" ("+fmt(start)+" – "+fmt(start+6)+")\n"+lines.join("\n")+"\n\nDifferentiale, de dagelijkse FPL-puzzel\n"+INVITE_BASE;
+}
+async function shareWeek(code){
+  const text = weekText(code);
+  if(navigator.share){ try{ await navigator.share({title:"Weekuitslag", text}); return; }catch(e){ if(e.name==="AbortError") return; } }
+  copyText(text);
 }
 async function shareInvite(code){
   const text = inviteText(code);
