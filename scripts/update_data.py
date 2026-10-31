@@ -37,7 +37,7 @@ def main():
     cur = next((e for e in events if e["is_current"]), None)
     nxt = next((e for e in events if e["is_next"]), None)
     stamp = now.strftime("%Y-%m-%dT%H:%M")
-    keep = [e for e in boot["elements"] if (e["status"] != "u" or e["minutes"] > 0) and not e.get("removed")]
+    keep = [e for e in boot["elements"] if not e.get("removed")]
     players = [[e["code"], e["web_name"], (e["first_name"] + " " + e["second_name"]).strip(), e["team"], e["element_type"],
                 e["now_cost"], float(e["selected_by_percent"]), e["total_points"], e["event_points"],
                 e["goals_scored"], e["assists"], e["clean_sheets"], e["minutes"]] for e in keep]
