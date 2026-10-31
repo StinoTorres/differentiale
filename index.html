@@ -172,7 +172,7 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 .pts{font-weight:800;color:var(--hd)}
 
 .devwarn{display:block;background:#fff0f5;border:2px solid var(--pink);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;line-height:1.45;color:var(--ink)}
-.devwarn b{display:block;font-size:15px;color:var(--pink);margin-bottom:4px}
+.devwarn b{display:block;font-size:15px;color:var(--pink)}
 [data-theme=dark] .devwarn{background:#3a0020}
 [data-theme=dark] .devwarn b{color:#ff5c93}
 
@@ -422,8 +422,7 @@ function openModal(content, closable=true){
 function closeModal(){ $("#modal").innerHTML=""; }
 function howTo(){
   return el("div",{class:"howto"},
-    el("div",{class:"devwarn"}, el("b",{},"⚠️ Spelen op één device is het devies"),
-      el("span",{},"Je voortgang, punten en reeks worden bijgehouden op het apparaat en in de browser waarmee je speelt. Wissel je van telefoon of browser, dan kan je profiel kwijtraken. Speel dus elke dag op hetzelfde apparaat.")),
+    el("div",{class:"devwarn"}, el("b",{},"⚠️ Spelen op één device is het devies")),
     el("h3",{style:"font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--hd);margin-bottom:8px",text:"Zo speel je"}),
     el("p",{},"Raad elke dag de geheime FPL-asset in zes pogingen. Bij elke gok zie je hoe dichtbij je zit op club, positie, prijs, eigendom, seizoenspunten en punten van de laatste gameweek. Pijlen wijzen naar het antwoord."),
     el("ul",{},
