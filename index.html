@@ -725,10 +725,21 @@ const KITS = {
   NEW:{b:"#111111",st:"#ffffff",s:"#111111",c:"#111111",i:"#ffffff"}, NFO:{b:"#dd0000",s:"#dd0000",c:"#ffffff",i:"#ffffff"},
   TOT:{b:"#ffffff",s:"#ffffff",c:"#132257",i:"#132257"}, SUN:{b:"#eb172b",st:"#ffffff",s:"#111111",c:"#111111",i:"#111111"}
 };
+// Keepersshirts: een felle effen kleur die afsteekt tegen het veldshirt van de club
+const GK_KITS = {
+  ARS:"#ffd23f", AVL:"#00b46e", BOU:"#7ed957", BRE:"#ffd23f", BHA:"#2b2b2b", CHE:"#ff8a00", COV:"#2b2b2b", CRY:"#ffd23f",
+  EVE:"#f7e04a", FUL:"#00b46e", HUL:"#3a9bdc", IPS:"#ff6fa8", LEE:"#2b2b2b", LIV:"#00b46e", MCI:"#ffd23f", MUN:"#2b2b2b",
+  NEW:"#ff8a00", NFO:"#7ed957", TOT:"#ff6fa8", SUN:"#3a9bdc"
+};
+function gkKit(club){
+  const b = GK_KITS[club] || "#7ed957"; const dark = lum(b) < 0.45;
+  return {b, s:b, c: dark ? "#ffffff" : "#111111", i: dark ? "#ffffff" : "#111111", gk:true};
+}
 function shirtSVG(p){
-  const club = teamS(p.team), k = KITS[club] || {b:COLORS[club]||"#888", s:COLORS[club]||"#888", c:"#ffffff", i:"#ffffff"};
+  const club = teamS(p.team);
+  const k = p.pos===1 ? gkKit(club) : (KITS[club] || {b:COLORS[club]||"#888", s:COLORS[club]||"#888", c:"#ffffff", i:"#ffffff"});
   const name = String(p.web||"").toUpperCase();
-  const fs = name.length<=6 ? 26 : name.length<=9 ? 22 : name.length<=12 ? 17 : 14;
+  const fs = name.length<=6 ? 28 : name.length<=9 ? 24 : name.length<=12 ? 19 : 16;
   const esc = t => t.replace(/[&<>"]/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
   const body = "M70 42 L56 92 L56 164 Q100 174 144 164 L144 92 L130 42 Q118 52 100 52 Q82 52 70 42Z";
   const id = "k"+Math.random().toString(36).slice(2,7);
@@ -739,16 +750,16 @@ function shirtSVG(p){
       <clipPath id="${id}c"><path d="${body}"/></clipPath>
       <linearGradient id="${id}s" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient></defs>
     <circle cx="100" cy="100" r="96" fill="url(#${id}g)"/>
-    <path d="M70 42 L52 48 L22 72 L38 102 L56 92 Z" fill="${k.s}" ${outline}/>
-    <path d="M130 42 L148 48 L178 72 L162 102 L144 92 Z" fill="${k.s}" ${outline}/>
-    <path d="M24 76 L38 100" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/><path d="M176 76 L162 100" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/>
+    ${k.gk ? `<path d="M70 42 L52 48 L12 104 L30 116 L56 92 Z" fill="${k.s}" ${outline}/><path d="M130 42 L148 48 L188 104 L170 116 L144 92 Z" fill="${k.s}" ${outline}/>`
+           : `<path d="M70 42 L52 48 L22 72 L38 102 L56 92 Z" fill="${k.s}" ${outline}/><path d="M130 42 L148 48 L178 72 L162 102 L144 92 Z" fill="${k.s}" ${outline}/>`}
+    ${k.gk ? `<path d="M14 106 L29 115" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/><path d="M186 106 L171 115" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/>`
+           : `<path d="M24 76 L38 100" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/><path d="M176 76 L162 100" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/>`}
     <path d="${body}" fill="${k.b}"/>
     <g clip-path="url(#${id}c)">${stripes}<rect x="50" y="30" width="100" height="150" fill="url(#${id}s)"/></g>
     <path d="${body}" fill="none" ${outline}/>
     <path d="M70 42 Q82 52 100 52 Q118 52 130 42" fill="none" stroke="${k.c}" stroke-width="6" stroke-linecap="round"/>
     <g font-family="Plus Jakarta Sans,system-ui" font-weight="800" text-anchor="middle" fill="${k.i}" ${k.st ? 'paint-order="stroke" stroke="'+k.b+'" stroke-width="5" stroke-linejoin="round"' : ""}>
-      <text x="100" y="${86+fs/3}" font-size="${fs}" letter-spacing="1" ${name.length*fs*0.7>80 ? 'textLength="80" lengthAdjust="spacingAndGlyphs"' : ""}>${esc(name)}</text>
-      <text x="100" y="140" font-size="30" letter-spacing="3">${esc(club)}</text>
+      <text x="100" y="${112+fs/3}" font-size="${fs}" letter-spacing="1" ${name.length*fs*0.7>80 ? 'textLength="80" lengthAdjust="spacingAndGlyphs"' : ""}>${esc(name)}</text>
     </g>
   </svg>`;
 }
