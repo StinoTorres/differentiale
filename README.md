@@ -10,7 +10,7 @@ Spelen: https://stinotorres.github.io/asset-van-de-dag/
 - **FPL-data:** `scripts/update_data.py` haalt FPL-data en de Snoep PL-selecties (league 57092) op, werkt `data/*.json` bij en stuurt alles naar Supabase. De Action draait na elke transferperiode (4 februari en 4 september) en kan altijd met de hand: Actions → FPL-data bijwerken → Run workflow.
 
 ## Instellen (eenmalig)
-1. **Supabase:** open je project (mag hetzelfde als Transferroute: alles heet `av_…`). SQL Editor → plak `supabase/schema.sql` → Run. Daarna hetzelfde met `supabase/seed.sql`.
-2. **config.js:** vul de Project URL en de anon (publishable) key in (Project Settings → API).
+1. ~~**Supabase:** `supabase/schema.sql` en `supabase/seed.sql` draaien~~ — gedaan op 31-10-2026 in het Transferroute-project (`lqsltyccaavymdivkoex`); alles heet `av_…`.
+2. ~~**config.js:** Project URL en publishable key~~ — ingevuld.
 3. **GitHub Pages:** Settings → Pages → Deploy from a branch → `main` / root.
 4. **Automatische update:** Settings → Secrets and variables → Actions → voeg `SUPABASE_URL` en `SUPABASE_SERVICE_ROLE_KEY` toe (service_role key, Project Settings → API). Deze sleutel is geheim: alleen als GitHub-secret, nooit in een bestand.
