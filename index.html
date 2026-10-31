@@ -24,7 +24,7 @@
   --bg:#f3f0f5; --bg2:#ece6ef; --card:#ffffff; --card2:#ffffff; --line:#e4dbe8;
   --ink:#37003c; --mute:#76647a; --faint:#a495a8;
   --acc:#00ff85; --acc-ink:#37003c; --link:#e90052;
-  --exact:#00ff85; --close:#04f5ff; --miss:#ece5ef;
+  --exact:#00ff85; --close:#ffd23f; --miss:#ece5ef;
   --bad:#e90052; --r:14px;
   --grad:linear-gradient(90deg,#04f5ff 0%,#00ff85 100%);
   --surface:#fff; --tile-ink:#37003c; --hd:#37003c; --okbg:#eafff4; --hover:#f5efff; --body:#4a2a4f;
@@ -33,7 +33,7 @@
 [data-theme=dark]{
   --bg:#1a001e; --bg2:#260029; --card:#2b0030; --card2:#2b0030; --line:#4a0f52;
   --ink:#f6eef8; --mute:#b9a2c1; --faint:#82688c; --link:#04f5ff;
-  --miss:#44084d; --close:#04f5ff; --link:#04f5ff;
+  --miss:#44084d; --close:#ffd23f; --link:#04f5ff;
   --surface:#2b0030; --tile-ink:#f6eef8; --hd:#00ff85; --okbg:#003a2a; --hover:#3a0a42; --body:#dccfe0;
   --banner-bg:#06343a; --banner-bd:#0b6f78; --banner-ink:#b9fbff; --sh:rgba(0,0,0,.35); --seg-on:#00ff85; --seg-on-ink:#37003c;
 }
@@ -416,7 +416,7 @@ function howTo(){
     el("p",{},"Raad elke dag de geheime FPL-asset in zes pogingen. Bij elke gok zie je hoe dichtbij je zit op club, positie, prijs, eigendom, seizoenspunten en punten van de laatste gameweek. Pijlen wijzen naar het antwoord."),
     el("ul",{},
       el("li",{},el("b",{class:"chip",style:"background:var(--exact)"},"Groen")," = exact"),
-      el("li",{},el("b",{class:"chip",style:"background:var(--close)"},"Lichtblauw")," = dichtbij (±£1.0m, ±8% eigendom, ±10 ptn, ±3 GW-ptn)"),
+      el("li",{},el("b",{class:"chip",style:"background:var(--close)"},"Geel")," = dichtbij (±£1.0m, ±8% eigendom, ±10 ptn, ±3 GW-ptn)"),
       el("li",{},"Na je eerste gok kun je de Snoep PL-hint openen: zit de speler in een team van onze FPL-league (ja/nee)? Nog een keer tikken laat zien in hoeveel teams. Elke stap kost 5 punten."),
       el("li",{},"Score: 60 punten bij de eerste gok, 50, 40… tot 10 bij de zesde. Elke hintstap kost 5. Niet geraden = 0."),
       el("li",{},"Het klassement telt per dag, per week (ma–zo) en per seizoen. Wie een week de meeste punten haalt, wint een weekbeker 🏆; gelijk = allebei."),
@@ -586,7 +586,7 @@ function renderResult(v){
 
 function copyShare(v){
   const n = v.rows.length;
-  const rows = v.rows.map(r=>KEYS.map(k=>r.fb[k].c==="exact"?"🟩":r.fb[k].c==="close"?"🟦":"⬛").join(""));
+  const rows = v.rows.map(r=>KEYS.map(k=>r.fb[k].c==="exact"?"🟩":r.fb[k].c==="close"?"🟨":"⬛").join(""));
   const txt = "Asset van de Dag #"+(dayIndex(S.today)+1)+" · "+(v.won?n:"X")+"/6"+(v.hints?" · "+v.hints+" hint"+(v.hints>1?"s":""):"")+" · "+v.points+" ptn\n"+rows.join("\n")+"\n"+location.origin+location.pathname;
   copyText(txt);
 }
