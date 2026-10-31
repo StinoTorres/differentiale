@@ -106,14 +106,21 @@ nav button.on{background:#fff;color:var(--purple)}
 .guess{margin-bottom:12px}
 .guess .gname{font-weight:800;font-size:14px;margin:0 2px 6px;display:flex;justify-content:space-between}
 .guess .gname span{color:var(--hd);font-weight:800;font-size:12px}
-.tile{position:relative;height:54px;border-radius:10px;background:var(--miss);color:var(--tile-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:15px;line-height:1.05;overflow:hidden;animation:flip .45s both}
+.tile{position:relative;height:54px;border-radius:10px;background:var(--miss);color:var(--tile-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:15px;line-height:1.05;overflow:hidden}
+.tile{--final:var(--miss)} .tile.exact{--final:var(--exact)} .tile.close{--final:var(--close)}
+.tile.anim{animation:wflip .55s ease-in-out both;animation-delay:calc(var(--i,0) * .32s)}
+.tile.anim > *{animation:wshow .55s step-end both;animation-delay:calc(var(--i,0) * .32s)}
+@keyframes wflip{0%{transform:rotateX(0);background:transparent;box-shadow:inset 0 0 0 2px var(--line)}
+  50%{transform:rotateX(90deg);background:transparent;box-shadow:inset 0 0 0 2px var(--line)}
+  50.01%{transform:rotateX(90deg);background:var(--final);box-shadow:none}
+  100%{transform:rotateX(0);background:var(--final);box-shadow:none}}
+@keyframes wshow{0%{opacity:0}50%{opacity:1}}
 .tile.exact{background:var(--exact);color:#37003c}
 .tile.close{background:var(--close);color:#37003c}
 .tile .ar{font-size:11px;font-weight:900;margin-top:3px;opacity:.8}
 .tile .club{font-size:14px;letter-spacing:.02em}
 .tile .stripe{position:absolute;left:0;right:0;bottom:0;height:5px}
 @keyframes flip{from{transform:rotateX(90deg);opacity:0}to{transform:none;opacity:1}}
-.tiles .tile:nth-child(2){animation-delay:.06s}.tiles .tile:nth-child(3){animation-delay:.12s}.tiles .tile:nth-child(4){animation-delay:.18s}.tiles .tile:nth-child(5){animation-delay:.24s}.tiles .tile:nth-child(6){animation-delay:.3s}
 .empty .tile{animation:none;background:transparent;border:2px dashed var(--line)}
 
 .legend{display:flex;gap:12px;justify-content:center;font-size:11.5px;color:var(--mute);margin:10px 0 16px;flex-wrap:wrap;font-weight:600}
@@ -176,6 +183,9 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 [data-theme=dark] .devwarn{background:#3a0020}
 [data-theme=dark] .devwarn b{color:#ff5c93}
 
+.giveup{font-size:13px;font-weight:700;color:var(--mute);border:2px solid var(--line);border-radius:999px;padding:8px 16px;background:transparent}
+.giveup.confirm{color:#fff;background:var(--pink);border-color:var(--pink)}
+.giveup:disabled{opacity:.5}
 .linkbtn{text-decoration:underline;color:var(--link);font-weight:700}
 .winner{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,rgba(4,245,255,.18),rgba(0,255,133,.18));border:2px solid var(--green);border-radius:16px;padding:12px 14px;margin-bottom:12px}
 .winner .cup{font-size:30px;line-height:1}
@@ -314,10 +324,10 @@ function view(){
   if(S.mode==="practice"){
     const g = S.practice, a = P[g.answer];
     const rows = g.guesses.map(c=>({...P[c], fb:compare(P[c], a)}));
-    const won = g.guesses.includes(g.answer), done = won || g.guesses.length>=6;
+    const won = g.guesses.includes(g.answer), done = won || g.guesses.length>=6 || !!g.gaveUp;
     let hint = null;
     if(g.hints>=1){ const n = LEAGUE ? (LEAGUE.picks[a.code]||[]).length : 0; hint = {yes:n>0, count: g.hints>=2 ? n : null}; }
-    return {rows, hints:g.hints, hint, done, won, points:scoreFor(rows.length, g.hints, won), answer: done ? a : null,
+    return {rows, hints:g.hints, hint, done, won, gave_up:!!g.gaveUp, points:scoreFor(rows.length, g.hints, won), answer: done ? a : null,
             league: LEAGUE ? {name:LEAGUE.name, total:LEAGUE.managers.length, gw:LEAGUE.gw} : null, practice:true};
   }
   return S.srv;
@@ -419,6 +429,7 @@ function howTo(){
       el("li",{},el("b",{class:"chip",style:"background:var(--close)"},"Geel")," = dichtbij (±£1.0m, ±8% eigendom, ±10 ptn, ±3 GW-ptn)"),
       el("li",{},"Na je eerste gok kun je de Snoep PL-hint openen: zit de speler in een team van onze FPL-league (ja/nee)? Nog een keer tikken laat zien in hoeveel teams. Elke stap kost 5 punten."),
       el("li",{},"Score: 60 punten bij de eerste gok, 50, 40… tot 10 bij de zesde. Elke hintstap kost 5. Niet geraden = 0."),
+      el("li",{},"Weet je het echt niet? Druk op 🏳️ Kleine speler om op te geven: 0 punten en je reeks stopt."),
       el("li",{},"Het klassement telt per dag, per week (ma–zo) en per seizoen. Wie een week de meeste punten haalt, wint een weekbeker 🏆; gelijk = allebei."),
       el("li",{},"Maak onder Klassement een poule en deel de code met je vrienden om onderling te vergelijken.")
     ),
@@ -527,18 +538,27 @@ function renderPlay(){
 
   const bd = el("div",{class:"board"}); box.append(bd);
   const pips = el("div",{class:"pips"}); for(let i=0;i<6;i++) pips.append(el("i",{class: i<n ? (v.won && i===n-1 ? "win":"used") : ""}));
-  bd.append(el("div",{class:"meter"}, el("span",{}, v.done ? (v.won?"Geraden in "+n+"/6":"Niet geraden") : S.busy ? "Even checken…" : "Poging "+(n+1)+" van 6"), pips));
+  bd.append(el("div",{class:"meter"}, el("span",{}, v.done ? (v.won?"Geraden in "+n+"/6":v.gave_up?"Kleine speler 🏳️":"Niet geraden") : S.busy ? "Even checken…" : "Poging "+(n+1)+" van 6"), pips));
   bd.append(el("div",{class:"colhead"}, ["Club","Pos","Prijs","Eig.","Ptn","GW"+DATA.gw].map(t=>el("div",{},t))));
-  [...v.rows].reverse().forEach(r=>{
-    const hit = KEYS.every(k=>r.fb[k].c==="exact");
+  const seenKey = (v.practice ? "p"+S.practice.answer : "d"+S.today), seen = S.seen && S.seen.k===seenKey ? S.seen.n : 0;
+  v.rows.forEach((r,ri)=>{
+    const hit = KEYS.every(k=>r.fb[k].c==="exact"), isNew = ri >= seen;
+    const tiles = KEYS.map((k,ki)=>{ const t = tileFor(r,r.fb,k); if(isNew){ t.classList.add("anim"); t.style.setProperty("--i", ki); } return t; });
     bd.append(el("div",{class:"guess"},
       el("div",{class:"gname"}, r.web, el("span",{}, hit ? "✓ raak" : "")),
-      el("div",{class:"tiles"}, KEYS.map(k=>tileFor(r,r.fb,k)))));
+      el("div",{class:"tiles"}, tiles)));
   });
+  S.seen = {k:seenKey, n};
   if(!v.done) bd.append(el("div",{class:"guess empty"}, el("div",{class:"gname"}," "), el("div",{class:"tiles"}, KEYS.map(()=>el("div",{class:"tile"})))));
   bd.append(el("div",{class:"legend"}, el("span",{},el("b",{style:"background:var(--exact)"}),"Exact"), el("span",{},el("b",{style:"background:var(--close)"}),"Dichtbij"), el("span",{},el("b",{style:"background:var(--miss)"}),"Mis"), el("span",{},"▲▼ richting antwoord"),
     el("div",{style:"flex-basis:100%;text-align:center;margin-top:2px"},"Dichtbij = prijs ±£1.0m · eigendom ±8% · punten ±10 · GW ±3")));
 
+  if(!v.done){
+    const gb = el("button",{class:"giveup"+(S.confirmGiveUp?" confirm":""), disabled:S.busy, onclick:()=>{
+      if(!S.confirmGiveUp){ S.confirmGiveUp = true; render(); clearTimeout(S.cgT); S.cgT = setTimeout(()=>{ S.confirmGiveUp=false; render(); }, 5000); return; }
+      S.confirmGiveUp = false; giveUp(); }}, S.confirmGiveUp ? "Echt een kleine speler? Tik nog een keer" : "🏳️ Kleine speler");
+    bd.append(el("div",{class:"row",style:"margin:2px 0 12px"}, gb));
+  }
   if(!v.done){
     const hasL = !!(v.league && v.league.total);
     const avail = hasL && n>=1 && !S.busy && (v.hints===0 || (v.hints===1 && v.hint && v.hint.yes));
@@ -561,6 +581,7 @@ function renderResult(v){
   const a = v.answer, n = v.rows.length;
   const r = el("div",{class:"panel result"});
   r.append(el("div",{class:"big num"}, String(v.points), el("small",{}," ptn")));
+  if(v.gave_up) r.append(el("div",{class:"sub",style:"margin-top:4px"},"🏳️ Kleine speler 🤏"));
   if(a){
     const full = (P[a.code] && P[a.code].full) || a.web;
     r.append(el("div",{class:"ans"}, full));
@@ -585,11 +606,12 @@ function renderResult(v){
 function shareText(v){
   const n = v.rows.length, st = (v.stats && v.stats.streak) || 0;
   const datum = new Date().toLocaleDateString("nl-NL",{timeZone:TZ,weekday:"short",day:"numeric",month:"short"});
+  // Zoals Transferroute: alleen bij geraden de blokjes; niet geraden of opgegeven verraadt niets
   const rows = v.rows.map(r=>KEYS.map(k=>r.fb[k].c==="exact"?"🟩":r.fb[k].c==="close"?"🟨":"⬛").join(""));
   const head = "⚽️ "+datum+" ⚽️\nDifferentiale #"+(dayIndex(S.today)+1)+(v.hints?" "+"💡".repeat(v.hints):"");
-  const uitslag = v.won ? n+"/6 · "+v.points+" ptn" : "❌ niet geraden";
+  const body = v.won ? rows.join("\n")+"\n"+n+"/6 · "+v.points+" ptn" : v.gave_up ? "❌🏳️ kleine speler 🤏" : "❌ niet geraden";
   const reeks = st>0 ? "🔥 Reeks: "+st+" "+(st===1?"dag":"dagen") : "💔 Reeks: 0";
-  return head+"\n"+rows.join("\n")+"\n"+uitslag+"\n"+reeks+"\n"+location.origin+location.pathname;
+  return head+"\n"+body+"\n"+reeks+"\n"+location.origin+location.pathname;
 }
 async function copyShare(v){
   const t = shareText(v);
@@ -607,7 +629,7 @@ async function makeGuess(code){
   if(S.mode==="practice"){
     const g = S.practice; if(g.guesses.includes(code) || view().done) return;
     g.guesses.push(code); S.q=""; S.hi=0;
-    const v = view(); if(v.done) toast(v.won ? CHEERS[v.rows.length-1] : "Helaas: het was "+P[g.answer].web);
+    const v = view(); if(v.done){ const m = v.won ? CHEERS[v.rows.length-1] : "Helaas: het was "+P[g.answer].web; setTimeout(()=>toast(m), 2100); }
     render(); if(!v.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
     return;
   }
@@ -618,7 +640,7 @@ async function makeGuess(code){
     if(dayStr()!==S.today){ await refresh(); toast("Er is een nieuwe puzzel!"); return; }
     const r = await rpc("av_guess", {...auth(), p_code:code});
     S.srv = {...S.srv, ...r}; S.err = null;
-    if(r.done){ toast(r.won ? CHEERS[r.rows.length-1] : "Helaas: het was "+r.answer.web); loadBoard(); }
+    if(r.done){ const m = r.won ? CHEERS[r.rows.length-1] : "Helaas: het was "+r.answer.web; setTimeout(()=>toast(m), 2100); loadBoard(); }
   }catch(e){ toast("Je gok kwam niet aan. Check je verbinding en probeer opnieuw."); }
   S.busy = false; render();
   if(S.srv && !S.srv.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
@@ -630,10 +652,18 @@ async function useHint(){
   catch(e){ toast("De hint kwam niet aan. Probeer het opnieuw."); }
   S.busy = false; render();
 }
+async function giveUp(){
+  if(S.mode==="practice"){ S.practice.gaveUp = true; toast("Het was "+P[S.practice.answer].web); render(); return; }
+  if(!S.id || !S.srv || S.srv.done) return;
+  S.busy = true; render();
+  try{ const r = await rpc("av_giveup", auth()); S.srv = {...S.srv, ...r}; if(r.answer) toast("Het was "+r.answer.web); loadBoard(); }
+  catch(e){ toast("Opgeven lukte niet. Check je verbinding en probeer opnieuw."); }
+  S.busy = false; render();
+}
 function startPractice(){
   const pool = LIST.slice(0,240), today = S.srv && S.srv.answer ? S.srv.answer.code : null;
   let c; do { c = pool[Math.floor(Math.random()*pool.length)].code; } while(c===today);
-  S.practice = {answer:c, guesses:[], hints:0}; S.mode = "practice"; S.tab="play"; S.q=""; render();
+  S.practice = {answer:c, guesses:[], hints:0, gaveUp:false}; S.confirmGiveUp = false; S.mode = "practice"; S.tab="play"; S.q=""; render();
 }
 
 /* ---------- poules ---------- */
@@ -723,7 +753,7 @@ function renderBoard(){
       const nameCell = el("td",{}, el("span",{},String(r.name)), el("span",{class:"tag"},"#"+(r.tag||"")),
         r.cups>0 ? el("span",{class:"cups",title:r.cups+" keer weekwinnaar"},"🏆"+(r.cups>1?r.cups:"")) : null,
         r.streak>=2 ? el("span",{class:"fire"},"🔥"+r.streak) : null);
-      const gok = S.board==="today" ? el("td",{class:"r num",style:"color:var(--mute)"}, r.today_n!=null ? (r.today_won ? r.today_n+"/6" : "X/6") : (r.today_played ? "✓" : "–")) : null;
+      const gok = S.board==="today" ? el("td",{class:"r num",style:"color:var(--mute)"}, r.today_n!=null ? (r.today_gave_up ? "🏳️" : r.today_won ? r.today_n+"/6" : "X/6") : (r.today_played ? "✓" : "–")) : null;
       tb.append(el("tr",{class:r.is_me?"me":""}, el("td",{class:"pos num"+(medal?" medal":"")}, medal || String(r.pos)), nameCell, gok,
         el("td",{class:"r pts num"}, val==null ? (S.board==="today" && !r.today_played ? "–" : "?") : String(val))));
     });
