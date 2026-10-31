@@ -8,6 +8,12 @@
 <meta property="og:title" content="Asset van de Dag">
 <meta property="og:description" content="Raad elke dag de geheime FPL-asset in zes pogingen.">
 <meta name="theme-color" content="#37003c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Asset vd Dag">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,6 +170,11 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 .tag{color:var(--faint);font-weight:500;font-size:12px;margin-left:3px}
 .fire{font-size:12px;color:var(--pink);margin-left:6px;font-weight:800}
 .pts{font-weight:800;color:var(--hd)}
+
+.devwarn{display:block;background:#fff0f5;border:2px solid var(--pink);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.devwarn b{display:block;font-size:15px;color:var(--pink);margin-bottom:4px}
+[data-theme=dark] .devwarn{background:#3a0020}
+[data-theme=dark] .devwarn b{color:#ff5c93}
 
 /* poules */
 .chips{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:none}
@@ -411,6 +422,8 @@ function openModal(content, closable=true){
 function closeModal(){ $("#modal").innerHTML=""; }
 function howTo(){
   return el("div",{class:"howto"},
+    el("div",{class:"devwarn"}, el("b",{},"⚠️ Spelen op één device is het devies"),
+      el("span",{},"Je voortgang, punten en reeks worden bijgehouden op het apparaat en in de browser waarmee je speelt. Wissel je van telefoon of browser, dan kan je profiel kwijtraken. Speel dus elke dag op hetzelfde apparaat.")),
     el("h3",{style:"font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--hd);margin-bottom:8px",text:"Zo speel je"}),
     el("p",{},"Raad elke dag de geheime FPL-asset in zes pogingen. Bij elke gok zie je hoe dichtbij je zit op club, positie, prijs, eigendom, seizoenspunten en punten van de laatste gameweek. Pijlen wijzen naar het antwoord."),
     el("ul",{},
@@ -752,6 +765,7 @@ function renderMe(){
     S.me ? el("p",{class:"note",style:"margin-top:8px"},"Je nummer #"+S.me.tag+" blijft hetzelfde.") : null));
   box.append(el("div",{class:"panel"}, howTo()));
   box.append(el("div",{class:"row",style:"margin:6px 0 14px"}, el("button",{class:"btn ghost",onclick:startPractice},"Speel een oefenronde")));
+  box.append(el("div",{class:"panel"}, el("h3",{},"Op je beginscherm"), el("p",{class:"note"},"Zet Asset van de Dag als app op je telefoon. iPhone: open de site in Safari, tik op de deel-knop en kies ‘Zet op beginscherm’. Android: open het menu in Chrome en kies ‘App installeren’.")));
   box.append(el("p",{class:"note",style:"text-align:center"},"Speldata: FPL na GW"+DATA.gw+" (bijgewerkt "+DATA.updated+")."));
   return box;
 }
@@ -768,6 +782,7 @@ loadLocal();
 render();
 setInterval(()=>{ const d=dayStr(); if(d!==S.today){ S.today=d; S.mode="daily"; loadLocal(); if(S.me) S.daily.guesses=[]; render(); } }, 30000);
 initBackend();
+if("serviceWorker" in navigator) window.addEventListener("load", ()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
 </body>
 </html>
