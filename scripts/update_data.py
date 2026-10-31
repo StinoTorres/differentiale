@@ -84,7 +84,9 @@ def supabase_rpc(fn, payload):
     if not url or not key:
         print("Geen SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY: Supabase overgeslagen"); return None
     req = urllib.request.Request(f"{url}/rest/v1/rpc/{fn}", data=json.dumps(payload).encode(), method="POST",
-                                 headers={"Content-Type": "application/json", "apikey": key, "Authorization": "Bearer " + key})
+                                 headers={"Content-Type": "application/json", "apikey": key,
+                                          # oude service_role-sleutel is een JWT; de nieuwe sb_secret_-sleutel alleen als apikey
+                                          **({"Authorization": "Bearer " + key} if key.startswith("eyJ") else {})})
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.load(r)
 
