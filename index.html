@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Differentiale</title>
 <meta name="description" content="Raad elke dag de geheime FPL-asset in zes pogingen. Met klassement en poules voor je vrienden.">
 <meta property="og:title" content="Differentiale">
@@ -186,6 +186,50 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 .giveup{font-size:13px;font-weight:700;color:var(--mute);border:2px solid var(--line);border-radius:999px;padding:8px 16px;background:transparent}
 .giveup.confirm{color:#fff;background:var(--pink);border-color:var(--pink)}
 .giveup:disabled{opacity:.5}
+.proud{text-align:center}
+.proud .shirt{width:150px;height:150px;margin:4px auto 10px;display:block;filter:drop-shadow(0 10px 18px rgba(55,0,60,.35))}
+.proud .eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--pink)}
+.proud h2{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 6px;color:var(--hd)}
+.proud p{font-size:16px;margin:0 0 4px}
+.proud .pts{font-size:42px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;margin:6px 0 10px}
+.ballrain{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+.ballrain span{position:absolute;top:-60px;animation:ballfall linear forwards}
+@keyframes ballfall{to{transform:translate(var(--drift),110vh) rotate(var(--spin))}}
+.confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:71}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+.modal .box.pop{animation:pop .35s cubic-bezier(.2,1.4,.4,1) both}
+/* telefoon */
+html{-webkit-text-size-adjust:100%}
+*{-webkit-tap-highlight-color:transparent}
+button,input,a,.tile{touch-action:manipulation}
+.top{padding-top:calc(18px + env(safe-area-inset-top))}
+.top .inner{padding-left:max(14px, env(safe-area-inset-left));padding-right:max(14px, env(safe-area-inset-right))}
+.wrap{padding-bottom:calc(80px + env(safe-area-inset-bottom));padding-left:max(14px, env(safe-area-inset-left));padding-right:max(14px, env(safe-area-inset-right))}
+.toast{bottom:calc(24px + env(safe-area-inset-bottom));max-width:calc(100vw - 32px);text-align:center}
+.modal{padding:max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom))}
+.modal .box{max-height:90vh;max-height:90dvh;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.sugg button{min-height:52px}
+.btn{min-height:44px}
+.row .btn{flex:1 1 auto}
+.copyarea{font-size:16px}
+@media (max-width:360px){
+  .wrap{padding-left:10px;padding-right:10px}
+  .colhead,.tiles{gap:4px}
+  .tile{height:46px;font-size:12.5px;border-radius:8px}
+  .tile .club{font-size:12px}
+  .tile .ar{font-size:10px}
+  .brand .t1{font-size:21px}
+  .brand .t2{font-size:11.5px}
+  .mascot{width:92px;height:92px;margin:-16px -10px -16px -4px}
+  .helpbtn{width:32px;height:32px}
+  nav button{font-size:13px}
+  .seg button{padding:7px 10px;font-size:12px}
+  .stats b{font-size:17px}
+  .result .big{font-size:38px}
+  .proud h2{font-size:25px}
+  .bigcode{font-size:26px;letter-spacing:.12em}
+  .colhead{font-size:9.5px}
+}
 .linkbtn{text-decoration:underline;color:var(--link);font-weight:700}
 .winner{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,rgba(4,245,255,.18),rgba(0,255,133,.18));border:2px solid var(--green);border-radius:16px;padding:12px 14px;margin-bottom:12px}
 .winner .cup{font-size:30px;line-height:1}
@@ -207,7 +251,7 @@ td.pos.medal{font-size:18px}
 
 /* profile */
 .field{display:flex;gap:8px}
-.field input{flex:1;background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:11px 16px;font-size:15px;font-weight:600;outline:none;min-width:0}
+.field input{flex:1;background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:11px 16px;font-size:16px;font-weight:600;outline:none;min-width:0}
 .field input:focus{border-color:var(--hd)}
 .howto p{font-size:14px;line-height:1.55;margin-bottom:8px;color:var(--body)}
 .howto ul{padding-left:18px;font-size:14px;line-height:1.65;color:var(--body)}
@@ -501,7 +545,7 @@ function searchBox(v){
     const res = LIST.filter(p=>!guessed.has(p.code) && (p.key.includes(q) || p.key.split(/[\s-]/).some(w=>w.startsWith(q)))).slice(0,8);
     if(!res.length) sugg.append(el("div",{class:"note",style:"padding:12px"},"Geen speler gevonden"));
     S.hi = Math.min(S.hi, Math.max(0,res.length-1));
-    res.forEach((p,i)=>sugg.append(el("button",{class:i===S.hi?"hi":"", onmousedown:e=>{e.preventDefault(); makeGuess(p.code);}},
+    res.forEach((p,i)=>sugg.append(el("button",{class:i===S.hi?"hi":"", onmousedown:e=>e.preventDefault(), onclick:()=>makeGuess(p.code)},
       el("span",{class:"nm"}, p.web, p.web!==p.full ? el("small",{},p.full) : null),
       el("span",{class:"meta num"}, teamS(p.team)+" · "+POS[p.pos]+" · "+fmtPrice(p.price)))));
     sugg.classList.remove("hide"); sugg._res = res;
@@ -514,7 +558,7 @@ function searchBox(v){
     else if(e.key==="Enter" && res[S.hi]) makeGuess(res[S.hi].code);
     else if(e.key==="Escape") sugg.classList.add("hide");
   });
-  inp.addEventListener("blur",()=>setTimeout(()=>sugg.classList.add("hide"),120));
+  inp.addEventListener("blur",()=>setTimeout(()=>sugg.classList.add("hide"),300));
   inp.addEventListener("focus",()=>{ if(inp.value) draw(); });
   const box = el("div",{class:"searchbox"}, inp, sugg);
   box.insertAdjacentHTML("afterbegin",'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>');
@@ -629,7 +673,7 @@ async function makeGuess(code){
   if(S.mode==="practice"){
     const g = S.practice; if(g.guesses.includes(code) || view().done) return;
     g.guesses.push(code); S.q=""; S.hi=0;
-    const v = view(); if(v.done){ const m = v.won ? CHEERS[v.rows.length-1] : "Helaas: het was "+P[g.answer].web; setTimeout(()=>toast(m), 2100); }
+    const v = view(); if(v.done){ if(v.won) setTimeout(()=>celebrate(view()), 2100); else setTimeout(()=>toast("Helaas: het was "+P[g.answer].web), 2100); }
     render(); if(!v.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
     return;
   }
@@ -640,7 +684,7 @@ async function makeGuess(code){
     if(dayStr()!==S.today){ await refresh(); toast("Er is een nieuwe puzzel!"); return; }
     const r = await rpc("av_guess", {...auth(), p_code:code});
     S.srv = {...S.srv, ...r}; S.err = null;
-    if(r.done){ const m = r.won ? CHEERS[r.rows.length-1] : "Helaas: het was "+r.answer.web; setTimeout(()=>toast(m), 2100); loadBoard(); }
+    if(r.done){ if(r.won) setTimeout(()=>celebrate(S.srv), 2100); else setTimeout(()=>toast("Helaas: het was "+r.answer.web), 2100); loadBoard(); }
   }catch(e){ toast("Je gok kwam niet aan. Check je verbinding en probeer opnieuw."); }
   S.busy = false; render();
   if(S.srv && !S.srv.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
@@ -664,6 +708,54 @@ function startPractice(){
   const pool = LIST.slice(0,240), today = S.srv && S.srv.answer ? S.srv.answer.code : null;
   let c; do { c = pool[Math.floor(Math.random()*pool.length)].code; } while(c===today);
   S.practice = {answer:c, guesses:[], hints:0, gaveUp:false}; S.confirmGiveUp = false; S.mode = "practice"; S.tab="play"; S.q=""; render();
+}
+
+/* ---------- feest bij goed geraden (zoals Transferroute) ---------- */
+function lum(hex){ const n=parseInt(hex.slice(1),16), r=n>>16&255, g=n>>8&255, b=n&255; return (0.299*r+0.587*g+0.114*b)/255; }
+function shirtSVG(p){
+  const club = teamS(p.team), col = COLORS[club] || "#888", ink = lum(col) > 0.6 ? "#37003c" : "#ffffff";
+  const ini = String(p.web||"?").replace(/[^A-Za-zÀ-ÿ]/g," ").trim().split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase() || "?";
+  return `<svg class="shirt" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="96" fill="url(#rg)"/>
+    <defs><radialGradient id="rg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#04f5ff" stop-opacity=".35"/><stop offset="1" stop-color="#00ff85" stop-opacity=".12"/></radialGradient></defs>
+    <path d="M70 42 L52 48 L22 72 L38 102 L56 92 L56 164 Q100 174 144 164 L144 92 L162 102 L178 72 L148 48 L130 42 Q118 58 100 58 Q82 58 70 42Z" fill="${col}" stroke="rgba(0,0,0,.18)" stroke-width="3"/>
+    <path d="M70 42 Q82 58 100 58 Q118 58 130 42" fill="none" stroke="${ink}" stroke-opacity=".55" stroke-width="5"/>
+    <text x="100" y="128" text-anchor="middle" font-family="Plus Jakarta Sans,system-ui" font-weight="800" font-size="46" fill="${ink}">${ini}</text>
+    <text x="100" y="153" text-anchor="middle" font-family="Plus Jakarta Sans,system-ui" font-weight="800" font-size="15" letter-spacing="2" fill="${ink}" fill-opacity=".8">${club}</text>
+  </svg>`;
+}
+function ballRain(n){
+  const box = el("div",{class:"ballrain"});
+  for(let i=0;i<n;i++){ const b=el("span",{},"⚽"); const size=18+Math.random()*26, dur=1.8+Math.random()*1.6, delay=Math.random()*1.2;
+    b.style.cssText=`left:${Math.random()*100}vw;font-size:${size}px;animation-duration:${dur}s;animation-delay:${delay}s;--spin:${(Math.random()<.5?-1:1)*(360+Math.random()*540)}deg;--drift:${(Math.random()-.5)*80}px`;
+    box.append(b); }
+  document.body.append(box); setTimeout(()=>box.remove(),5200);
+}
+function confetti(){
+  const c=document.createElement("canvas"); c.className="confetti"; document.body.appendChild(c);
+  const ctx=c.getContext("2d"), dpr=window.devicePixelRatio||1, W=c.width=innerWidth*dpr, H=c.height=innerHeight*dpr;
+  const cols=["#37003c","#00ff85","#04f5ff","#e90052","#ffd23f","#ffffff"];
+  const Q=Array.from({length:180},()=>({x:W/2+(Math.random()-.5)*W*.3,y:H*.35,vx:(Math.random()-.5)*14*dpr,vy:(-Math.random()*16-6)*dpr,s:(5+Math.random()*7)*dpr,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[Math.floor(Math.random()*cols.length)]}));
+  const t0=performance.now();
+  (function f(now){ const t=now-t0; ctx.clearRect(0,0,W,H);
+    for(const p of Q){ p.vy+=.45*dpr; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.globalAlpha=Math.max(0,1-t/3500); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); }
+    if(t<3500) requestAnimationFrame(f); else c.remove(); })(t0);
+}
+function celebrate(v){
+  const a = v.answer, n = v.rows.length, first = n===1;
+  const full = (P[a.code] && P[a.code].full) || a.web;
+  const box = el("div",{class:"proud"});
+  box.insertAdjacentHTML("beforeend", shirtSVG(a));
+  box.append(el("div",{class:"eyebrow"}, first ? "In één keer!" : "Geraden in "+n+"/6"),
+    el("h2",{}, first ? "Wat een kenner." : n<=3 ? "Goed geraden!" : n<6 ? "Netjes!" : "Op het nippertje!"),
+    el("p",{}, "Het was ", el("b",{}, full), " (" + teamN(a.team) + ")."),
+    el("div",{class:"pts num"}, (v.practice ? "Oefenronde" : "+"+v.points+" ptn")),
+    el("div",{class:"row"}, !v.practice ? el("button",{class:"btn",onclick:()=>copyShare(v)},"📤 Deel resultaat") : null, el("button",{class:"btn ghost",onclick:closeModal},"Dank je")));
+  openModal(box, false);
+  const bx = document.querySelector(".modal .box"); if(bx) bx.classList.add("pop");
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  ballRain(first ? 40 : 26);
+  if(first) confetti();
 }
 
 /* ---------- poules ---------- */
