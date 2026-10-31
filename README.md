@@ -10,7 +10,7 @@ Spelen: https://stinotorres.github.io/differentiale/
 - **FPL-data:** `scripts/update_data.py` haalt FPL-data en de Snoep PL-selecties (league 57092) op, werkt `data/*.json` bij en stuurt alles naar Supabase. Het spel rekent altijd met de stand na de **laatst afgeronde gameweek** (FPL `finished` + `data_checked`): seizoenspunten zonder de punten van een lopende gameweek, GW-punten van die afgeronde gameweek, en de Snoep PL-teams van diezelfde gameweek. De Action kijkt elke 3 uur of er een nieuwe gameweek is afgerond en doet anders niets. Met de hand: Actions → FPL-data bijwerken → Run workflow (vink *force* aan om toch te verversen).
 
 ## Instellen (eenmalig)
-1. ~~**Supabase:** `supabase/schema.sql` en `supabase/seed.sql` draaien~~ — gedaan op 31-10-2026 in het Transferroute-project (`lqsltyccaavymdivkoex`); alles heet `av_…`. Daarna ook `kleine-speler.sql`, `gisteren.sql` en `stats.sql`.
+1. ~~**Supabase:** `supabase/schema.sql` en `supabase/seed.sql` draaien~~ — gedaan op 31-10-2026 in het Transferroute-project (`lqsltyccaavymdivkoex`); alles heet `av_…`. Daarna ook `kleine-speler.sql`, `gisteren.sql`, `stats.sql` en `alleen-poules.sql`.
 2. ~~**config.js:** Project URL en publishable key~~ — ingevuld.
 3. **GitHub Pages:** Settings → Pages → Deploy from a branch → `main` / root.
 4. **Automatische update:** Settings → Secrets and variables → Actions → voeg `SUPABASE_URL` en `SUPABASE_SERVICE_ROLE_KEY` toe (service_role key, Project Settings → API). Deze sleutel is geheim: alleen als GitHub-secret, nooit in een bestand.

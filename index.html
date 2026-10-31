@@ -375,7 +375,7 @@ const S = {
   me:null, leagues:[],
   practice:null,
   loading:true, err:null, busy:false,
-  board:"today", scope:"all", rows:null, boardErr:null, boardLoading:false,
+  board:"today", scope:null, rows:null, boardErr:null, boardLoading:false,
   q:"", hi:0, pendingJoin:null
 };
 
@@ -536,8 +536,8 @@ function howTo(){
       el("li",{},"Na je eerste gok kun je de Snoep PL-hint openen: zit de speler in een team van onze FPL-league (ja/nee)? Nog een keer tikken laat zien in hoeveel teams. Elke stap kost 5 punten."),
       el("li",{},"Score: 60 punten bij de eerste gok, 50, 40… tot 10 bij de zesde. Elke hintstap kost 5. Niet geraden = 0."),
       el("li",{},"Weet je het echt niet? Druk op 🏳️ Kleine speler om op te geven: 0 punten en je reeks stopt."),
-      el("li",{},"Het klassement telt per dag, per week (ma–zo) en per seizoen. Wie een week de meeste punten haalt, wint een weekbeker 🏆; gelijk = allebei."),
-      el("li",{},"Maak onder Klassement een poule en deel de code met je vrienden om onderling te vergelijken.")
+      el("li",{},"Het klassement is er per poule: per dag, per week (ma–zo) en per seizoen. Wie een week de meeste punten in de poule haalt, wint een weekbeker 🏆; gelijk = allebei."),
+      el("li",{},"Maak onder Klassement een poule en deel de code met je vrienden, of doe mee met hun code.")
     )
   );
 }
@@ -898,7 +898,7 @@ async function joinLeague(raw){
 function leaveLeague(code){
   openModal(el("div",{}, el("h2",{text:"Poule verlaten?"}),
     el("p",{class:"note",style:"margin-bottom:14px"},"Je verdwijnt uit de stand van "+leagueName(code)+". Je punten blijven bewaard en met de code kun je altijd terugkomen."),
-    el("div",{class:"row"}, el("button",{class:"btn",onclick:async()=>{ closeModal(); try{ await rpc("av_leave_league", {...auth(), p_code:code}); await refresh(); S.scope="all"; render(); loadBoard(); toast("Poule verlaten"); }catch(e){ toast(errText(e)); } }},"Verlaten"),
+    el("div",{class:"row"}, el("button",{class:"btn",onclick:async()=>{ closeModal(); try{ await rpc("av_leave_league", {...auth(), p_code:code}); await refresh(); S.scope=null; S.rows=null; render(); loadBoard(); toast("Poule verlaten"); }catch(e){ toast(errText(e)); } }},"Verlaten"),
       el("button",{class:"btn ghost",onclick:closeModal},"Blijven"))), false);
 }
 function inviteText(code){ return "Doe mee met mijn poule “"+leagueName(code)+"” in Differentiale, de dagelijkse FPL-puzzel! Poulecode: "+code+"\n"+INVITE_BASE+"#poule-"+code; }
@@ -924,20 +924,22 @@ async function handlePendingJoin(){
 async function loadBoard(){
   if(!API || !S.id) return;
   const scope = S.scope;
+  if(!scope) return;
   S.boardLoading = true;
   try{
-    const r = await rpc("av_board", {...auth(), p_scope: scope==="all" ? "ALL" : scope});
+    const r = await rpc("av_board", {...auth(), p_scope: scope});
     if(scope===S.scope){ S.rows = r || []; S.boardErr = null; }
-  }catch(e){ if(/niet in deze poule/.test(errText(e))){ S.scope="all"; } S.boardErr = "Het klassement kan nu niet worden geladen."; }
+  }catch(e){ if(/niet in deze poule/.test(errText(e))){ S.scope=null; } S.boardErr = "Het klassement kan nu niet worden geladen."; }
   S.boardLoading = false;
   if(S.tab==="board") render();
 }
 function renderBoard(){
   const box = el("div");
-  if(S.scope!=="all" && !S.leagues.some(l=>l.code===S.scope)) S.scope = "all";
+  // Alleen poule-klassementen: zonder poule is er geen ranglijst
+  if(!S.leagues.some(l=>l.code===S.scope)){ S.scope = S.leagues.length ? S.leagues[0].code : null; S.rows = null; }
   const pick = s => { if(S.scope!==s){ S.scope=s; S.rows=null; render(); loadBoard(); } };
+  if(!S.scope){ box.append(pouleForm(true)); return box; }
   box.append(el("div",{class:"chips"},
-    el("button",{class:S.scope==="all"?"on":"", onclick:()=>pick("all")},"Iedereen"),
     S.leagues.map(l=>el("button",{class:S.scope===l.code?"on":"", onclick:()=>pick(l.code)}, l.name))));
   box.append(el("div",{style:"text-align:center"}, el("div",{class:"seg"}, [["today","Vandaag"],["week","Deze week"],["season","Seizoen"]].map(([k,t])=>el("button",{class:S.board===k?"on":"",onclick:()=>{S.board=k;render();}},t)))));
   const panel = el("div",{class:"panel",style:"padding:6px 8px"});
@@ -972,24 +974,30 @@ function renderBoard(){
     t.append(tb); panel.append(t);
   }
   box.append(panel);
-  if(S.scope!=="all") box.append(el("div",{class:"panel leaguebar"},
+  box.append(el("div",{class:"panel leaguebar"},
     el("div",{}, el("div",{class:"lbl2"},"Poulecode"), el("div",{class:"code num"},S.scope)),
     el("div",{class:"row",style:"justify-content:flex-end"}, el("button",{class:"btn",onclick:()=>showInvite(S.scope)},"Nodig uit"), el("button",{class:"btn ghost",onclick:()=>leaveLeague(S.scope)},"Verlaat"))));
   if(S.board==="today" && !myDone) box.append(el("p",{class:"note",style:"text-align:center"},"De uitslagen van vandaag zie je zodra je zelf klaar bent."));
   box.append(el("p",{class:"note",style:"text-align:center;margin-top:8px"},"Week = maandag t/m zondag. Wie een week de meeste punten haalt, wint een weekbeker 🏆; gelijk = allebei. Gelijke stand? De langste reeks 🔥 staat hoger."));
 
+  box.append(pouleForm(false));
+  return box;
+}
+function pouleForm(first){
   const nameIn = el("input",{placeholder:"Naam, bijv. Snoep PL", maxlength:30});
   const codeIn = el("input",{placeholder:"Code, bijv. K7P2QX", maxlength:6, autocapitalize:"characters"});
   const mk = () => createLeague(nameIn.value), jn = () => joinLeague(codeIn.value);
   nameIn.addEventListener("keydown",e=>{ if(e.key==="Enter") mk(); });
   codeIn.addEventListener("keydown",e=>{ if(e.key==="Enter") jn(); });
-  box.append(el("div",{class:"panel",style:"margin-top:14px"}, el("h3",{},"Poules"),
-    el("p",{class:"note",style:"margin-bottom:12px"},"Maak een poule en deel de code met je vrienden. Dan zien jullie de onderlinge stand per dag, week en seizoen, met weekbekers."),
+  const intro = !API || !S.id ? (!API ? "Het klassement is nog niet gekoppeld." : "Kies eerst een managernaam.")
+    : first ? "Het klassement is er per poule. Maak een poule en deel de code met je vrienden, of doe mee met de code die je kreeg. Dan zien jullie de onderlinge stand per dag, week en seizoen, met weekbekers 🏆."
+    : "Nog een poule maken of erbij? Je kunt in meerdere poules tegelijk zitten.";
+  return el("div",{class:"panel",style:first?"":"margin-top:14px"}, el("h3",{}, first ? "Klassement" : "Poules"),
+    el("p",{class:"note",style:"margin-bottom:12px"}, intro),
     el("div",{class:"lbl2"},"Nieuwe poule"),
     el("div",{class:"field",style:"margin-bottom:12px"}, nameIn, el("button",{class:"btn",onclick:mk},"Maak aan")),
     el("div",{class:"lbl2"},"Doe mee met een poule"),
-    el("div",{class:"field"}, codeIn, el("button",{class:"btn ghost",onclick:jn},"Doe mee"))));
-  return box;
+    el("div",{class:"field"}, codeIn, el("button",{class:"btn ghost",onclick:jn},"Doe mee")));
 }
 
 /* ---------- profiel-tab ---------- */
