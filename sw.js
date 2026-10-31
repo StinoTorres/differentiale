@@ -1,6 +1,6 @@
 // Differentiale: eenvoudige service worker. Altijd eerst het netwerk (zodat updates direct binnenkomen),
 // zonder verbinding de laatst opgeslagen versie. Alleen bestanden van deze site, nooit Supabase.
-const CACHE = "avdd-v5";
+const CACHE = "avdd-v6";
 const SHELL = ["./", "index.html", "config.js", "favicon.svg", "manifest.webmanifest", "icon-192.png", "data/players.json", "data/league.json"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(()=>{})); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))); self.clients.claim(); });
