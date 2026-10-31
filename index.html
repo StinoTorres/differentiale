@@ -570,7 +570,7 @@ function renderResult(v){
     const s = v.stats || {played:0,won:0,streak:0,best:0};
     const pct = s.played ? Math.round(100*s.won/s.played) : 0;
     r.append(el("div",{class:"stats"}, [["Gespeeld",s.played],["Gewonnen",pct+"%"],["Reeks",s.streak],["Beste",s.best]].map(([t,val])=>el("div",{},el("b",{class:"num"},String(val)),el("span",{},t)))));
-    r.append(el("div",{class:"row"}, el("button",{class:"btn",onclick:()=>copyShare(v)},"Kopieer resultaat"),
+    r.append(el("div",{class:"row"}, el("button",{class:"btn",onclick:()=>copyShare(v)},"📤 Deel resultaat"),
       el("button",{class:"btn ghost",onclick:()=>{S.tab="board";render();loadBoard();}},"Klassement"),
       el("button",{class:"btn ghost",onclick:startPractice},"Oefenronde")));
     const cd = el("div",{class:"count num"}); r.append(cd);
@@ -582,11 +582,19 @@ function renderResult(v){
   return r;
 }
 
-function copyShare(v){
-  const n = v.rows.length;
+function shareText(v){
+  const n = v.rows.length, st = (v.stats && v.stats.streak) || 0;
+  const datum = new Date().toLocaleDateString("nl-NL",{timeZone:TZ,weekday:"short",day:"numeric",month:"short"});
   const rows = v.rows.map(r=>KEYS.map(k=>r.fb[k].c==="exact"?"🟩":r.fb[k].c==="close"?"🟨":"⬛").join(""));
-  const txt = "Differentiale #"+(dayIndex(S.today)+1)+" · "+(v.won?n:"X")+"/6"+(v.hints?" · "+v.hints+" hint"+(v.hints>1?"s":""):"")+" · "+v.points+" ptn\n"+rows.join("\n")+"\n"+location.origin+location.pathname;
-  copyText(txt);
+  const head = "⚽️ "+datum+" ⚽️\nDifferentiale #"+(dayIndex(S.today)+1)+(v.hints?" "+"💡".repeat(v.hints):"");
+  const uitslag = v.won ? n+"/6 · "+v.points+" ptn" : "❌ niet geraden";
+  const reeks = st>0 ? "🔥 Reeks: "+st+" "+(st===1?"dag":"dagen") : "💔 Reeks: 0";
+  return head+"\n"+rows.join("\n")+"\n"+uitslag+"\n"+reeks+"\n"+location.origin+location.pathname;
+}
+async function copyShare(v){
+  const t = shareText(v);
+  try{ await navigator.clipboard.writeText(t); toast("Gekopieerd, plak het in je groepsapp"); }
+  catch(e){ openModal(el("div",{}, el("h2",{text:"Deel je resultaat"}), el("p",{class:"note"},"Selecteer en kopieer de tekst:"), el("textarea",{class:"copyarea",readonly:true,onfocus:e=>e.target.select()}, t))); }
 }
 function copyText(txt){
   const fallback = () => openModal(el("div",{}, el("h2",{text:"Kopieer de tekst"}), el("textarea",{class:"copyarea",readonly:true}, txt)));
