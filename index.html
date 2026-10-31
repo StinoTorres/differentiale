@@ -504,6 +504,7 @@ async function restore(code){
   }catch(e){ toast(/herstelcode/i.test(errText(e)) ? "Deze herstelcode ken ik niet" : errText(e)); }
 }
 const fmtRec = r => String(r||"").replace(/(.{4})(?=.)/g,"$1-");
+const cleanRec = v => { let t = String(v||"").toUpperCase(); const i = t.lastIndexOf(":"); if(i>=0) t = t.slice(i+1); return t.replace(/[^A-Z0-9]/g,"").slice(-12); };
 function askName(){
   const inp = el("input",{placeholder:"Bijv. Klopp's Kabouters", maxlength:24});
   const btn = el("button",{class:"btn"},"Start");
@@ -520,8 +521,12 @@ function askName(){
   setTimeout(()=>inp.focus(),50);
 }
 function askRestore(){
-  const inp = el("input",{placeholder:"XXXX-XXXX-XXXX", maxlength:16, autocapitalize:"characters", style:"text-transform:uppercase"});
-  const go = () => restore(inp.value);
+  const inp = el("input",{placeholder:"XXXX-XXXX-XXXX", autocapitalize:"characters", autocomplete:"off", spellcheck:"false", style:"text-transform:uppercase"});
+  // Plakt iemand een hele zin ("Mijn herstelcode voor Differentiale: ABCD-…"), houd dan alleen de code over
+  const clean = () => { const c = cleanRec(inp.value); const f = fmtRec(c); if(inp.value !== f) inp.value = f; };
+  inp.addEventListener("input", clean);
+  inp.addEventListener("paste", () => setTimeout(clean, 0));
+  const go = () => restore(cleanRec(inp.value));
   inp.addEventListener("keydown",e=>{ if(e.key==="Enter") go(); });
   openModal(el("div",{},
     el("h2",{text:"Profiel herstellen"}),
@@ -1060,7 +1065,7 @@ function renderMe(){
     box.append(el("div",{class:"panel"}, el("h3",{},"Herstelcode"),
       el("p",{class:"note",style:"margin-bottom:10px"},"Nieuwe telefoon of browser? Met deze code haal je je profiel, punten en poules terug. Bewaar hem goed, bijvoorbeeld in je notities, en deel hem met niemand."),
       el("div",{class:"bigcode num",style:"font-size:24px"}, fmtRec(S.me.recovery)),
-      el("div",{class:"row",style:"margin-top:12px"}, el("button",{class:"btn",onclick:()=>copyText("Mijn herstelcode voor Differentiale: "+fmtRec(S.me.recovery))},"Kopieer herstelcode"))));
+      el("div",{class:"row",style:"margin-top:12px"}, el("button",{class:"btn",onclick:()=>copyText(fmtRec(S.me.recovery))},"Kopieer herstelcode"))));
   } else if(API){
     box.append(el("div",{class:"panel"}, el("h3",{},"Profiel"), el("div",{class:"row"}, el("button",{class:"btn",onclick:askName},"Kies een managernaam"), el("button",{class:"btn ghost",onclick:askRestore},"Profiel herstellen"))));
   }
