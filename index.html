@@ -166,6 +166,13 @@ nav button.on{background:#fff;color:var(--purple)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:16px 0}
 .stats div{background:var(--bg);border-radius:12px;padding:10px 4px}
 .result .stats div{background:rgba(255,255,255,.1)}
+.todayline{font-size:14px;font-weight:700;margin:-4px 0 12px;opacity:.95}
+.dist{display:grid;gap:4px;margin:0 0 16px;text-align:left}
+.drow{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.drow .dl{width:18px;text-align:center;flex:none}
+.dbar{display:flex;justify-content:flex-end;align-items:center;min-width:26px;height:22px;border-radius:6px;padding:0 7px;background:#6b5b80;color:#fff;box-sizing:border-box}
+.dbar.now{background:var(--exact);color:#37003c}
+.dbar b{font-size:12px}
 .stats b{display:block;font-size:20px;font-weight:800}
 .stats span{font-size:11px;color:var(--mute);font-weight:600}
 .result .stats span{color:rgba(255,255,255,.7)}
@@ -676,6 +683,20 @@ function renderPlay(){
   return box;
 }
 
+// Gokverdeling zoals bij Wordle; mark = index van vandaag (0..5 geraden in n, 6 = niet geraden)
+function distBars(dist, mark){
+  if(!dist || !dist.some(x=>x>0)) return null;
+  const max = Math.max(...dist), labels = ["1","2","3","4","5","6","❌"];
+  return el("div",{class:"dist"}, dist.map((c,i)=>el("div",{class:"drow"},
+    el("span",{class:"dl"}, labels[i]),
+    el("span",{class:"dbar"+(i===mark?" now":""), style:"width:"+Math.max(8, Math.round(100*c/max))+"%"}, el("b",{class:"num"}, String(c))))));
+}
+function todayLine(v){
+  const t = v.today; if(!t || !t.played) return null;
+  const pct = Math.round(100*t.won/t.played);
+  return el("div",{class:"todayline"}, t.played===1 ? "Jij bent de eerste die vandaag klaar is." : pct+"% van de "+t.played+" spelers had hem vandaag.");
+}
+
 function renderResult(v){
   const a = v.answer, n = v.rows.length;
   const r = el("div",{class:"panel result"});
@@ -690,6 +711,8 @@ function renderResult(v){
     const s = v.stats || {played:0,won:0,streak:0,best:0};
     const pct = s.played ? Math.round(100*s.won/s.played) : 0;
     r.append(el("div",{class:"stats"}, [["Gespeeld",s.played],["Gewonnen",pct+"%"],["Reeks",s.streak],["Beste",s.best]].map(([t,val])=>el("div",{},el("b",{class:"num"},String(val)),el("span",{},t)))));
+    const tl = todayLine(v); if(tl) r.append(tl);
+    const db = distBars(s.dist, v.won ? n-1 : 6); if(db) r.append(db);
     r.append(el("div",{class:"row"}, el("button",{class:"btn",onclick:()=>copyShare(v)},"📤 Deel resultaat"),
       el("button",{class:"btn ghost",onclick:()=>{S.tab="board";render();loadBoard();}},"Klassement"),
       el("button",{class:"btn ghost",onclick:startPractice},"Oefenronde")));
@@ -975,7 +998,9 @@ function renderMe(){
   const s = (S.srv && S.srv.stats) || {played:0,won:0,streak:0,best:0};
   const pct = s.played ? Math.round(100*s.won/s.played) : 0;
   box.append(el("div",{class:"panel"}, el("h3",{},"Jouw statistieken"),
-    el("div",{class:"stats",style:"margin:0"}, [["Gespeeld",s.played],["Gewonnen",pct+"%"],["Reeks",s.streak],["Beste",s.best]].map(([t,val])=>el("div",{style:"text-align:center"},el("b",{class:"num"},String(val)),el("span",{},t))))));
+    el("div",{class:"stats",style:"margin:0"}, [["Gespeeld",s.played],["Gewonnen",pct+"%"],["Reeks",s.streak],["Beste",s.best]].map(([t,val])=>el("div",{style:"text-align:center"},el("b",{class:"num"},String(val)),el("span",{},t)))),
+    s.dist && s.dist.some(x=>x>0) ? el("h3",{style:"margin-top:14px"},"Gokverdeling") : null,
+    distBars(s.dist, -1)));
   if(S.me){
     const inp = el("input",{value:S.me.name||"", maxlength:24, placeholder:"Managernaam"});
     const save = () => rename(inp.value);

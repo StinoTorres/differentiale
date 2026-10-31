@@ -106,6 +106,12 @@ def main():
     staat (of met FORCE=1)."""
     now = datetime.now(timezone.utc)
     stamp = now.strftime("%Y-%m-%dT%H:%M")
+    # Supabase wakker houden: een gratis project wordt na een week zonder verkeer gepauzeerd
+    try:
+        if supabase_rpc("av_ping", {}) is not None:
+            print("Supabase ping ok")
+    except Exception as e:
+        print("Supabase ping mislukt:", e)
     boot = get("/bootstrap-static/")
     events = boot["events"]
     done = [e for e in events if e.get("finished") and e.get("data_checked")]
