@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 LEAGUE_ID = int(os.environ.get("LEAGUE_ID", "57092"))
 API = "https://fantasy.premierleague.com/api"
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-UA = {"User-Agent": "Mozilla/5.0 (asset-van-de-dag data updater)"}
+UA = {"User-Agent": "Mozilla/5.0 (differentiale data updater)"}
 
 
 def get(path):

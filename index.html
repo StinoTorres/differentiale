@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Asset van de Dag</title>
+<title>Differentiale</title>
 <meta name="description" content="Raad elke dag de geheime FPL-asset in zes pogingen. Met klassement en poules voor je vrienden.">
-<meta property="og:title" content="Asset van de Dag">
+<meta property="og:title" content="Differentiale">
 <meta property="og:description" content="Raad elke dag de geheime FPL-asset in zes pogingen.">
 <meta name="theme-color" content="#37003c">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Asset vd Dag">
+<meta name="apple-mobile-web-app-title" content="Differentiale">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -217,7 +217,7 @@ td.pos.medal{font-size:18px}
 <div class="top"><div class="inner">
   <header>
     <div class="brand">
-      <div class="t1">Asset <span>van de Dag</span></div>
+      <div class="t1">Differenti<span>ale</span></div>
       <div class="t2" id="sub">&nbsp;</div>
     </div>
     <div class="hright">
@@ -576,7 +576,7 @@ function renderResult(v){
       el("button",{class:"btn ghost",onclick:()=>{S.tab="board";render();loadBoard();}},"Klassement"),
       el("button",{class:"btn ghost",onclick:startPractice},"Oefenronde")));
     const cd = el("div",{class:"count num"}); r.append(cd);
-    const tick = () => { const parts=Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:TZ,hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value])); const left = 86400-(+parts.hour*3600 + +parts.minute*60 + +parts.second); cd.textContent = "Nieuwe asset over "+Math.floor(left/3600)+":"+String(Math.floor(left%3600/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0"); };
+    const tick = () => { const parts=Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:TZ,hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value])); const left = 86400-(+parts.hour*3600 + +parts.minute*60 + +parts.second); cd.textContent = "Nieuwe puzzel over "+Math.floor(left/3600)+":"+String(Math.floor(left%3600/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0"); };
     tick(); clearInterval(renderResult.t); renderResult.t = setInterval(()=>{ if(!document.body.contains(cd)) return clearInterval(renderResult.t); tick(); },1000);
   } else {
     r.append(el("div",{class:"row",style:"margin-top:16px"}, el("button",{class:"btn",onclick:startPractice},"Nog een oefenronde"), el("button",{class:"btn ghost",onclick:()=>{S.mode="daily";render();}},"Terug naar vandaag")));
@@ -587,7 +587,7 @@ function renderResult(v){
 function copyShare(v){
   const n = v.rows.length;
   const rows = v.rows.map(r=>KEYS.map(k=>r.fb[k].c==="exact"?"🟩":r.fb[k].c==="close"?"🟨":"⬛").join(""));
-  const txt = "Asset van de Dag #"+(dayIndex(S.today)+1)+" · "+(v.won?n:"X")+"/6"+(v.hints?" · "+v.hints+" hint"+(v.hints>1?"s":""):"")+" · "+v.points+" ptn\n"+rows.join("\n")+"\n"+location.origin+location.pathname;
+  const txt = "Differentiale #"+(dayIndex(S.today)+1)+" · "+(v.won?n:"X")+"/6"+(v.hints?" · "+v.hints+" hint"+(v.hints>1?"s":""):"")+" · "+v.points+" ptn\n"+rows.join("\n")+"\n"+location.origin+location.pathname;
   copyText(txt);
 }
 function copyText(txt){
@@ -653,7 +653,7 @@ function leaveLeague(code){
     el("div",{class:"row"}, el("button",{class:"btn",onclick:async()=>{ closeModal(); try{ await rpc("av_leave_league", {...auth(), p_code:code}); await refresh(); S.scope="all"; render(); loadBoard(); toast("Poule verlaten"); }catch(e){ toast(errText(e)); } }},"Verlaten"),
       el("button",{class:"btn ghost",onclick:closeModal},"Blijven"))), false);
 }
-function inviteText(code){ return "Doe mee met mijn poule “"+leagueName(code)+"” in Asset van de Dag, de dagelijkse FPL-puzzel! Poulecode: "+code+"\n"+INVITE_BASE+"#poule-"+code; }
+function inviteText(code){ return "Doe mee met mijn poule “"+leagueName(code)+"” in Differentiale, de dagelijkse FPL-puzzel! Poulecode: "+code+"\n"+INVITE_BASE+"#poule-"+code; }
 function showInvite(code){
   openModal(el("div",{}, el("h2",{text:"Nodig je vrienden uit"}),
     el("p",{class:"note",style:"margin-bottom:12px"},"Stuur de link of de code naar je vrienden. Zodra ze meedoen, zien jullie samen de stand van "+leagueName(code)+"."),
@@ -760,14 +760,14 @@ function renderMe(){
     box.append(el("div",{class:"panel"}, el("h3",{},"Herstelcode"),
       el("p",{class:"note",style:"margin-bottom:10px"},"Nieuwe telefoon of browser? Met deze code haal je je profiel, punten en poules terug. Bewaar hem goed, bijvoorbeeld in je notities, en deel hem met niemand."),
       el("div",{class:"bigcode num",style:"font-size:24px"}, fmtRec(S.me.recovery)),
-      el("div",{class:"row",style:"margin-top:12px"}, el("button",{class:"btn",onclick:()=>copyText("Mijn herstelcode voor Asset van de Dag: "+fmtRec(S.me.recovery))},"Kopieer herstelcode"))));
+      el("div",{class:"row",style:"margin-top:12px"}, el("button",{class:"btn",onclick:()=>copyText("Mijn herstelcode voor Differentiale: "+fmtRec(S.me.recovery))},"Kopieer herstelcode"))));
   } else if(API){
     box.append(el("div",{class:"panel"}, el("h3",{},"Profiel"), el("div",{class:"row"}, el("button",{class:"btn",onclick:askName},"Kies een managernaam"), el("button",{class:"btn ghost",onclick:askRestore},"Profiel herstellen"))));
   }
   if(S.me) box.append(el("p",{class:"note",style:"text-align:center;margin-bottom:12px"}, "Ander profiel terugzetten? ", el("button",{class:"linkbtn",onclick:askRestore},"Profiel herstellen met een herstelcode")));
   box.append(el("div",{class:"panel"}, howTo()));
   box.append(el("div",{class:"row",style:"margin:6px 0 14px"}, el("button",{class:"btn ghost",onclick:startPractice},"Speel een oefenronde")));
-  box.append(el("div",{class:"panel"}, el("h3",{},"Op je beginscherm"), el("p",{class:"note"},"Zet Asset van de Dag als app op je telefoon. iPhone: open de site in Safari, tik op de deel-knop en kies ‘Zet op beginscherm’. Android: open het menu in Chrome en kies ‘App installeren’.")));
+  box.append(el("div",{class:"panel"}, el("h3",{},"Op je beginscherm"), el("p",{class:"note"},"Zet Differentiale als app op je telefoon. iPhone: open de site in Safari, tik op de deel-knop en kies ‘Zet op beginscherm’. Android: open het menu in Chrome en kies ‘App installeren’.")));
   box.append(el("p",{class:"note",style:"text-align:center"},"Speldata: FPL na GW"+DATA.gw+" (bijgewerkt "+String(DATA.updated).slice(0,10)+")."));
   return box;
 }

@@ -1,6 +1,6 @@
 {
-  "name": "Asset van de Dag",
-  "short_name": "Asset vd Dag",
+  "name": "Differentiale",
+  "short_name": "Differentiale",
   "description": "Raad elke dag de geheime FPL-asset in zes pogingen.",
   "lang": "nl",
   "start_url": "./",

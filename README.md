@@ -1,8 +1,8 @@
-# Asset van de Dag
+# Differentiale
 
 Dagelijkse FPL-raadpuzzel voor Snoep PL: raad de geheime FPL-asset in zes pogingen op club, positie, prijs, eigendom, seizoenspunten en punten van de laatste gameweek. Met klassement (vandaag, week, seizoen), weekbekers, poules voor vrienden, een herstelcode en een Snoep PL-hint. Elke dag een andere speler uit 240 bekende assets, zonder herhalingen dit seizoen; raden kan met alle FPL-spelers.
 
-Spelen: https://stinotorres.github.io/asset-van-de-dag/
+Spelen: https://stinotorres.github.io/differentiale/
 
 ## Hoe het werkt
 - **Pagina:** `index.html` op GitHub Pages, installeerbaar als app (`manifest.webmanifest`, `sw.js`).
