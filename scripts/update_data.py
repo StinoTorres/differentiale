@@ -44,6 +44,7 @@ def main():
     write("players.json", {
         "gw": cur["id"] if cur else 0,
         "next": {"gw": nxt["id"], "deadline": nxt["deadline_time"]} if nxt else None,
+        "deadlines": [[e["id"], e["deadline_time"]] for e in events],
         "updated": stamp,
         "teams": [[t["id"], t["short_name"], t["name"]] for t in boot["teams"]],
         "players": players,

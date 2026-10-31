@@ -7,7 +7,7 @@ Spelen: https://stinotorres.github.io/asset-van-de-dag/
 ## Hoe het werkt
 - **Pagina:** `index.html`, gehost met GitHub Pages.
 - **Klassement en poules:** Supabase (tabellen `players` en `leagues`, zie `supabase/schema.sql`). Spelers loggen automatisch anoniem in, een account is niet nodig.
-- **FPL-data:** `.github/workflows/update-data.yml` draait elke 3 uur `scripts/update_data.py`. Dat script werkt `data/players.json` en de Snoep PL-selecties in `data/league.json` (league 57092) bij.
+- **FPL-data:** `.github/workflows/update-data.yml` draait na elke transferperiode (4 februari en 4 september) `scripts/update_data.py`. Dat script werkt `data/players.json` en de Snoep PL-selecties in `data/league.json` (league 57092) bij. Tussendoor bijwerken kan via Actions → FPL-data bijwerken → Run workflow.
 
 ## Instellen
 1. Supabase: maak een project, plak `supabase/schema.sql` in de SQL Editor en zet onder Authentication > Sign In / Providers **Allow anonymous sign-ins** aan.

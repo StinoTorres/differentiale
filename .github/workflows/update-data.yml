@@ -2,7 +2,9 @@ name: FPL-data bijwerken
 
 on:
   schedule:
-    - cron: "17 */3 * * *"   # elke 3 uur
+    # alleen na de transferperiodes (UTC): 4 februari en 4 september
+    - cron: "17 12 4 2 *"
+    - cron: "17 12 4 9 *"
   workflow_dispatch: {}
 
 permissions:
