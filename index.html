@@ -217,7 +217,7 @@ td.pos.medal{font-size:18px}
 <div class="top"><div class="inner">
   <header>
     <div class="brand">
-      <div class="t1">Differenti<span>ale</span></div>
+      <div class="t1">Differentia<span>le</span></div>
       <div class="t2" id="sub">&nbsp;</div>
     </div>
     <div class="hright">
@@ -428,9 +428,7 @@ function howTo(){
 
 /* ---------- render ---------- */
 function render(){
-  const dl = (DATA.deadlines || []).map(([gw,t])=>({gw, t:new Date(t)})).find(x=>x.t>new Date());
-  const fmtDl = d => { const days=(d.t-new Date())/DAY; return d.t.toLocaleString("nl-NL",{timeZone:TZ,weekday:"short",hour:"2-digit",minute:"2-digit", ...(days>6?{day:"numeric",month:"short"}:{})}); };
-  $("#sub").textContent = "Nr. "+(dayIndex(S.today)+1) + (dl ? " · GW"+dl.gw+"-deadline "+fmtDl(dl) : "");
+  $("#sub").textContent = "Nr. "+(dayIndex(S.today)+1)+" · de dagelijkse FPL-puzzel";
   document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.tab===S.tab));
   const v = $("#view"); v.innerHTML = "";
   if(S.tab==="play") v.append(renderPlay());

@@ -74,10 +74,10 @@ def main():
     meta = {"fpl_gw": gw}
     counts = None
 
-    # Snoep PL: selecties van de laatste gameweek waarvan de deadline voorbij is
-    passed = [e for e in events if datetime.fromisoformat(e["deadline_time"].replace("Z", "+00:00")) <= now]
-    if passed:
-        lgw = max(e["id"] for e in passed)
+    # Snoep PL: selecties van de afgelopen (afgeronde) gameweek
+    finished = [e for e in events if e.get("finished")]
+    if finished:
+        lgw = max(e["id"] for e in finished)
         code = {e["id"]: e["code"] for e in boot["elements"]}
         entries, page = [], 1
         while True:
