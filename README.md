@@ -1,15 +1,16 @@
 # Asset van de Dag
 
-Dagelijkse FPL-raadpuzzel voor Snoep PL: raad de geheime FPL-asset in zes pogingen op club, positie, prijs, eigendom, seizoenspunten en punten van de laatste gameweek. Met klassement (vandaag, week, seizoen), poules voor vrienden en een Snoep PL-hint. Elke dag een andere speler uit een vaste lijst van 240 bekende assets, zonder herhalingen tot het einde van het seizoen; raden kan met alle FPL-spelers.
+Dagelijkse FPL-raadpuzzel voor Snoep PL: raad de geheime FPL-asset in zes pogingen op club, positie, prijs, eigendom, seizoenspunten en punten van de laatste gameweek. Met klassement (vandaag, week, seizoen), weekbekers, poules voor vrienden, een herstelcode en een Snoep PL-hint. Elke dag een andere speler uit 240 bekende assets, zonder herhalingen dit seizoen; raden kan met alle FPL-spelers.
 
 Spelen: https://stinotorres.github.io/asset-van-de-dag/
 
 ## Hoe het werkt
-- **Pagina:** `index.html`, gehost met GitHub Pages.
-- **Klassement en poules:** Supabase (tabellen `players` en `leagues`, zie `supabase/schema.sql`). Spelers loggen automatisch anoniem in, een account is niet nodig.
-- **FPL-data:** `.github/workflows/update-data.yml` draait na elke transferperiode (4 februari en 4 september) `scripts/update_data.py`. Dat script werkt `data/players.json` en de Snoep PL-selecties in `data/league.json` (league 57092) bij. Tussendoor bijwerken kan via Actions → FPL-data bijwerken → Run workflow.
+- **Pagina:** `index.html` op GitHub Pages, installeerbaar als app (`manifest.webmanifest`, `sw.js`).
+- **Server:** Supabase. Het antwoord van de dag, de scores, de hint, het klassement, de poules en de herstelcodes zitten daar, achter functies (`supabase/schema.sql`). De tabellen zijn niet leesbaar met de publieke sleutel, dus valsspelen via de paginacode kan niet.
+- **FPL-data:** `scripts/update_data.py` haalt FPL-data en de Snoep PL-selecties (league 57092) op, werkt `data/*.json` bij en stuurt alles naar Supabase. De Action draait na elke transferperiode (4 februari en 4 september) en kan altijd met de hand: Actions → FPL-data bijwerken → Run workflow.
 
-## Instellen
-1. Supabase: maak een project, plak `supabase/schema.sql` in de SQL Editor en zet onder Authentication > Sign In / Providers **Allow anonymous sign-ins** aan.
-2. Vul `config.js` met de Project URL en de anon/publishable key.
-3. GitHub: Settings > Pages > Deploy from a branch > `main` / root.
+## Instellen (eenmalig)
+1. **Supabase:** open je project (mag hetzelfde als Transferroute: alles heet `av_…`). SQL Editor → plak `supabase/schema.sql` → Run. Daarna hetzelfde met `supabase/seed.sql`.
+2. **config.js:** vul de Project URL en de anon (publishable) key in (Project Settings → API).
+3. **GitHub Pages:** Settings → Pages → Deploy from a branch → `main` / root.
+4. **Automatische update:** Settings → Secrets and variables → Actions → voeg `SUPABASE_URL` en `SUPABASE_SERVICE_ROLE_KEY` toe (service_role key, Project Settings → API). Deze sleutel is geheim: alleen als GitHub-secret, nooit in een bestand.

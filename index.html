@@ -176,6 +176,14 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 [data-theme=dark] .devwarn{background:#3a0020}
 [data-theme=dark] .devwarn b{color:#ff5c93}
 
+.linkbtn{text-decoration:underline;color:var(--link);font-weight:700}
+.winner{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,rgba(4,245,255,.18),rgba(0,255,133,.18));border:2px solid var(--green);border-radius:16px;padding:12px 14px;margin-bottom:12px}
+.winner .cup{font-size:30px;line-height:1}
+.winner b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--hd)}
+.winner span{font-weight:800;font-size:15px}
+.cups{font-size:12px;font-weight:800;margin-left:6px;white-space:nowrap}
+td.pos.medal{font-size:18px}
+
 /* poules */
 .chips{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
@@ -229,41 +237,37 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 <div id="modal"></div>
 <div id="toast" class="toast hide"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
 (function(){ let t=null; try{ t=localStorage.getItem("avdd:theme"); }catch(e){} if(!t) t = (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light"; document.documentElement.dataset.theme=t; })();
 </script>
 <script>
 const DATA0 = {"deadlines":[[1,"2026-08-21T17:30:00Z"],[2,"2026-08-28T17:30:00Z"],[3,"2026-09-04T17:30:00Z"],[4,"2026-09-12T12:30:00Z"],[5,"2026-09-18T17:30:00Z"],[6,"2026-10-10T10:00:00Z"],[7,"2026-10-17T10:00:00Z"],[8,"2026-10-23T17:30:00Z"],[9,"2026-10-31T11:00:00Z"],[10,"2026-11-06T18:30:00Z"],[11,"2026-11-21T11:00:00Z"],[12,"2026-11-27T18:30:00Z"],[13,"2026-12-01T18:30:00Z"],[14,"2026-12-05T11:00:00Z"],[15,"2026-12-12T13:30:00Z"],[16,"2026-12-19T11:00:00Z"],[17,"2026-12-26T11:00:00Z"],[18,"2026-12-29T18:00:00Z"],[19,"2027-01-01T18:30:00Z"],[20,"2027-01-05T18:00:00Z"],[21,"2027-01-16T13:30:00Z"],[22,"2027-01-23T13:30:00Z"],[23,"2027-01-30T13:30:00Z"],[24,"2027-02-06T13:30:00Z"],[25,"2027-02-10T18:30:00Z"],[26,"2027-02-20T13:30:00Z"],[27,"2027-02-27T13:30:00Z"],[28,"2027-03-03T18:30:00Z"],[29,"2027-03-13T13:30:00Z"],[30,"2027-03-20T13:30:00Z"],[31,"2027-04-10T12:30:00Z"],[32,"2027-04-17T12:30:00Z"],[33,"2027-04-24T12:30:00Z"],[34,"2027-05-01T12:30:00Z"],[35,"2027-05-08T12:30:00Z"],[36,"2027-05-15T12:30:00Z"],[37,"2027-05-23T12:30:00Z"],[38,"2027-05-30T13:30:00Z"]],"gw":8,"next":{"gw":9,"deadline":"2026-10-31T11:00:00Z"},"updated":"2026-10-31","teams":[[1,"ARS","Arsenal"],[2,"AVL","Aston Villa"],[3,"BOU","Bournemouth"],[4,"BRE","Brentford"],[5,"BHA","Brighton"],[6,"CHE","Chelsea"],[7,"COV","Coventry City"],[8,"CRY","Crystal Palace"],[9,"EVE","Everton"],[10,"FUL","Fulham"],[11,"HUL","Hull City"],[12,"IPS","Ipswich Town"],[13,"LEE","Leeds"],[14,"LIV","Liverpool"],[15,"MCI","Man City"],[16,"MUN","Man Utd"],[17,"NEW","Newcastle"],[18,"NFO","Nott'm Forest"],[19,"TOT","Spurs"],[20,"SUN","Sunderland"]],"players":[[154561,"Raya","David Raya Martín",1,1,62,45.5,49,7,0,0,5,720],[109745,"Arrizabalaga","Kepa Arrizabalaga Revuelta",1,1,49,0.1,0,0,0,0,0,0],[437495,"Meslier","Illan Meslier",1,1,49,0.0,0,0,0,0,0,0],[226597,"Gabriel","Gabriel dos Santos Magalhães",1,2,80,23.9,52,17,1,0,5,720],[445122,"J.Timber","Jurriën Timber",1,2,65,0.8,3,0,0,0,0,155],[462424,"Saliba","William Saliba",1,2,59,0.2,0,0,0,0,0,0],[499169,"Lewis-Skelly","Myles Lewis-Skelly",1,3,54,0.5,13,2,0,0,3,400],[466075,"Calafiori","Riccardo Calafiori",1,2,59,48.1,45,1,1,2,4,609],[448104,"Hincapie","Piero Hincapié",1,2,52,0.7,3,0,0,0,0,40],[198869,"White","Benjamin White",1,2,54,4.7,42,10,0,3,4,532],[500040,"Mosquera","Cristhian Mosquera",1,2,52,1.2,12,0,0,0,2,168],[223340,"Saka","Bukayo Saka",1,3,95,7.2,37,0,3,0,4,596],[204480,"Rice","Declan Rice",1,3,74,12.0,39,3,0,4,5,670],[232413,"Eze","Eberechi Eze",1,3,62,1.2,8,3,0,0,1,209],[184029,"Ødegaard","Martin Ødegaard",1,3,67,16.8,36,3,2,0,5,646],[248857,"Madueke","Noni Madueke",1,3,62,0.4,12,3,1,0,1,248],[195384,"Merino","Mikel Merino Zazón",1,3,57,0.4,9,3,0,0,1,173],[444145,"Martinelli","Gabriel Martinelli Silva",1,3,63,0.1,0,0,0,0,0,0],[481655,"Zubimendi","Martín Zubimendi Ibáñez",1,3,52,0.5,6,1,0,0,0,99],[616077,"Dowman","Max Dowman",1,3,53,0.1,2,1,0,0,0,19],[499175,"Nwaneri","Ethan Nwaneri",1,3,54,0.0,0,0,0,0,0,0],[438098,"Fábio Vieira","Fábio Ferreira Vieira",1,3,55,0.0,0,0,0,0,0,0],[200641,"Nelson","Reiss Nelson",1,3,55,0.0,0,0,0,0,0,0],[224117,"Gyökeres","Viktor Gyökeres",1,4,70,3.1,9,5,0,1,1,147],[219847,"Havertz","Kai Havertz",1,4,74,5.5,24,1,2,0,4,586],[205651,"G.Jesus","Gabriel Fernando de Jesus",1,4,59,0.1,0,0,0,0,0,0],[199798,"Konsa","Ezri Konsa Ngoyo",1,2,47,20.9,39,14,1,0,3,551],[208706,"Bruno G.","Bruno Guimarães Rodriguez Moura",1,3,67,2.3,22,1,2,0,1,237],[439509,"Tzolis","Christos Tzolis",1,3,61,3.9,16,0,0,2,2,362],[72147,"M.Bizot","Marco Bizot",2,1,45,0.1,1,0,0,0,0,90],[101188,"Digne","Lucas Digne",2,2,45,0.0,0,0,0,0,0,0],[199796,"Cash","Matty Cash",2,2,43,4.4,17,3,0,0,2,566],[149484,"Mings","Tyrone Mings",2,2,45,0.4,18,0,0,0,2,441],[244954,"Pau","Pau Torres",2,2,44,0.3,6,2,0,0,0,290],[515597,"Bogarde","Lamare Bogarde",2,3,49,0.1,1,0,0,0,0,16],[441302,"Maatsen","Ian Maatsen",2,2,44,0.4,11,2,0,0,1,425],[184667,"Lindelöf","Victor Lindelöf",2,2,45,0.6,22,2,0,0,2,720],[606798,"A.García","Andrés García",2,2,40,1.2,0,0,0,0,0,0],[578545,"Nedeljkovic","Kosta Nedeljkovic",2,2,40,0.1,0,0,0,0,0,0],[195546,"Buendía","Emiliano Buendía Stati",2,3,59,1.2,28,0,1,1,2,559],[215711,"Bailey","Leon Bailey",2,3,54,0.0,0,0,0,0,0,0],[122806,"McGinn","John McGinn",2,3,54,3.4,34,6,1,3,2,634],[88894,"Barkley","Ross Barkley",2,3,50,0.2,13,1,0,0,1,354],[226944,"Kamara","Boubacar Kamara",2,3,50,0.4,28,4,0,1,3,713],[449871,"Onana","Amadou Onana",2,3,49,0.0,0,0,0,0,0,0],[469247,"Iling Jr","Samuel Iling-Junior",2,3,50,0.0,0,0,0,0,0,0],[645618,"Burrowes","Bradley Burrowes",2,3,44,0.5,0,0,0,0,0,0],[577285,"George Hemmings","George Hemmings",2,3,44,0.7,9,0,0,0,1,297],[653481,"Alysson","Alysson Edward Franco da Rocha dos Santos",2,3,49,0.1,10,1,1,0,0,194],[614071,"Manzambi","Johan Manzambi",2,3,61,6.3,31,1,2,2,2,319],[448089,"Gomes","Joao Gomes",2,3,55,0.1,11,2,0,1,1,366],[178301,"Watkins","Ollie Watkins",2,4,78,2.3,0,0,0,0,0,0],[173879,"Abraham","Tammy Abraham",2,4,55,0.2,4,0,0,0,0,71],[493105,"Garnacho","Alejandro Garnacho Ferreyra",2,3,57,0.3,3,0,0,0,0,31],[517052,"N.Jackson","Nicolas Jackson",2,4,69,20.6,34,13,4,0,2,547],[690838,"Madjo","Brian Madjo",2,4,54,0.2,0,0,0,0,0,8],[487992,"Ruggeri","Matteo Ruggeri",2,2,44,0.1,6,0,0,0,0,158],[433969,"Suzuki","Zion Suzuki",2,1,50,3.6,30,4,0,0,2,630],[569577,"Rowe","Triston Rowe",2,2,40,0.2,0,0,0,0,0,0],[571380,"Lynch","Luka Lynch",2,3,45,0.1,0,0,0,0,0,0],[214590,"Wan-Bissaka","Aaron Wan-Bissaka",2,2,45,0.2,13,0,0,0,1,273],[119090,"Goretzka","Leon Goretzka",2,3,59,0.0,2,1,0,0,0,26],[245719,"Harwood-Bellis","Taylor Harwood-Bellis",2,2,45,0.0,0,0,0,0,0,0],[638987,"Mbaye","Ibrahim Mbaye",2,3,60,0.1,8,4,0,1,0,108],[481283,"Wright","James Wright",2,1,40,0.4,0,0,0,0,0,0],[457569,"Petrović","Đorđe Petrović",3,1,45,3.0,22,7,0,0,2,720],[40383,"Forster","Fraser Forster",3,1,40,3.4,0,0,0,0,0,0],[444172,"Dennis","Will Dennis",3,1,40,0.1,0,0,0,0,0,0],[463981,"Hill","James Hill",3,2,55,2.5,32,11,0,0,2,720],[494521,"Truffert","Adrien Truffert",3,2,54,3.2,25,10,0,1,2,713],[242882,"Diakité","Bafodé Diakité",3,2,49,0.1,2,1,0,0,0,4],[620487,"Milosavljević","Veljko Milosavljevic",3,2,49,0.0,0,0,0,0,0,0],[54469,"Smith","Adam Smith",3,2,45,0.2,16,6,0,0,2,682],[436893,"J.Araujo","Julián Araujo Zúñiga",3,2,44,0.0,0,0,0,0,0,0],[575901,"Soler","Julio Soler Barreto",3,2,40,0.2,1,0,0,0,0,6],[499604,"Rayan","Rayan Vitor Simplício Rocha",3,3,63,2.1,25,10,1,0,2,702],[201658,"Tavernier","Marcus Tavernier",3,3,65,24.1,52,10,5,0,2,660],[503139,"Scott","Alex Scott",3,3,59,2.3,30,0,1,2,1,446],[222683,"Kluivert","Justin Kluivert",3,3,59,0.8,22,6,1,1,3,384],[155408,"Cook","Lewis Cook",3,3,50,0.2,17,6,0,1,4,332],[496208,"Gannon-Doak","Ben Gannon-Doak",3,3,48,0.1,7,1,0,0,0,85],[200785,"Adams","Tyler Adams",3,3,50,0.3,20,4,0,0,2,547],[111317,"Brooks","David Brooks",3,3,50,0.0,4,0,0,0,0,90],[158499,"Christie","Ryan Christie",3,3,50,0.0,11,1,0,0,1,279],[614574,"Tóth.A","Alex Tóth",3,3,49,0.0,2,0,0,0,0,17],[489888,"Adli","Amine Adli",3,3,48,0.0,2,1,0,0,0,14],[560262,"Kroupi.Jr","Junior Kroupi",3,3,73,0.4,1,1,0,0,0,3],[444102,"Evanilson","Francisco Evanilson de Lima Barbosa",3,4,63,12.9,43,6,3,4,4,678],[168636,"Enes Ünal","Enes Ünal",3,4,55,0.0,0,0,0,0,0,0],[561245,"Rodríguez","Álvaro Rodríguez",3,4,60,0.1,4,0,0,0,0,39],[483067,"Silva","António João Pereira de Albuquerque Tavares da Silva",3,2,50,1.9,29,8,0,0,2,720],[494928,"Sanchez","Juanlu Sánchez",3,2,44,0.2,1,0,0,0,0,18],[523700,"Jebbison","Daniel Jebbison",3,4,50,0.1,3,0,0,0,0,31],[230650,"Di Gregorio","Michele Di Gregorio",3,1,45,0.0,0,0,0,0,0,0],[200720,"Kelleher","Caoimhín Kelleher",4,1,50,6.3,26,2,0,0,2,720],[507433,"Valdimarsson","Hákon Rafn Valdimarsson",4,1,44,0.1,0,0,0,0,0,0],[432830,"Collins","Nathan Collins",4,2,54,0.8,10,0,0,0,1,196],[444765,"Van den Berg","Sepp van den Berg",4,2,49,0.1,3,2,0,0,0,160],[249231,"Lewis-Potter","Keane Lewis-Potter",4,3,55,2.0,35,2,2,1,2,625],[191866,"Ajer","Kristoffer Ajer",4,2,45,4.3,32,2,1,0,2,720],[607464,"Kayode","Michael Kayode",4,2,46,6.9,28,4,1,0,2,564],[194010,"Henry","Rico Henry",4,2,44,0.2,1,0,0,0,0,2],[472713,"Hickey","Aaron Hickey",4,2,45,0.1,8,1,0,0,0,277],[570241,"Ji-soo","Kim Ji-soo",4,2,44,0.0,0,0,0,0,0,0],[513086,"Schuster","Jannik Schuster",4,2,45,0.4,22,0,0,1,1,298],[513418,"Schade","Kevin Schade",4,3,62,14.9,42,2,3,2,2,604],[533463,"O.Dango","Dango Ouattara",4,3,62,0.5,19,10,1,0,1,324],[440089,"Damsgaard","Mikkel Damsgaard",4,3,53,0.3,18,1,0,1,2,324],[207283,"Jensen","Mathias Jensen",4,3,54,0.1,10,2,0,1,1,224],[204580,"Janelt","Vitaly Janelt",4,3,50,1.7,30,0,2,0,2,630],[543295,"Milambo","Antoni Milambo",4,3,50,0.0,0,0,0,0,0,0],[244858,"Carvalho","Fábio Freitas Gouveia Carvalho",4,3,50,0.0,6,0,1,0,0,3],[508395,"Yarmoliuk","Yehor Yarmoliuk",4,3,47,0.5,15,0,1,1,1,334],[183656,"Dasilva","Josh Dasilva",4,3,48,0.0,0,0,0,0,0,0],[444180,"Anthony","Jaidon Anthony",4,3,59,0.3,23,1,1,1,2,455],[502500,"Thiago","Igor Thiago Nascimento Rodrigues",4,4,78,9.4,23,5,1,3,2,712],[593174,"Furo","Kaye Furo",4,4,45,0.6,0,0,0,0,0,0],[75115,"Wilson","Callum Wilson",4,4,54,0.3,4,1,0,0,0,30],[513545,"M.Sangaré","Mamadou Sangaré",4,3,54,6.4,28,4,0,2,1,494],[613804,"Diouf","El Hadji Malick Diouf",4,2,45,0.1,5,1,0,0,0,154],[626464,"Nunes","Gustavo Nunes Fernandes Gomes",4,3,45,0.0,0,0,0,0,0,0],[612534,"Fredrick","Benjamin Fredrick",4,2,40,0.0,0,0,0,0,0,0],[235448,"Balcombe","Ellery Balcombe",4,1,40,0.1,0,0,0,0,0,0],[489639,"Verbruggen","Bart Verbruggen",5,1,46,22.0,40,2,0,0,5,720],[49262,"Steele","Jason Steele",5,1,40,3.6,0,0,0,0,0,0],[231416,"F.Kadıoğlu","Ferdi Kadıoğlu",5,2,44,1.5,29,1,0,0,4,517],[204120,"Boscagli","Olivier Boscagli",5,2,45,0.6,33,-1,0,1,5,629],[465730,"De Cuyper","Maxim De Cuyper",5,2,53,42.5,60,1,2,3,5,670],[83299,"Dunk","Lewis Dunk",5,2,45,1.4,30,1,1,0,3,569],[550090,"Coppola","Diego Coppola",5,2,45,0.0,0,0,0,0,0,0],[223434,"Igor","Igor Julio dos Santos de Paulo",5,2,45,0.0,0,0,0,0,0,0],[451490,"Costinha","João Pedro Loureiro da Costa",5,2,45,0.0,5,0,0,0,0,174],[454490,"Svoboda","Michael Svoboda",5,2,50,0.1,2,0,0,0,0,5],[451340,"Mitoma","Mitoma Kaoru",5,3,59,0.0,0,0,0,0,0,0],[592031,"Minteh","Yankuba Minteh",5,3,58,0.0,0,0,0,0,0,0],[532529,"Hinshelwood","Jack Hinshelwood",5,3,59,0.6,23,1,3,0,1,127],[60307,"Groß","Pascal Groß",5,3,62,45.7,58,0,3,6,5,700],[463067,"Georginio","Georginio Rutter",5,4,53,0.4,12,1,0,2,1,140],[219249,"O'Riley","Matt O'Riley",5,3,54,0.1,2,0,0,0,0,10],[514254,"Gomez","Diego Gómez Amarilla",5,3,50,3.9,39,2,1,3,5,700],[536916,"Buonanotte","Facundo Buonanotte",5,3,50,0.0,0,0,0,0,0,0],[509416,"Ayari","Yasin Ayari",5,3,54,0.8,33,2,2,1,5,574],[467779,"Wieffer","Mats Wieffer",5,2,48,0.1,7,0,0,0,1,156],[597320,"Howell","Harry Howell",5,3,45,0.0,0,0,0,0,0,0],[549074,"Watson","Tom Watson",5,3,50,0.0,0,0,0,0,0,0],[556637,"Oriola","Nehemiah Oriola",5,3,44,0.2,0,0,0,0,0,0],[700308,"Yohanna","Zadok Yohanna",5,3,48,0.0,1,0,0,0,0,12],[608181,"Tzimas","Stefanos Tzimas",5,4,54,0.0,0,0,0,0,0,0],[647850,"Kostoulas","Charalampos Kostoulas",5,4,58,10.1,43,2,3,4,3,572],[487117,"Ferguson","Evan Ferguson",5,4,49,0.0,0,0,0,0,0,0],[222694,"Struijk","Pascal Struijk",5,2,49,0.1,5,0,0,0,1,154],[610799,"Vuskovic","Luka Vušković",5,2,52,6.7,52,1,1,1,5,707],[538007,"David","Promise David",5,4,59,0.2,1,0,0,0,0,23],[612855,"Osman","Ibrahim Osman",5,3,49,0.0,3,0,0,0,0,40],[611695,"Yalcouyé","Malick Yalcouyé",5,3,45,3.0,23,1,2,0,1,303],[512123,"Hadjam","Jaouen Hadjam",5,2,45,0.1,8,0,1,0,0,11],[519324,"Cozier-Duberry","Amario Cozier-Duberry",5,3,50,0.0,0,0,0,0,0,0],[592984,"Andrés","José María Andrés Baixauli",5,3,55,0.1,18,1,1,1,3,342],[471551,"Azeez","Femi Azeez",5,3,55,0.0,0,0,0,0,0,0],[661016,"Ibrahim","Younes Ibrahim",5,3,45,0.0,0,0,0,0,0,0],[98980,"Martinez","Emiliano Martínez Romero",6,1,49,3.4,20,0,0,0,1,524],[244850,"Rogers","Morgan Rogers",6,3,81,50.7,41,1,4,1,1,700],[56979,"Henderson","Jordan Henderson",6,3,49,1.7,25,2,2,1,1,360],[50175,"Welbeck","Danny Welbeck",6,4,58,0.8,7,1,0,0,0,95],[215059,"Sánchez","Robert Lynch Sánchez",6,1,49,0.6,2,0,0,0,0,90],[508479,"Jörgensen","Filip Jörgensen",6,1,50,0.0,0,0,0,0,0,0],[225796,"James","Reece James",6,2,52,3.5,3,0,0,0,0,292],[180736,"Chalobah","Trevoh Chalobah",6,2,55,0.1,0,0,0,0,0,0],[482609,"Gusto","Malo Gusto",6,2,48,0.8,5,0,0,0,0,274],[444463,"Fofana","Wesley Fofana",6,2,50,0.2,8,0,0,0,0,312],[242880,"B.Badiashile","Benoît Badiashile Mukinayi",6,2,45,0.0,0,0,0,0,0,0],[551210,"Hato","Jorrel Hato",6,2,45,0.8,25,6,0,3,2,412],[460028,"Colwill","Levi Samuels Colwill",6,2,48,0.9,14,3,0,0,1,611],[574458,"M.Sarr","Mamadou Sarr",6,2,45,0.0,0,0,0,0,0,0],[577016,"Acheampong","Josh Acheampong",6,2,45,0.4,15,1,0,0,1,491],[620109,"Palestra","Marco Palestra",6,2,53,0.5,2,0,0,0,0,44],[244851,"Palmer","Cole Palmer",6,3,98,27.3,37,-1,2,4,1,698],[247632,"Neto","Pedro Lomba Neto",6,3,66,4.7,37,3,3,1,1,591],[624773,"Estêvão","Estêvão Almeida de Oliveira Gonçalves",6,3,63,0.6,6,1,0,0,0,47],[463936,"Gittens","Jamie Bynoe-Gittens",6,3,58,0.0,0,0,0,0,0,0],[486672,"Caicedo","Moisés Caicedo Corozo",6,3,53,1.1,8,2,0,0,1,264],[514356,"Lavia","Roméo Lavia",6,3,50,0.2,13,0,1,0,0,277],[491007,"D.Essugo","Dário Luís Essugo",6,3,45,0.1,0,0,0,0,0,0],[593117,"Quenda","Geovany Quenda",6,3,52,0.0,6,3,0,0,1,99],[475168,"João Pedro","João Pedro Junqueira de Jesus",6,4,78,51.2,47,0,5,3,1,521],[499309,"Marc Guiu","Marc Guiu Paz",6,4,50,0.1,0,0,0,0,0,0],[567119,"Mheuka","Shumaira Mheuka",6,4,45,0.4,0,0,0,0,0,0],[503037,"Emegha","Emmanuel Emegha",6,4,49,0.1,0,0,0,0,0,0],[437499,"Lacroix","Maxence Lacroix",6,2,59,5.8,24,3,0,1,1,634],[549939,"Penders","Mike Penders",6,1,44,0.3,1,0,0,0,0,105],[622758,"Anselmino","Aaron Anselmino",6,2,45,0.0,0,0,0,0,0,0],[543158,"Barco","Valentín Barco",6,3,54,0.1,3,0,0,0,0,115],[498444,"Chavarria","Pep Chavarría",6,2,49,0.2,10,0,0,1,0,298],[636846,"Nicoll-Jazuli","Mahdi Nicoll-Jazuli",6,3,45,0.0,1,0,0,0,0,3],[499857,"Sharman-Lowe","Teddy Sharman-Lowe",6,1,40,0.1,0,0,0,0,0,0],[231065,"Pinnock","Ethan Pinnock",7,2,45,0.1,21,4,0,0,1,552],[428580,"Onyeka","Frank Onyeka",7,3,48,0.1,12,1,0,0,1,379],[472739,"Rushworth","Carl Rushworth",7,1,45,0.9,22,2,0,1,1,720],[484389,"Dovin","Oliver Dovin",7,1,40,0.8,0,0,0,0,0,0],[110690,"Wilson","Ben Wilson",7,1,44,0.3,0,0,0,0,0,0],[461102,"Thomas","Bobby Thomas",7,2,40,8.7,32,1,0,0,2,676],[436761,"Kitching","Liam Kitching",7,2,40,0.3,0,0,0,0,0,0],[451284,"van Ewijk","Milan van Ewijk",7,2,39,7.2,15,2,0,1,0,630],[173878,"Dasilva","Jay Dasilva",7,2,40,1.5,27,2,1,1,1,714],[465390,"Kesler-Hayden","Kaine Kesler-Hayden",7,2,39,0.1,1,0,0,0,0,3],[80178,"Bidwell","Jake Bidwell",7,2,40,0.1,0,0,0,0,0,0],[204813,"Latibeaudiere","Joel Latibeaudiere",7,2,39,0.0,1,0,0,0,0,1],[220583,"Woolfenden","Luke Woolfenden",7,2,39,0.1,0,0,0,0,0,0],[577411,"Brau","Miguel Brau",7,2,40,0.0,0,0,0,0,0,0],[539142,"Amenda","Aurèle Amenda",7,2,39,0.4,4,0,0,0,0,360],[480457,"Rudoni","Jack Rudoni",7,3,49,0.7,28,2,2,0,2,555],[168144,"Grimes","Matt Grimes",7,3,48,0.1,17,2,0,0,1,705],[501459,"Sakamoto","Tatsuhiro Sakamoto",7,3,48,0.1,6,2,0,0,0,222],[241293,"Mason-Clark","Ephron Mason-Clark",7,3,53,0.1,10,1,0,0,1,326],[439668,"Eccles","Josh Eccles",7,3,48,0.0,0,0,0,0,0,0],[226965,"Torp","Victor Torp",7,3,53,0.1,4,0,0,0,0,60],[684268,"Shepherd","George Shepherd",7,3,44,0.2,0,0,0,0,0,0],[469272,"Tchaouna","Loum Tchaouna",7,3,53,0.1,5,0,0,0,0,211],[492498,"Borges Rodrigues","Raphael Borges Rodrigues",7,3,45,0.1,0,0,0,0,0,0],[629397,"Andrews","Kai Andrews",7,3,45,0.2,0,0,0,0,0,0],[176412,"Wright","Haji Wright",7,4,53,0.1,0,0,0,0,0,0],[230730,"Thomas-Asante","Brandon Thomas-Asante",7,4,50,1.1,21,2,0,2,2,460],[218997,"Simms","Ellis Simms",7,4,49,0.6,10,0,1,0,0,116],[551262,"Markelo","Jahnoah Markelo",7,4,50,0.0,0,0,0,0,0,0],[549653,"Bassette","Norman Bassette",7,4,45,0.0,0,0,0,0,0,0],[210156,"Awoniyi","Taiwo Awoniyi",7,4,54,0.3,5,1,0,0,0,285],[661888,"Yirenkyi","Caleb Yirenkyi",7,3,48,0.1,16,3,0,0,3,467],[196100,"Hamer","Gustavo Hamer",7,3,53,0.1,5,1,0,0,0,48],[627221,"Cherif","Sidiki Cherif",7,4,50,0.5,16,2,1,1,1,232],[79602,"Bentley","Dan Bentley",7,1,40,1.0,0,0,0,0,0,0],[242893,"Gboho","Yann Gboho",7,3,55,0.0,0,0,0,0,0,0],[566213,"Mfuni","Stephen Mfuni",7,2,40,0.2,14,1,1,0,1,127],[485337,"Guessand","Evann Guessand",8,3,54,0.0,2,0,0,0,0,54],[220362,"Disasi","Axel Disasi",8,2,44,0.1,4,3,0,0,0,229],[172649,"Henderson","Dean Henderson",8,1,49,1.0,5,0,0,0,0,270],[121709,"Benitez","Walter Benítez",8,1,45,0.1,13,1,0,0,1,450],[427623,"Richards","Chris Richards",8,2,49,0.6,23,3,0,0,1,720],[651426,"Canvot","Jaydee Canvot",8,2,48,0.2,12,0,0,0,1,630],[244723,"Mitchell","Tyrick Mitchell",8,2,45,5.1,29,1,2,0,1,689],[218364,"Sosa","Borna Sosa",8,2,45,0.0,0,0,0,0,0,0],[515621,"Chadi Riad","Chadi Riad Dnanou",8,2,43,0.0,1,0,0,0,0,72],[242313,"Mingueza","Oscar Mingueza",8,2,43,0.0,2,0,0,0,0,16],[232185,"Sarr","Ismaïla Sarr",8,3,62,0.6,2,0,0,0,0,15],[496221,"Wharton","Adam Wharton",8,3,54,0.6,23,2,0,1,1,706],[488024,"Yeremy","Yéremy Pino Santos",8,3,55,0.3,26,1,1,2,1,539],[108413,"Hughes","Will Hughes",8,3,43,5.8,3,0,0,0,0,38],[152551,"Lerma","Jefferson Lerma Solís",8,3,48,0.1,10,0,1,0,0,159],[209400,"Kamada","Daichi Kamada",8,3,50,0.7,32,2,1,3,1,700],[489706,"Devenny","Justin Devenny",8,3,50,0.0,0,0,0,0,0,0],[606921,"Esse","Romain Esse",8,3,50,0.0,0,0,0,0,0,0],[536694,"M.França","Matheus França de Oliveira",8,3,49,0.0,0,0,0,0,0,0],[438464,"Doucouré","Cheick Doucouré",8,3,48,0.0,0,0,0,0,0,0],[450542,"J.Rak-Sakyi","Jesurun Rak-Sakyi",8,3,49,0.0,0,0,0,0,0,0],[590014,"Cardines","Rio Cardines",8,2,45,0.0,0,0,0,0,0,0],[672492,"Drakes-Thomas","Joél Drakes-Thomas",8,3,44,0.1,0,0,0,0,0,0],[247412,"Strand Larsen","Jørgen Strand Larsen",8,4,60,0.5,21,0,1,1,1,440],[231747,"Mateta","Jean-Philippe Mateta",8,4,63,1.2,5,2,0,0,0,152],[205533,"Nketiah","Eddie Nketiah",8,4,54,0.4,11,1,0,1,0,239],[660392,"Uche","Christantus Uche",8,4,50,0.0,0,0,0,0,0,0],[433154,"McNeil","Dwight McNeil",8,3,53,0.1,7,2,0,0,0,192],[169593,"Matthews","Remi Matthews",8,1,40,1.6,0,0,0,0,0,0],[223723,"Tomiyasu","Takehiro Tomiyasu",8,2,43,0.2,3,0,0,0,0,189],[570794,"Khalaili","Anan Khalaili",8,2,50,0.3,21,0,1,0,1,649],[559152,"Gozo","Zavier Gozo",8,3,49,0.0,2,0,0,0,0,28],[605972,"Ahanor","Honest Ahanor",8,2,45,0.0,3,0,0,0,0,160],[172850,"Chilwell","Ben Chilwell",8,2,44,0.3,8,0,1,0,0,29],[450063,"Timber","Quinten Timber",8,3,50,0.0,17,0,0,1,1,388],[533646,"Osorio","Darío Osorio",8,3,54,0.0,2,1,0,0,0,28],[128295,"Nørgaard","Christian Nørgaard",9,3,48,0.0,0,0,0,0,0,5],[242898,"Johnson","Brennan Johnson",9,3,58,0.1,14,2,0,0,2,379],[111234,"Pickford","Jordan Pickford",9,1,55,8.5,29,1,0,0,3,720],[229600,"Travers","Mark Travers",9,1,50,0.0,0,0,0,0,0,0],[138001,"King","Tom King",9,1,45,0.0,0,0,0,0,0,0],[17761,"Tarkowski","James Tarkowski",9,2,62,18.9,48,2,1,1,3,720],[480455,"Branthwaite","Jarrad Branthwaite",9,2,55,2.3,31,0,0,0,3,630],[106611,"Keane","Michael Keane",9,2,47,0.6,1,0,0,0,0,90],[512462,"O'Brien","Jake O'Brien",9,2,48,0.3,6,3,0,0,0,118],[224967,"Mykolenko","Vitalii Mykolenko",9,2,46,2.3,28,0,0,0,3,613],[243571,"Patterson","Nathan Patterson",9,2,45,0.0,0,0,0,0,0,0],[499300,"Aznou","Adam Aznou",9,2,40,0.1,0,0,0,0,0,0],[215413,"Dewsbury-Hall","Kiernan Dewsbury-Hall",9,3,66,6.1,37,2,2,1,3,715],[114283,"Grealish","Jack Grealish",9,3,65,0.4,10,0,0,0,1,304],[232928,"Garner","James Garner",9,3,60,0.2,20,3,0,0,2,598],[550615,"George","Tyrique George",9,3,55,0.5,23,2,1,0,2,458],[502697,"Alcaraz","Carlos Alcaraz Durán",9,3,48,0.1,3,1,0,0,0,13],[609873,"Armstrong","Harrison Armstrong",9,3,50,0.3,23,4,0,1,3,697],[496661,"Dibling","Tyler Dibling",9,3,53,0.0,3,1,0,0,0,46],[513466,"Röhl","Merlin Röhl",9,3,49,0.0,10,2,0,0,1,429],[244860,"Hackney","Hayden Hackney",9,3,53,0.1,12,1,0,1,1,165],[486385,"Beto","Norberto Bercique Gomes Betuncal",9,4,54,0.4,2,0,0,0,0,31],[586309,"Barry","Thierno Barry",9,4,56,7.3,30,2,3,0,3,682],[154043,"Maitland-Niles","Ainsley Maitland-Niles",9,2,45,1.4,26,0,1,1,2,308],[629068,"Graham","Braiden Graham",9,3,44,0.1,0,0,0,0,0,0],[80201,"Leno","Bernd Leno",10,1,45,4.4,34,8,0,0,3,720],[86873,"Lecomte","Benjamin Lecomte",10,1,40,1.1,0,0,0,0,0,0],[505079,"McNally","Alfie McNally",10,1,40,0.1,0,0,0,0,0,0],[174874,"Andersen","Joachim Andersen",10,2,50,0.2,3,0,0,0,0,190],[169528,"Robinson","Antonee Robinson",10,2,44,1.3,26,7,0,0,3,609],[246301,"J.Cuenca","Jorge Cuenca Barreno",10,2,44,0.0,3,0,0,0,0,90],[167074,"Tete","Kenny Tete",10,2,44,0.2,2,1,0,0,0,126],[232892,"Bassey","Calvin Bassey",10,2,45,1.3,33,8,0,1,3,720],[166477,"Castagne","Timothy Castagne",10,2,45,1.2,35,7,0,2,4,588],[153133,"Iwobi","Alex Iwobi",10,3,54,1.4,32,3,1,0,5,657],[209289,"Smith Rowe","Emile Smith Rowe",10,3,52,0.2,3,0,0,0,0,41],[560552,"Kevin","Kevin Santos Lopes de Macedo",10,3,52,0.0,5,0,0,0,0,75],[477555,"Bobb","Oscar Bobb",10,3,55,0.5,30,11,1,0,6,575],[207189,"Berge","Sander Berge",10,3,49,0.3,19,1,0,1,3,556],[76357,"Cairney","Tom Cairney",10,3,49,0.0,2,1,0,0,0,21],[577725,"King","Josh King",10,3,56,3.9,34,6,2,1,5,657],[184349,"Sessegnon","Ryan Sessegnon",10,2,43,0.2,8,0,1,0,0,152],[153366,"Reed","Harrison Reed",10,3,43,1.0,0,0,0,0,0,0],[244042,"Muniz","Rodrigo Muniz Carvalho",10,4,53,0.4,5,1,0,0,0,68],[631786,"Kusi-Asare","Jonah Kusi-Asare",10,4,44,4.5,0,0,0,0,0,0],[551466,"Gonzalo","Gonzalo García",10,4,60,4.9,20,2,1,0,5,668],[571779,"Palacios","César Palacios",10,3,53,0.1,14,1,1,0,0,247],[463210,"Charles","Shea Charles",10,3,50,0.1,21,2,0,0,4,553],[547686,"De Fougerolles","Luc De Fougerolles",10,2,40,0.1,0,0,0,0,0,0],[616069,"Zepa","Macaulay Zepa",10,3,44,0.4,0,0,0,0,0,0],[551050,"Larsson","Hugo Larsson",10,3,50,0.0,7,3,0,0,1,102],[500033,"Ángel","Manuel Ángel Morán Ibáñez",10,3,50,0.0,0,0,0,0,0,19],[442299,"Affengruber","David Affengruber",10,2,45,0.6,27,6,0,0,3,450],[490094,"Iroegbunam","Tim Iroegbunam",11,3,50,0.0,13,9,0,1,0,211],[167825,"Phillips","Dillon Phillips",11,1,40,1.3,0,0,0,0,0,0],[105666,"Butland","Jack Butland",11,1,44,0.1,0,0,0,0,0,0],[494950,"Cartwright","Harvey Cartwright",11,1,40,0.0,0,0,0,0,0,0],[444307,"Lo-Tutala","Thimothée Lo-Tutala",11,1,40,0.0,0,0,0,0,0,0],[108416,"Egan","John Egan",11,2,41,7.4,35,4,0,0,3,707],[501902,"Hughes","Charlie Hughes",11,2,39,0.1,0,0,0,0,0,0],[146426,"Ajayi","Semi Ajayi",11,2,42,12.9,34,4,1,0,3,693],[193278,"Coyle","Lewie Coyle",11,2,40,0.6,19,2,0,0,2,592],[433590,"Drameh","Cody Drameh",11,2,40,0.0,2,0,0,0,0,65],[232351,"Giles","Ryan Giles",11,2,40,2.7,29,2,0,1,3,593],[449428,"Jacob","Matty Jacob",11,2,40,0.0,0,0,0,0,0,0],[661800,"McCarthy","Cathal McCarthy",11,2,40,0.1,0,0,0,0,0,0],[160817,"McNair","Paddy McNair",11,2,40,0.1,1,0,0,0,0,26],[540324,"Belloumi","Mohamed Belloumi",11,3,52,10.3,43,4,3,2,3,595],[232905,"Millar","Liam Millar",11,3,50,0.0,6,0,1,0,0,50],[171270,"Dowell","Kieran Dowell",11,3,44,0.2,0,0,0,0,0,0],[101282,"Crooks","Matt Crooks",11,3,44,0.6,6,0,0,0,1,334],[243413,"Slater","Regan Slater",11,3,45,4.5,20,2,0,1,3,675],[465525,"Matazo","Eliot Matazo",11,3,45,0.0,0,0,0,0,0,0],[208481,"Ömür","Abdülkadir Ömür",11,3,49,0.0,0,0,0,0,0,0],[490161,"Kamara","Abu Kamara",11,3,50,0.0,0,0,0,0,0,0],[553783,"Zambrano","Óscar Zambrano",11,3,45,0.1,0,0,0,0,0,0],[169432,"McBurnie","Oli McBurnie",11,4,55,1.7,24,8,1,2,3,706],[213292,"Akintola","David Akintola",11,3,50,0.0,0,0,0,0,0,0],[470294,"Gyabi","Darko Gyabi",11,3,44,0.0,0,0,0,0,0,0],[500957,"Destan","Enis Destan",11,4,45,0.1,0,0,0,0,0,0],[534392,"Burstow","Mason Burstow",11,4,45,0.0,0,0,0,0,0,0],[462635,"Gelhardt","Joe Gelhardt",11,3,50,0.0,11,1,1,0,0,97],[169359,"Targett","Matt Targett",11,2,39,1.2,1,0,0,0,0,5],[445028,"Morita","Hidemasa Morita",11,3,49,0.0,4,1,0,0,0,93],[473284,"Tzolakis","Konstantinos Tzolakis",11,1,47,14.4,42,3,0,0,3,720],[552946,"Hjertø-Dahl","Jens Hjertø-Dahl",11,3,48,0.0,1,0,0,0,0,8],[608227,"Stroud","Elliot Stroud",11,3,49,0.1,15,4,0,1,2,365],[597462,"Herrington","Lucas Herrington",11,2,40,0.5,9,4,0,0,0,332],[606930,"Mendy","Nobel Mendy",11,2,41,4.7,28,0,1,0,2,339],[469266,"Gourna-Douath","Lucas Gourna-Douath",11,3,49,0.0,4,0,0,0,1,138],[490884,"Cho","Mohamed-Ali Cho",11,3,50,0.0,10,1,1,0,0,97],[626751,"Ansah","Ilyas Ansah",11,4,49,0.0,0,0,0,0,0,0],[631000,"Vaz","Robinio Vaz",11,4,50,0.1,5,1,0,0,0,50],[496181,"Norton-Cuffy","Brooke Norton-Cuffy",11,2,39,0.4,4,1,0,0,0,126],[243951,"Thomas","Sorba Thomas",11,3,55,0.0,13,0,0,1,0,271],[647839,"Mouzakitis","Christos Mouzakitis",11,3,50,0.0,0,0,0,0,0,0],[219924,"Diop","Issa Diop",12,2,39,10.4,18,1,0,0,0,720],[212314,"Lukić","Saša Lukić",12,3,49,0.1,15,0,0,1,0,490],[108813,"Walton","Christian Walton",12,1,44,0.5,9,3,0,0,0,360],[112520,"Palmer","Alex Palmer",12,1,40,3.5,0,0,0,0,0,0],[50093,"Button","David Button",12,1,40,0.6,0,0,0,0,0,0],[183015,"Kipré","Cédric Kipré",12,2,39,0.8,0,0,0,0,0,0],[216616,"O'Shea","Dara O'Shea",12,2,40,2.9,26,2,1,0,0,720],[455084,"Davis","Leif Davis",12,2,40,7.1,28,2,2,2,0,720],[449429,"Greaves","Jacob Greaves",12,2,39,1.1,4,0,0,0,0,447],[222018,"Johnson","Ben Johnson",12,2,40,0.0,0,0,0,0,0,0],[176420,"Furlong","Darnell Furlong",12,2,39,0.6,1,0,0,0,0,17],[501390,"Núñez","Marcelino Núñez",12,3,48,0.1,6,0,0,0,0,140],[241117,"Matusiwa","Azor Matusiwa",12,3,49,0.0,2,1,0,0,0,24],[149929,"Burns","Wes Burns",12,3,50,0.0,0,0,0,0,0,0],[231899,"Taylor","Jack Taylor",12,3,44,0.0,0,0,0,0,0,0],[443261,"Clarke","Jack Clarke",12,3,53,0.2,17,1,1,1,0,227],[229164,"Ogbene","Chiedozie Ogbene",12,3,49,0.0,0,0,0,0,0,0],[531442,"Fatawu","Abdul Fatawu",12,3,54,0.1,14,2,0,2,0,443],[543968,"Emersonn","Emersonn Correia da Silva",12,4,55,3.3,31,1,2,1,0,523],[222625,"Hirst","George Hirst",12,4,50,0.1,0,0,0,0,0,0],[481624,"Philogene","Jaden Philogene",12,3,54,0.1,6,2,0,0,0,174],[172453,"Szmodics","Sam Szmodics",12,3,50,0.0,0,0,0,0,0,0],[147675,"Akpom","Chuba Akpom",12,4,50,0.9,10,1,1,0,0,113],[557012,"Walle Egeli","Sindre Walle Egeli",12,4,45,2.9,2,0,0,0,0,19],[462387,"Al-Hamadi","Ali Al-Hamadi",12,4,50,0.0,0,0,0,0,0,0],[461587,"McAteer","Kasey McAteer",12,3,44,0.8,3,0,0,0,0,42],[232457,"Mehmeti","Anis Mehmeti",12,3,48,0.0,0,0,0,0,0,0],[546600,"Van Oevelen","Kayne van Oevelen",12,1,45,0.0,0,0,0,0,0,0],[442967,"Maeda","Daizen Maeda",12,3,53,0.2,18,1,1,0,0,426],[240514,"Scherpen","Kjell Scherpen",12,1,44,0.5,7,0,0,0,0,360],[216055,"Florentino","Florentino Ibrain Morris Luís",12,3,48,0.1,10,4,0,0,0,246],[474120,"Enciso","Julio Enciso",12,3,55,0.9,29,10,1,2,0,645],[572584,"Ouattara","Abdoul Ouattara",12,2,40,1.0,21,2,1,1,0,401],[524180,"Humphreys","Cameron Humphreys",12,3,45,0.0,0,0,0,0,0,0],[218543,"Palacios","Exequiel Palacios",12,3,50,0.1,20,4,0,0,0,482],[431639,"Flemming","Zian Flemming",12,4,55,0.1,13,1,2,0,0,121],[153682,"Wilson","Harry Wilson",13,3,62,1.2,9,3,0,0,2,229],[201595,"Perri","Lucas Estella Perri",13,1,45,0.3,0,0,0,0,0,0],[434752,"Bijol","Jaka Bijol",13,2,50,0.6,21,8,0,0,2,258],[214225,"Rodon","Joe Rodon",13,2,43,0.5,7,0,0,0,1,123],[226182,"Bogle","Jayden Bogle",13,2,48,11.3,50,5,2,0,5,630],[243526,"Gudmundsson","Gabriel Gudmundsson",13,2,45,0.1,25,6,0,1,3,522],[220627,"Justin","James Justin",13,2,45,2.3,40,6,1,0,3,708],[437738,"Bornauw","Sebastiaan Bornauw",13,2,45,0.0,0,0,0,0,0,0],[522047,"Muharemović","Tarik Muharemović",13,2,51,6.0,43,9,0,2,3,720],[466525,"Stach","Anton Stach",13,3,60,1.9,32,1,1,0,3,651],[435997,"Okafor","Noah Okafor",13,3,58,0.3,23,1,1,0,3,467],[427637,"Aaronson","Brenden Aaronson",13,3,52,0.4,11,3,0,0,2,277],[199598,"Ampadu","Ethan Ampadu",13,3,53,0.7,25,2,0,1,3,720],[180135,"Longstaff","Sean Longstaff",13,3,48,0.1,4,1,0,0,0,20],[492859,"Gnonto","Wilfried Gnonto",13,3,50,0.0,0,0,0,0,0,0],[221399,"Harrison","Jack Harrison",13,3,50,0.0,0,0,0,0,0,0],[200617,"James","Daniel James",13,3,49,0.1,3,0,0,0,0,52],[486520,"Gruev","Ilia Gruev",13,3,50,0.0,0,0,0,0,0,0],[248056,"Tanaka","Tanaka Ao",13,3,49,0.3,20,3,0,2,3,493],[177815,"Calvert-Lewin","Dominic Calvert-Lewin",13,4,61,21.0,35,2,3,1,4,683],[174594,"Nmecha","Lukas Nmecha",13,4,53,0.4,10,1,0,1,0,96],[235826,"Piroe","Joël Piroe",13,4,50,0.0,0,0,0,0,0,0],[565297,"Mateo Joseph","Mateo Joseph Fernández-Regatillo",13,4,45,0.0,0,0,0,0,0,0],[432720,"Trafford","James Trafford",13,1,50,6.3,42,10,0,0,3,720],[173774,"Elvedi","Nico Elvedi",13,2,45,0.1,16,0,0,0,1,501],[643970,"Lienou","Jayden Lienou",13,2,40,0.1,0,0,0,0,0,0],[592740,"Cresswell","Alfie Cresswell",13,3,45,0.1,0,0,0,0,0,0],[97846,"Cairns","Alex Cairns",13,1,40,0.2,0,0,0,0,0,0],[155465,"Zetterer","Michael Zetterer",13,1,40,0.7,0,0,0,0,0,0],[437497,"Bard","Melvin Bard",13,2,45,0.0,1,0,0,0,0,18],[587982,"Bahoya","Jean-Mattéo Bahoya",13,3,49,0.0,2,0,0,0,0,5],[116535,"A.Becker","Alisson Becker",14,1,55,4.1,36,6,0,0,4,720],[449027,"Mamardashvili","Giorgi Mamardashvili",14,1,48,0.1,0,0,0,0,0,0],[155503,"Woodman","Freddie Woodman",14,1,40,1.0,0,0,0,0,0,0],[586268,"Pecsi","Armin Pecsi",14,1,40,0.0,0,0,0,0,0,0],[432987,"Jaros","Vitezslav Jaros",14,1,40,0.0,0,0,0,0,0,0],[464353,"Davies","Harvey Davies",14,1,40,0.2,0,0,0,0,0,0],[97032,"Virgil","Virgil van Dijk",14,2,64,15.0,38,9,0,0,4,720],[216094,"Frimpong","Jeremie Frimpong",14,2,52,1.3,4,0,0,0,0,199],[544877,"Kerkez","Milos Kerkez",14,2,53,1.9,22,6,0,0,3,652],[171287,"Gomez","Joe Gomez",14,2,49,0.0,2,0,0,0,0,13],[492777,"Bradley","Conor Bradley",14,2,49,0.0,0,0,0,0,0,0],[519440,"Lucky","Wellity Lucky",14,2,40,0.1,0,0,0,0,0,0],[606702,"Jacquet","Jeremy Jacquet",14,2,51,4.3,38,8,0,0,4,682],[647681,"Leoni","Giovanni Leoni",14,2,39,0.0,0,0,0,0,0,0],[214285,"Tsimikas","Kostas Tsimikas",14,2,49,0.1,3,1,0,0,0,66],[489580,"Ramsay","Calvin Ramsay",14,2,40,0.1,0,0,0,0,0,0],[494595,"Wirtz","Florian Wirtz",14,3,72,5.0,31,6,0,4,4,621],[243298,"Gakpo","Cody Gakpo",14,3,71,6.8,35,3,1,3,3,460],[424876,"Szoboszlai","Dominik Szoboszlai",14,3,67,13.9,21,0,1,0,3,471],[611922,"Ngumoha","Rio Ngumoha",14,3,57,0.5,7,1,0,0,0,165],[223541,"Chiesa","Federico Chiesa",14,3,53,0.0,1,0,0,0,0,2],[441266,"Gravenberch","Ryan Gravenberch",14,3,58,0.9,11,3,0,1,1,341],[243016,"Mac Allister","Alexis Mac Allister",14,3,54,1.3,17,3,0,0,3,576],[206915,"C.Jones","Curtis Jones",14,3,55,0.0,0,0,0,0,0,0],[158983,"Endo","Endo Wataru",14,3,48,0.1,0,0,0,0,0,0],[591386,"Nyoni","Trey Nyoni",14,3,48,0.0,6,1,0,0,0,145],[535928,"Bajcetic","Stefan Bajčetić Maquieira",14,3,50,0.0,0,0,0,0,0,0],[551499,"Munoz","Victor Munoz",14,3,65,0.7,26,0,2,1,1,425],[491501,"McConnell","James McConnell",14,3,44,0.2,0,0,0,0,0,0],[219168,"Isak","Alexander Isak",14,4,91,19.2,51,9,6,0,4,567],[510663,"Ekitiké","Hugo Ekitiké",14,4,74,0.1,0,0,0,0,0,0],[514514,"Koumas","Lewis Koumas",14,3,50,0.1,7,1,0,0,0,120],[500058,"Danns","Jayden Danns",14,4,45,0.2,0,0,0,0,0,0],[444884,"Elliott","Harvey Elliott",14,3,54,0.0,0,0,0,0,0,0],[445087,"Araujo","Ronald Araujo",14,2,54,3.8,33,10,0,0,4,493],[482616,"Barcola","Bradley Barcola",14,3,81,4.1,19,6,0,2,3,421],[448047,"Enzo","Enzo Fernández",15,3,69,3.8,19,2,1,0,3,480],[440993,"Ndiaye","Iliman Ndiaye",15,3,58,5.5,33,5,0,4,2,598],[204936,"Donnarumma","Gianluigi Donnarumma",15,1,55,7.5,30,1,0,0,3,720],[122074,"Bettinelli","Marcus Bettinelli",15,1,44,0.0,0,0,0,0,0,0],[472769,"O'Reilly","Nico O'Reilly",15,2,62,8.5,13,0,0,0,1,288],[209036,"Guéhi","Marc Guéhi",15,2,60,16.6,37,0,1,1,3,675],[465351,"Matheus N.","Matheus Nunes",15,2,59,0.9,19,0,0,0,2,378],[171314,"Rúben","Rúben dos Santos Gato Alves Dias",15,2,55,2.0,25,1,0,0,3,720],[477424,"Gvardiol","Joško Gvardiol",15,2,57,26.4,42,1,1,4,2,577],[448514,"Aït-Nouri","Rayan Aït-Nouri",15,2,52,0.4,0,0,0,0,0,0],[578153,"Khusanov","Abdukodir Khusanov",15,2,53,1.2,13,3,0,0,1,372],[494307,"Alleyne","Max Alleyne",15,2,50,0.0,0,0,0,0,0,0],[477064,"Lewis","Rico Lewis",15,2,43,0.2,2,1,0,0,0,101],[616222,"Vitor Reis","Vitor de Oliveira Nunes dos Reis",15,2,44,0.0,1,0,0,0,0,1],[437730,"Semenyo","Antoine Semenyo",15,3,82,6.9,37,0,2,3,3,553],[209244,"Foden","Phil Foden",15,3,68,2.7,19,1,1,2,0,338],[466052,"Cherki","Rayan Cherki",15,3,80,37.3,44,0,4,2,2,437],[248875,"Doku","Jérémy Doku",15,3,75,4.5,21,2,1,2,0,215],[220566,"Rodrigo","Rodrigo 'Rodri' Hernandez Cascante",15,3,65,0.0,0,0,0,0,0,0],[433036,"Reijnders","Tijjani Reijnders",15,3,60,0.0,0,0,0,0,0,0],[91651,"Kovačić","Mateo Kovačić",15,3,53,0.1,7,0,0,1,0,91],[575204,"Echeverri","Claudio Echeverri",15,3,49,0.0,0,0,0,0,0,0],[155405,"Phillips","Kalvin Phillips",15,3,50,0.0,0,0,0,0,0,0],[590039,"Mukasa","Divine Mukasa",15,3,45,0.1,0,0,0,0,0,0],[649208,"Monga","Jeremy Monga",15,3,49,0.0,0,0,0,0,0,0],[223094,"Haaland","Erling Haaland",15,4,158,78.7,66,8,9,0,3,709],[215379,"Anderson","Elliot Anderson",15,3,63,3.7,23,1,0,1,3,606],[106921,"Rulli","Gerónimo Rulli",15,1,49,0.0,0,0,0,0,0,0],[637238,"Bouaddi","Ayyoub Bouaddi",15,3,55,0.2,4,0,0,0,0,122],[616288,"McAidoo","Ryan McAidoo",15,3,44,0.1,2,0,0,0,0,32],[554054,"Braithwaite","Kaden Braithwaite",15,2,39,0.2,1,0,0,0,0,1],[624777,"Allan","Allan Andrade Elias",15,3,60,0.0,1,0,0,0,0,10],[595480,"Samba","Floyd Samba",15,3,44,0.0,0,0,0,0,0,0],[166989,"Tielemans","Youri Tielemans",16,3,57,1.3,24,0,0,1,0,588],[535301,"Baleba","Carlos Baleba",16,3,49,0.3,7,2,0,0,0,175],[532605,"Andrey Santos","Andrey Nascimento dos Santos",16,3,47,0.5,8,3,0,0,0,262],[59735,"Darlow","Karl Darlow",16,1,45,0.0,0,0,0,0,0,0],[465247,"Lammens","Senne Lammens",16,1,48,7.7,17,1,0,0,0,720],[451302,"Bayindir","Altay Bayındır",16,1,45,0.0,0,0,0,0,0,0],[21205,"Heaton","Tom Heaton",16,1,40,0.1,0,0,0,0,0,0],[596777,"Dorgu","Patrick Dorgu",16,3,57,0.3,10,0,0,1,0,171],[209365,"De Ligt","Matthijs de Ligt",16,2,49,0.0,0,0,0,0,0,0],[216051,"Dalot","Diogo Dalot Teixeira",16,2,48,1.3,13,1,0,0,0,557],[95658,"Maguire","Harry Maguire",16,2,47,5.8,16,0,0,1,0,720],[221820,"Martinez","Lisandro Martínez",16,2,48,1.1,11,1,0,0,0,520],[550864,"Yoro","Leny Yoro",16,2,48,0.5,10,1,0,0,0,260],[606745,"Heaven","Ayden Heaven",16,2,43,0.2,2,0,0,0,0,155],[230001,"Mazraoui","Noussair Mazraoui",16,2,43,0.4,6,0,0,0,0,142],[106760,"Shaw","Luke Shaw",16,2,42,4.0,12,0,0,1,0,425],[577974,"Amass","Harry Amass",16,2,40,0.2,0,0,0,0,0,0],[547676,"Fredricson","Tyler Fredricson",16,2,40,0.0,0,0,0,0,0,0],[141746,"B.Fernandes","Bruno Borges Fernandes",16,3,117,23.0,33,0,3,1,0,630],[446008,"Mbeumo","Bryan Mbeumo",16,3,79,21.1,43,2,4,1,0,720],[430871,"Cunha","Matheus Santos Carneiro da Cunha",16,3,78,5.8,38,1,1,3,1,548],[176297,"Rashford","Marcus Rashford",16,3,68,1.0,11,0,0,0,1,352],[184341,"Mount","Mason Mount",16,3,54,0.0,4,2,0,0,0,116],[493250,"Amad","Amad Diallo",16,3,57,0.3,5,2,0,0,0,225],[516895,"Mainoo","Kobbie Mainoo",16,3,55,1.1,26,0,0,1,0,444],[232112,"Ugarte","Manuel Ugarte Ribeiro",16,3,50,0.0,0,0,0,0,0,0],[547037,"J.Fletcher","Jack Fletcher",16,3,49,0.0,0,0,0,0,0,0],[576628,"Lacey","Shea Lacey",16,3,49,0.1,2,1,0,0,0,22],[490881,"Collyer","Toby Collyer",16,3,50,0.0,0,0,0,0,0,0],[576620,"Bendito Mantato","Bendito Mantato",16,3,44,0.2,0,0,0,0,0,0],[519913,"Fletcher","Tyler Fletcher",16,3,44,0.3,0,0,0,0,0,0],[485711,"Šeško","Benjamin Sesko",16,4,69,1.0,8,0,1,0,0,76],[458249,"Zirkzee","Joshua Zirkzee",16,4,53,0.4,4,1,0,0,0,69],[596047,"Obi","Chido Obi",16,4,45,0.7,0,0,0,0,0,0],[465694,"N.Gonzalez","Nico González Iglesias",17,3,55,0.2,19,4,0,1,2,434],[98747,"Pope","Nick Pope",17,1,49,0.9,0,0,0,0,0,0],[81441,"Gillespie","Mark Gillespie",17,1,45,0.0,0,0,0,0,0,0],[554578,"Jaouen","Ewen Jaouen",17,1,44,0.0,0,0,0,0,0,0],[465642,"Thiaw","Malick Thiaw",17,2,50,1.7,16,1,0,0,1,631],[119471,"Schär","Fabian Schär",17,2,49,0.2,9,7,0,0,1,115],[220237,"Botman","Sven Botman",17,2,50,0.8,26,0,1,0,1,630],[78916,"Burn","Dan Burn",17,2,48,0.7,8,6,0,0,1,92],[487838,"Hall","Lewis Hall",17,2,53,20.5,40,5,1,1,2,719],[441191,"Livramento","Tino Livramento",17,2,48,0.0,4,0,0,1,0,33],[545477,"A.Murphy","Alex Murphy",17,2,40,0.0,0,0,0,0,0,0],[201666,"Barnes","Harvey Barnes",17,3,61,7.6,40,8,2,3,2,706],[449434,"Elanga","Anthony Elanga",17,3,60,2.4,19,1,2,0,1,245],[232653,"J.Ramsey","Jacob Ramsey",17,3,48,0.2,8,1,1,0,0,82],[114243,"J.Murphy","Jacob Murphy",17,3,59,0.1,10,6,0,1,1,329],[180974,"Joelinton","Joelinton Cássio Apolinário de Lira",17,3,54,0.0,4,3,0,0,1,204],[547719,"L.Miley","Lewis Miley",17,3,55,0.1,15,0,0,0,1,544],[200089,"Willock","Joe Willock",17,3,50,0.5,27,3,2,0,2,473],[611665,"Touré","Bazoumana Touré",17,3,57,0.1,10,0,1,0,0,115],[636852,"Steur","Sean Steur",17,3,48,0.1,9,1,0,0,1,228],[470313,"Woltemade","Nick Woltemade",17,4,59,0.4,4,0,0,1,0,19],[216646,"Wissa","Yoane Wissa",17,4,60,10.6,19,1,1,1,1,621],[538207,"Osula","William Osula",17,4,58,0.4,14,9,1,1,1,177],[599303,"Neave","Sean Neave",17,4,45,0.4,0,0,0,0,0,0],[632794,"Bamba","Aladji Bamba",17,3,48,0.1,3,0,0,0,0,27],[470551,"Horníček","Lukás Hornícek",17,1,50,1.3,24,8,0,0,2,720],[463726,"Dedić","Amar Dedic",17,2,45,1.2,24,11,0,2,2,448],[553746,"Shahar","Leo Shahar",17,2,40,0.1,0,0,0,0,0,0],[613221,"Fernandez-Pardo","Matias Fernandez-Pardo",17,4,59,0.1,7,0,0,0,0,302],[665243,"Miley","Mason Miley",17,3,45,0.1,0,0,0,0,0,0],[578512,"Pivas","Miodrag Pivas",17,2,40,0.0,0,0,0,0,0,0],[601767,"Salia","Vakhtang Salia",17,4,45,0.3,0,0,0,0,0,0],[655585,"Mills","Michael Mills",17,3,45,0.0,0,0,0,0,0,0],[671875,"Thompson","Kyran Thompson",17,3,45,0.0,0,0,0,0,0,0],[463034,"Delap","Liam Delap",18,4,54,1.7,15,2,1,0,1,528],[247348,"Muñoz","Daniel Muñoz Mejía",18,2,53,4.7,15,7,0,1,0,527],[85633,"Sels","Matz Sels",18,1,50,1.4,20,2,0,0,1,720],[221389,"John","John Victor Maciel Furtado",18,1,44,0.1,0,0,0,0,0,0],[215136,"N.Williams","Neco Williams",18,2,50,5.8,31,8,1,1,1,713],[485047,"Morato","Felipe Rodrigues da Silva",18,2,50,0.0,0,0,0,0,0,0],[227444,"Milenković","Nikola Milenković",18,2,54,0.8,14,2,0,0,1,360],[575476,"Murillo","Murillo Costa dos Santos",18,2,55,2.1,28,1,0,1,1,719],[159506,"Aina","Ola Aina",18,2,43,1.5,8,0,0,0,1,388],[575458,"Jair Cunha","Jair Paula da Cunha Filho",18,2,44,0.2,15,2,0,0,1,534],[500151,"Savona","Nicolò Savona",18,2,45,0.0,0,0,0,0,0,0],[204822,"O.Richards","Omar Richards",18,2,39,0.2,0,0,0,0,0,0],[549067,"Abbott","Zach Abbott",18,2,40,0.1,0,0,0,0,0,0],[470315,"Netz","Luca Netz",18,2,44,0.0,4,1,0,0,0,33],[538638,"Bindon","Tyler Bindon",18,2,40,0.1,0,0,0,0,0,0],[222531,"Gibbs-White","Morgan Gibbs-White",18,3,79,11.4,32,2,1,2,1,630],[209046,"Hudson-Odoi","Callum Hudson-Odoi",18,3,57,0.1,4,1,0,0,0,45],[456512,"Ndoye","Dan Ndoye",18,3,55,0.6,27,2,2,0,2,527],[503301,"Hutchinson","Omari Hutchinson",18,3,54,0.1,0,0,0,0,0,0],[476887,"Bakwa","Dilane Bakwa",18,3,55,0.0,0,0,0,0,0,0],[432714,"McAtee","James McAtee",18,3,55,0.1,23,5,0,0,2,680],[250199,"Dominguez","Nicolás Domínguez",18,3,48,0.0,4,0,0,0,1,74],[210462,"I.Sangaré","Ibrahim Sangaré",18,3,47,0.3,6,0,0,0,0,145],[204968,"Yates","Ryan Yates",18,3,44,1.0,0,0,0,0,0,0],[60689,"Wood","Chris Wood",18,4,57,0.8,7,1,0,0,0,86],[482973,"Igor Jesus","Igor Jesus Maciel da Cruz",18,4,57,1.2,12,0,1,0,0,257],[465680,"Kalimuendo","Arnaud Kalimuendo",18,4,54,0.0,3,0,0,0,0,25],[204561,"Schlager","Xaver Schlager",18,3,50,0.1,23,4,0,0,1,621],[568420,"Diomande","Ousmane Diomande",18,2,53,0.5,10,0,0,0,0,343],[428971,"Benda","Steven Benda",18,1,45,0.1,0,0,0,0,0,0],[469142,"Van Hecke","Jan Paul van Hecke",19,2,49,9.6,38,7,1,0,3,720],[109646,"Tosin","Tosin Adarabioyo",19,2,43,0.1,3,0,0,0,0,75],[438234,"Marmoush","Omar Marmoush",19,4,70,2.6,20,2,1,0,3,513],[510281,"Sávio","Sávio Moreira de Oliveira",19,3,65,0.4,10,0,0,0,2,330],[432422,"Tonali","Sandro Tonali",19,3,53,2.0,30,5,0,1,3,697],[184254,"Vicario","Guglielmo Vicario",19,1,45,0.1,0,0,0,0,0,0],[214572,"Austin","Brandon Austin",19,1,40,1.0,0,0,0,0,0,0],[485055,"Kinsky","Antonín Kinský",19,1,44,15.4,32,9,0,0,3,720],[67089,"Dubravka","Martin Dubravka",19,1,40,15.7,0,0,0,0,0,0],[221466,"Senesi","Marcos Senesi Barón",19,2,57,3.0,5,0,0,0,0,178],[441164,"Pedro Porro","Pedro Porro Sauceda",19,2,53,5.1,10,1,0,0,1,223],[221632,"Romero","Cristian Romero",19,2,50,0.1,0,0,0,0,0,0],[122798,"Robertson","Andrew Robertson",19,2,43,2.4,28,6,0,2,2,498],[491279,"Van de Ven","Micky van de Ven",19,2,50,4.0,24,5,0,0,3,556],[232859,"Spence","Djed Spence",19,2,45,0.2,0,0,0,0,0,0],[487053,"Udogie","Destiny Udogie",19,2,44,0.3,9,0,0,0,1,159],[548308,"Phillips","Ashley Phillips",19,2,45,0.0,0,0,0,0,0,0],[115556,"Davies","Ben Davies",19,2,39,1.0,8,1,1,0,0,22],[640419,"Byfield","Jun'ai Byfield",19,2,40,0.1,0,0,0,0,0,0],[499716,"Rowswell","James Rowswell",19,2,40,0.1,0,0,0,0,0,0],[616221,"Souza","João Victor de Souza Menezes",19,2,40,0.1,0,0,0,0,0,0],[460842,"Kudus","Mohammed Kudus",19,3,65,1.5,19,3,0,2,2,362],[493362,"Xavi","Xavi Simons",19,3,59,0.0,0,0,0,0,0,0],[511499,"Tel","Mathys Tel",19,3,56,0.5,20,11,1,0,2,348],[172780,"Maddison","James Maddison",19,3,62,0.6,14,1,1,0,0,193],[202993,"Bentancur","Rodrigo Bentancur",19,3,54,0.1,13,0,0,0,2,381],[550839,"Odobert","Wilson Odobert",19,3,55,0.0,0,0,0,0,0,0],[482442,"P.M.Sarr","Pape Matar Sarr",19,3,49,0.1,0,0,0,0,0,0],[232787,"Gallagher","Conor Gallagher",19,3,53,0.2,13,0,1,0,1,267],[570526,"Bergvall","Lucas Bergvall",19,3,53,0.1,6,0,0,0,1,143],[445044,"Kulusevski","Dejan Kulusevski",19,3,65,0.0,2,1,0,0,0,4],[547701,"Gray","Archie Gray",19,3,49,0.2,17,3,0,0,2,577],[499721,"Moore","Mikey Moore",19,3,50,0.0,3,0,0,0,0,89],[499726,"Olusesi","Callum Olusesi",19,3,44,0.8,0,0,0,0,0,0],[551226,"Fernandes","Mateus Fernandes",19,3,56,0.7,16,7,0,1,2,359],[154566,"Solanke","Dominic Solanke-Mitchell",19,4,58,1.5,19,1,1,1,1,375],[212319,"Richarlison","Richarlison de Andrade",19,4,59,0.5,2,0,0,0,0,67],[490145,"Scarlett","Dane Scarlett",19,4,45,0.8,0,0,0,0,0,0],[465920,"Mudryk","Mykhailo Mudryk",19,3,53,0.0,1,0,0,0,0,16],[611917,"Williams-Barnett","Luca Williams-Barnett",19,3,44,0.1,0,0,0,0,0,0],[135720,"Danso","Kevin Danso",20,2,50,0.2,1,0,0,0,0,376],[498016,"Roefs","Robin Roefs",20,1,49,2.2,23,9,0,0,2,720],[232571,"Patterson","Anthony Patterson",20,1,40,0.1,0,0,0,0,0,0],[515046,"Ellborg","Melker Ellborg",20,1,44,0.1,0,0,0,0,0,0],[223827,"Ballard","Daniel Ballard",20,2,48,1.1,14,0,0,0,1,450],[200834,"Mukiele","Nordi Mukiele",20,2,54,1.8,20,1,0,0,1,591],[487676,"Hume","Trai Hume",20,2,42,1.9,20,6,0,0,2,476],[201895,"Alderete","Omar Alderete",20,2,48,0.2,1,1,0,0,0,119],[434399,"Reinildo","Reinildo Mandava",20,2,44,0.3,15,5,0,0,2,612],[519634,"Seelt","Jenson Seelt",20,2,45,0.0,0,0,0,0,0,0],[477547,"Hjelde","Leo Fuhr Hjelde",20,2,40,0.0,0,0,0,0,0,0],[167512,"O'Nien","Luke O'Nien",20,2,39,2.5,11,9,0,0,1,187],[105717,"Masuaku","Arthur Masuaku",20,2,40,0.1,0,0,0,0,0,0],[93605,"Meunier","Thomas Meunier",20,2,44,0.2,15,0,0,1,1,429],[484420,"E.Le Fée","Enzo Le Fée",20,3,57,2.8,27,3,1,1,2,686],[547027,"Diarra","Habib Diarra",20,3,53,0.0,7,1,0,1,0,70],[84450,"Xhaka","Granit Xhaka",20,3,54,2.9,28,3,0,1,2,720],[577669,"Sadiki","Noah Sadiki",20,3,48,0.2,18,3,0,0,2,680],[535818,"Adingra","Simon Adingra",20,3,49,0.0,0,0,0,0,0,0],[461199,"Mundle","Romaine Mundle",20,3,48,0.0,1,0,0,0,0,1],[554197,"Rigg","Chris Rigg",20,3,48,0.0,6,3,0,0,1,171],[549912,"Talbi","Chemsdine Talbi",20,3,52,0.1,2,1,0,0,0,42],[699989,"Jocelin.T","Djiamgone Jocelin Ta Bi",20,3,49,0.0,1,0,0,0,0,17],[536661,"N.Angulo","Nilson Angulo",20,3,50,0.1,21,3,1,1,2,463],[441264,"Brobbey","Brian Brobbey",20,4,57,5.2,26,2,3,0,2,463],[437505,"Isidor","Wilson Isidor",20,4,54,0.8,17,0,1,1,0,207],[638411,"Methalie","Dayann Méthalie",20,2,45,0.0,0,0,0,0,0,107],[696104,"Ahoka","Jules Ahoka",20,3,44,0.2,1,0,0,0,0,25],[549940,"Fofana","Malick Fofana",20,3,55,0.0,4,0,0,0,0,116],[661313,"J.Angulo","Juan Angulo",20,4,45,0.7,1,0,0,0,0,9],[604211,"Tutierov","Tymur Tutierov",20,3,50,0.0,2,1,0,0,0,83]]};
-const SCHED = "VUNRVBVSXFgYBQMEDk1EUFAVU0BAHAUFCgBZWlVSFFNCVAEABwsOU0JIVRpXQ10ZHgADA1FBVUgZXkJaHAQaBgBRQ1FVAVRAVR0BAB4GV0FRVR9KQlgUAAUDG1BEVlwdUFxYGgABAQ5NQlNQHFRAQBwLDwUOV1pQXB1SRVsBBwMDA1dASFAZUkFUHR4EAw5ZQlNIH1RGWRQFGgYDV0ZUXAFfRVoYChoABVNAXFcBUkdeGgQPHgNVRFZdFEpEVB8EBgsbU0ZUXB5SXFkcAgQKBk1CXFcdUEdAHwYOCgBUWlVTGVNJWAEGBQUDWE9IVRRTQ1QZHgcLDlRPXEgYV0FYFAsaBgFQR1RWAVJEWBwCBB4CV05QVh1KQl4fBwUDG1dHVFMUX1xYGwEBAAFNRFZSFFJEQBkEAwUEUVpWUB5TQloBCgYAB1BaUlQeVkdAGAcHAAZRWlFUHFFFQBgCBQMEWFpWVhlfRlsBBgAHBFRHSFEbX0dVAQcHBA9YQ0hWHlRIVR8eAgsGU0FdSBxeRFwfCxoABFNCVVcBU0BcHQYGHgNXQFFWGEpEVRkHBAMbU0JTUBxUXF4ZCg4HAE1HU1IfX0dAHAYBBABUWlBWGV5HWgEDAwYCV0BIURxVRF0VHgQAB1NFU0gfV0ZcGAMaAwFXQlNTAVdBXR8BAh4DWE5UVRtKQVwbBAcDG1RFXVUZVFxYGQsCAQNNQ1FVGV9JQBwGAAYFV1pWUB5WQVoBBwMCD1dCSFYcXklVGh4DBwdXR1FIH1ZBWhgKGgADUUNVUAFTRFgVBQEeAlJFUFIeSkRVGwAEAxtVQFRUH15cXRwEAwECTUJXVhVVQEAcCwMHA1daUFcZUUVeAQYOAgNUQ0hVFFVCWxUeBAAEUkJUSB9XRlwUBhoAA1ZAV1YBUkZfFAoHHgZRR1ZcH0pFVRoGAAAbVEFTVhVTXFkaBwIFAU1EV1YeU0FAGQYDAwVTWlBcGVJCXAEGDwQGWUdIURpeQVkeHgQCA1VOVEgZUEVaGQAaBgNQRFJQAVNEXxQEDh4DWUBSUx9KSVQUCgYeAVBHXVYfSkFVFQoACxtVQVFVG15cXh0LAgIHTUdRUBhQQUAfAwMDBFdaVVQVXkFfAQYFCwJRT0hWHVJFVB0eAgsOUEBdSBtXQVoUBxoGBFNBVlQBVERbHgYOHgZRQFNSHUpFXRkAAwYbV0ZSXR5WXF0aAAAGDk1CXVAYX0VAGAUBBQVUWlBQHFRGWgEGDgoHU0JIVh9WRl4aHgQGA1ZEV0gZXklaHgsaAAVSRl1QAVJIWR0HAx4GVUdTUBtKRV8fBAYHG1NGVFQVX1xeHwQHCgVNRFVSG1JGQB8DAAQGV1pWVRRXRlQBBgUAA1NESFEfVEBYGh4OAQVYT0hQHl5CXxkeBAIPVkZSSBtWR1gbBhoAB1VPV1IBVENdGQMAHgNWQVFRGEpBVBkEAAUbVUJdUB9fXF4ZAQQLD01DVFweX0VAHAQPBgRTWlFUFFJBWgEGBQUCUUNIURpRQF0bHgIEAVFBUUgZXkdUHgoaBAdXQVRWAVdBWB8KBR4CUURRVB1KRV0aAgMAG1ROUlcdX1xYGwIOBgVNQlNXH15EQBgGBgEFVVpVVBVSQVoBAAQBD1NBSFAVV0ZZGB4EAQZWQlNIGVNGWRwAGgQFVkRWVQFSRF0cBAIeBlhPU10VSkJcFAACBhtVQVNQH1JcXh0DAAQBTUJXVBVRQUAfAQYFBFFaVVEUU0BaAQQCBQ9URkhWHFNDWxQeBAADUEdTSB9UQVQfAhoGBFJPUl0BVEBYHAAGHgNVTlRQGkpBXh8FDwobUE9VXBtQXFgbAQYBA01CXV0bVkRAHwAHBgFXWlFVHlZIWgEGAgMEUURIXBlSRVwBAAYHAlJFSFUZX0RUGR4DAQ9TRlNIHFNDWhUAGgMAU0FcVAFSRFkdCgEeAlZEUVwZSkReGgQFBRtURVZRH19cWBsHBAYATUJSVx1QR0AcBwICA1JaVlUZVEJZAQMBBQFQWlFVHlNEWQEGAgIOWEVIUBtQQFkfHgcEAVhOXUgfVUBcHQMaBQ9YR1JIFVNGXx4eAgAAV0RXSBRRQF8fHgIEDlBCVkgZXkJVGgEaBgRWQVdUAVdFXxwBBR4FUENQVR5KRFkcAA4GG1NCUFwYV1xYFQUABQFNR1NTFVdFQB8AAwUOV1pWVhpSRFgBBwMDBVNASFYdVkdeHR4EBgRVR1c=";
-const SKEY = "avdd-fpl-2627";
+const LEAGUE0 = {"name":"Snoep PL","league":57092,"gw":8,"updated":"2026-10-31T00:00","managers":["","","","","","","","","",""],"picks":{"489639":[0,5,6,8,9],"466075":[0,1,2,3,4,5,6,7,8],"465730":[0,1,2,3,4,7,8,9],"199798":[0,1,2,7],"469142":[0,4,6,7],"244851":[0,1,2,3,7,9],"244850":[0,1,2,3,4,5,7,8],"446008":[0,4,6,7],"60307":[0,3,5,6,7,8],"223094":[0,1,2,3,4,5,6,8],"216646":[0],"79602":[0,3],"475168":[0,1,2,3,4,5,6,7,8,9],"146426":[0,6],"577285":[0],"485055":[1,5,6],"184029":[1,4],"466052":[1,5,6,7,8,9],"201658":[1,2],"586309":[1,7],"67089":[1,2],"461102":[1],"106760":[1],"154561":[2,3,7,9],"477424":[2,8,9],"487838":[2,3,6,9],"177815":[2,6],"243413":[2],"513545":[2],"201666":[3],"577725":[3,5,9],"647850":[3,9],"226182":[3,5],"455084":[3],"472739":[4],"191866":[4],"513418":[4],"482616":[4],"517052":[4],"80201":[4],"173878":[4],"209036":[5,6],"222531":[5,9],"441264":[5],"231416":[5],"154043":[5],"56979":[6],"611695":[6],"451284":[7],"219168":[7],"444172":[7],"437499":[8],"17761":[8,9],"540324":[8],"473284":[8],"508395":[8],"247412":[8],"502500":[9],"223340":[9],"174874":[9]}};   // alleen voor de oefenronde; de echte hint komt van de server
 const TZ = "Europe/Amsterdam";
 const START = "2026-10-31";
 const COLORS = {ARS:"#e8303a",AVL:"#7a1f3d",BOU:"#d71920",BRE:"#e30613",BHA:"#0057b8",CHE:"#034694",COV:"#5bb8f0",CRY:"#1b458f",EVE:"#003399",FUL:"#e6e6e6",HUL:"#f5a12d",IPS:"#3a64a3",LEE:"#ffcd00",LIV:"#c8102e",MCI:"#6cabdd",MUN:"#da291c",NEW:"#cfcfcf",NFO:"#dd0000",TOT:"#e9ecf2",SUN:"#eb172b"};
 const POS = {1:"GK",2:"DEF",3:"MID",4:"FWD"};
 const POSNL = {1:"keeper",2:"verdediger",3:"middenvelder",4:"aanvaller"};
 const TOL = {price:10, own:8, pts:10, gw:3};
+const KEYS = ["team","pos","price","own","pts","gw"];
 
 /* ---------- utils ---------- */
 const $ = s => document.querySelector(s);
 const el = (tag, attrs={}, ...kids) => { const e=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==="class") e.className=v; else if(k==="text") e.textContent=v; else if(k.startsWith("on")) e.addEventListener(k.slice(2),v); else if(v!==false&&v!=null) e.setAttribute(k,v===true?"":v);} for(const k of kids.flat()){ if(k==null||k===false) continue; e.append(k.nodeType?k:document.createTextNode(String(k))); } return e; };
 const norm = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ø/g,"o").replace(/ß/g,"ss").toLowerCase();
-const ls = { get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
+const ls = { get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }, set(k,v){ try{ if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
 function dayStr(d=new Date()){ return new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(d); }
 const DAY = 864e5;
 const dms = ds => Date.parse(ds+"T00:00:00Z");
-const iso = t => new Date(t).toISOString().slice(0,10);
 const dayIndex = ds => Math.round((dms(ds)-dms(START))/DAY);
-const weekKey = ds => { const t=dms(ds); return iso(t-((new Date(t).getUTCDay()+6)%7)*DAY); };
-const prevDay = ds => iso(dms(ds)-DAY);
 const fmtPrice = c => "£"+(c/10).toFixed(1);
-function hash(s){ let h=2166136261; for(const c of s){ h^=c.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; }
-function rng(seed){ let a=seed>>>0; return ()=>{ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
-function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.remove("hide"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.add("hide"),1800); }
+const fmtOwn = o => (+o%1===0 ? (+o).toFixed(0) : (+o).toFixed(1))+"%";
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.remove("hide"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.add("hide"),2200); }
+const errText = e => String((e && e.message) || "Er ging iets mis");
 
-/* ---------- data ---------- */
-let DATA, P = {}, LIST = [], TEAM = {};
+/* ---------- data (zoeken en oefenronde) ---------- */
+let DATA, P = {}, LIST = [], TEAM = {}, LEAGUE = LEAGUE0;
 function useData(d){
   DATA = d; P = {}; TEAM = {};
   for(const [id,s,n] of d.teams) TEAM[id] = {s,n};
@@ -271,144 +275,129 @@ function useData(d){
   LIST.sort((a,b)=>b.own-a.own || b.pts-a.pts);
 }
 useData(DATA0);
-const LEAGUE0 = {"name":"Snoep PL","league":57092,"gw":8,"updated":"2026-10-31T00:00","managers":["","","","","","","","","",""],"picks":{"489639":[0,5,6,8,9],"466075":[0,1,2,3,4,5,6,7,8],"465730":[0,1,2,3,4,7,8,9],"199798":[0,1,2,7],"469142":[0,4,6,7],"244851":[0,1,2,3,7,9],"244850":[0,1,2,3,4,5,7,8],"446008":[0,4,6,7],"60307":[0,3,5,6,7,8],"223094":[0,1,2,3,4,5,6,8],"216646":[0],"79602":[0,3],"475168":[0,1,2,3,4,5,6,7,8,9],"146426":[0,6],"577285":[0],"485055":[1,5,6],"184029":[1,4],"466052":[1,5,6,7,8,9],"201658":[1,2],"586309":[1,7],"67089":[1,2],"461102":[1],"106760":[1],"154561":[2,3,7,9],"477424":[2,8,9],"487838":[2,3,6,9],"177815":[2,6],"243413":[2],"513545":[2],"201666":[3],"577725":[3,5,9],"647850":[3,9],"226182":[3,5],"455084":[3],"472739":[4],"191866":[4],"513418":[4],"482616":[4],"517052":[4],"80201":[4],"173878":[4],"209036":[5,6],"222531":[5,9],"441264":[5],"231416":[5],"154043":[5],"56979":[6],"611695":[6],"451284":[7],"219168":[7],"444172":[7],"437499":[8],"17761":[8,9],"540324":[8],"473284":[8],"508395":[8],"247412":[8],"502500":[9],"223340":[9],"174874":[9]}};
-let LEAGUE = LEAGUE0;
-const POOL = (()=>{ const b=atob(SCHED); let s=""; for(let i=0;i<b.length;i++) s+=String.fromCharCode(b.charCodeAt(i)^SKEY.charCodeAt(i%SKEY.length)); return s.split(",").map(Number); })();
-function orderFor(round){ if(round===0) return POOL; const a=POOL.slice(), r=rng(9001+round); for(let i=a.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function answerCode(ds){
-  // dag i krijgt plek i van de geschudde pool; is die speler uit de FPL-data verdwenen, dan een reserve van achteraan de lijst
-  const i=dayIndex(ds), n=POOL.length, ord=orderFor(Math.floor(i/n)), idx=((i%n)+n)%n;
-  if(P[ord[idx]]) return ord[idx];
-  let miss=0; for(let k=0;k<idx;k++) if(!P[ord[k]]) miss++;
-  let found=-1;
-  for(let k=n-1;k>idx;k--){ if(P[ord[k]]){ if(found<0 && miss===0) return ord[k]; if(miss>0){ miss--; } } }
-  for(let k=1;k<n;k++){ const c=ord[(idx+k)%n]; if(P[c]) return c; }
-  return LIST[0].code;
-}
+const teamS = id => (TEAM[id]||{s:"?"}).s, teamN = id => (TEAM[id]||{n:"?"}).n;
 
-/* ---------- game ---------- */
-function compare(g, a){
-  const num = (k) => { const d=a[k]-g[k]; if(Math.abs(d)<1e-9) return {cls:"exact"}; return {cls:Math.abs(d)<=TOL[k]+1e-9?"close":"miss", dir:d>0?"up":"down"}; };
-  return { team:{cls:g.team===a.team?"exact":"miss"}, pos:{cls:g.pos===a.pos?"exact":"miss"}, price:num("price"), own:num("own"), pts:num("pts"), gw:num("gw") };
+/* ---------- server (Supabase, alleen via functies) ---------- */
+const CFG = window.AVDD_CONFIG || {};
+const API = CFG.supabaseUrl && CFG.supabaseAnonKey ? CFG.supabaseUrl.replace(/\/+$/,"") + "/rest/v1/rpc/" : null;
+async function rpc(fn, args){
+  const r = await fetch(API + fn, {method:"POST", headers:{"Content-Type":"application/json", apikey:CFG.supabaseAnonKey, Authorization:"Bearer "+CFG.supabaseAnonKey}, body:JSON.stringify(args||{})});
+  const txt = await r.text(); let j = null; try{ j = txt ? JSON.parse(txt) : null; }catch(e){}
+  if(!r.ok) throw new Error((j && j.message) || ("Serverfout "+r.status));
+  return j;
 }
-const scoreFor = (n, hints, won) => won ? Math.max(0, 70-10*n-5*hints) : 0;
-const nHints = g => g.hints + (+g.sp||0);
-function newGame(code){ return {answer:code, guesses:[], hints:0, sp:0}; }
-function status(g){ const won = g.guesses.includes(g.answer); return {won, done: won || g.guesses.length>=6, n:g.guesses.length}; }
+const ID_KEY = "avdd:id";
+const auth = () => ({p_player:S.id.player, p_secret:S.id.secret});
+function fetchJSON(url){ return fetch(url+"?v="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null); }
 
 /* ---------- app state ---------- */
 const S = {
-  tab:"play", today: dayStr(), mode:"daily", daily:null, practice:null,
-  db:null, user:null, uid:null, canWrite:false, readOnlyNote:null,
-  me:null,           // {name, tag, results:{}}
-  players:[], boardLoaded:false, boardErr:null, board:"today",
-  q:"", hi:0, scope:"all", leagueInfo:{}, pendingJoin:null
+  tab:"play", today:dayStr(), mode:"daily",
+  id: ls.get(ID_KEY),        // {player, secret} op dit apparaat
+  srv:null,                  // spel van vandaag zoals de server het geeft
+  me:null, leagues:[],
+  practice:null,
+  loading:true, err:null, busy:false,
+  board:"today", scope:"all", rows:null, boardErr:null, boardLoading:false,
+  q:"", hi:0, pendingJoin:null
 };
-const game = () => S.mode==="practice" ? S.practice : S.daily;
-const localKey = () => "avdd:v1";
 
-function loadLocal(){
-  const L = ls.get(localKey()) || {};
-  if(!S.me && L.me) S.me = L.me;
-  const d = L.daily && L.daily.date===S.today ? L.daily : null;
-  S.daily = newGame(answerCode(S.today));
-  if(d) S.daily.guesses = d.g.filter(c=>P[c]).slice(0,6), S.daily.hints = d.h||0, S.daily.sp = +d.sp||0;
+/* ---------- vergelijken (oefenronde; de echte vergelijking doet de server) ---------- */
+function compare(g, a){
+  const num = k => { const d=a[k]-g[k]; if(Math.abs(d)<1e-9) return {c:"exact"}; return {c:Math.abs(d)<=TOL[k]+1e-9?"close":"miss", d:d>0?1:-1}; };
+  return {team:{c:g.team===a.team?"exact":"miss"}, pos:{c:g.pos===a.pos?"exact":"miss"}, price:num("price"), own:num("own"), pts:num("pts"), gw:num("gw")};
 }
-function saveLocal(){
-  const L = ls.get(localKey()) || {};
-  L.me = S.me; L.daily = {date:S.today, g:S.daily.guesses, h:S.daily.hints, sp:S.daily.sp};
-  ls.set(localKey(), L);
+const scoreFor = (n, hints, won) => won ? Math.max(0, 70-10*n-5*hints) : 0;
+
+// Eén weergave voor zowel het echte spel als de oefenronde
+function view(){
+  if(S.mode==="practice"){
+    const g = S.practice, a = P[g.answer];
+    const rows = g.guesses.map(c=>({...P[c], fb:compare(P[c], a)}));
+    const won = g.guesses.includes(g.answer), done = won || g.guesses.length>=6;
+    let hint = null;
+    if(g.hints>=1){ const n = LEAGUE ? (LEAGUE.picks[a.code]||[]).length : 0; hint = {yes:n>0, count: g.hints>=2 ? n : null}; }
+    return {rows, hints:g.hints, hint, done, won, points:scoreFor(rows.length, g.hints, won), answer: done ? a : null,
+            league: LEAGUE ? {name:LEAGUE.name, total:LEAGUE.managers.length, gw:LEAGUE.gw} : null, practice:true};
+  }
+  return S.srv;
 }
 
-/* ---------- backend (Supabase) ---------- */
-let writeQ = Promise.resolve(), SB = null;
-function rowPayload(){ return {id:S.uid, name:S.me.name, tag:S.me.tag, results:S.me.results||{}, leagues:S.me.leagues||[], cur:{date:S.today,g:S.daily.guesses,h:S.daily.hints,sp:S.daily.sp}, updated_at:new Date().toISOString()}; }
-function pushRow(){
-  if(!SB || !S.uid || !S.canWrite || !S.me) return;
-  writeQ = writeQ.then(async()=>{
-    let {error} = await SB.from("players").upsert(rowPayload());
-    if(error){ await new Promise(r=>setTimeout(r,1000)); ({error} = await SB.from("players").upsert(rowPayload())); }
-    if(error){ console.warn(error); toast("Opslaan mislukt, probeer het later nog eens"); }
-  }).catch(()=>{});
-  return writeQ;
-}
-function syncCurrent(){
-  const g=S.daily, st=status(g);
-  if(S.me && st.done){ S.me.results = S.me.results||{}; S.me.results[S.today] = {p:scoreFor(st.n,nHints(g),st.won), n:st.n, w:st.won, h:nHints(g)}; saveLocal(); }
-  const p = pushRow(); if(p && st.done) p.then(loadBoard);
-}
-async function loadBoard(){
-  if(!SB) return;
-  const {data, error} = await SB.from("players").select("id,name,tag,results,leagues").limit(1000);
-  if(error){ S.boardErr = "Het klassement kan nu niet worden geladen."; }
-  else { S.players = data||[]; S.boardLoaded = true; S.boardErr = null; }
-  if(S.tab==="board") render();
-}
-async function beGetLeague(code){ if(!SB) return null; const {data} = await SB.from("leagues").select("code,name").eq("code",code).maybeSingle(); return data||null; }
-async function beCreateLeague(code,name){ const {error} = await SB.from("leagues").insert({code, name}); if(error) throw error; }
-function beSaveMyLeagues(){ const p = pushRow(); if(p) p.then(loadBoard); }
-const INVITE_BASE = location.origin + location.pathname;
-function fetchJSON(url){ return fetch(url+"?v="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null); }
-
-async function initBackend(){
-  fetchJSON("data/players.json").then(d=>{ if(d && d.players && (d.updated>DATA.updated || d.gw>DATA.gw)){ useData(d); S.daily.answer = answerCode(S.today); render(); } });
-  fetchJSON("data/league.json").then(d=>{ if(d && d.picks && (!LEAGUE || d.gw>LEAGUE.gw || (d.gw===LEAGUE.gw && (d.updated||"")>(LEAGUE.updated||"")))){ LEAGUE=d; render(); } });
-  const C = window.AVDD_CONFIG || {};
-  if(!C.supabaseUrl || !C.supabaseAnonKey || !window.supabase){ S.boardErr = "Het klassement is nog niet gekoppeld. Je kunt wel gewoon spelen."; render(); if(!S.me) askName(); return; }
+/* ---------- opstarten ---------- */
+function applyGet(r){ S.srv = r; S.me = r.me; S.leagues = r.leagues || []; }
+async function refresh(){
+  if(!API || !S.id) return;
   try{
-    SB = window.supabase.createClient(C.supabaseUrl, C.supabaseAnonKey, {auth:{persistSession:true, autoRefreshToken:true}});
-    let { data:{session} } = await SB.auth.getSession();
-    if(!session){ const r = await SB.auth.signInAnonymously(); if(r.error) throw r.error; session = r.data.session; }
-    S.uid = session.user.id; S.canWrite = true; S.db = true;
-    const { data:row } = await SB.from("players").select("*").eq("id", S.uid).maybeSingle();
-    if(row){
-      S.me = {name:row.name, tag:row.tag, results:{...(S.me&&S.me.results||{}), ...(row.results||{})}, leagues:Array.isArray(row.leagues)?row.leagues.slice(0,20):[]};
-      const c = row.cur;
-      if(c && c.date===S.today && (c.g||[]).length >= S.daily.guesses.length){ S.daily.guesses = c.g.filter(x=>P[x]).slice(0,6); S.daily.hints = c.h||0; S.daily.sp = +c.sp||0; }
-      saveLocal();
-      if(S.daily.guesses.length && (!c || c.date!==S.today || (c.g||[]).length < S.daily.guesses.length)) syncCurrent();
-    } else if(S.me){ pushRow(); }
-    await loadBoard();
-    setInterval(()=>{ if(S.tab==="board" && !document.hidden) loadBoard(); }, 30000);
-  }catch(e){ console.warn(e); S.boardErr = "Verbinden met het klassement lukt nu niet. Je kunt wel gewoon spelen."; }
+    const r = await rpc("av_get", auth());
+    applyGet(r); S.err = null; S.today = dayStr();
+  }catch(e){
+    if(/Onbekende speler/.test(errText(e))){ ls.set(ID_KEY, null); S.id = null; S.me = null; S.srv = null; askName(); }
+    else S.err = "Geen verbinding met de server. Probeer het zo opnieuw, of speel intussen een oefenronde.";
+  }
+  S.loading = false; render();
+}
+async function boot(){
   render();
-  if(!S.me) askName(); else { loadLeagueNames(); handlePendingJoin(); }
+  fetchJSON("data/players.json").then(d=>{ if(d && d.players && (d.updated>DATA.updated || d.gw>DATA.gw)){ useData(d); render(); } });
+  fetchJSON("data/league.json").then(d=>{ if(d && d.picks && (!LEAGUE || d.gw>LEAGUE.gw || (d.gw===LEAGUE.gw && (d.updated||"")>(LEAGUE.updated||"")))){ LEAGUE=d; } });
+  const m = location.hash.match(/^#poule-([A-Za-z0-9]{6})$/); if(m) S.pendingJoin = m[1].toUpperCase();
+  if(!API){ S.loading=false; S.err="Het spel is nog niet gekoppeld aan de server. Je kunt wel een oefenronde spelen."; render(); return; }
+  if(!S.id){ S.loading=false; render(); askName(); return; }
+  await refresh();
+  handlePendingJoin();
 }
 
-/* ---------- profile ---------- */
-function tagFor(){ return String(1000 + hash(S.uid || (ls.get("avdd:lid") || (()=>{ const r=Math.random().toString(36).slice(2); ls.set("avdd:lid",r); return r; })())) % 9000); }
-function setName(name){
-  name = name.trim().slice(0,24); if(!name) return false;
-  const first = !S.me;
-  S.me = S.me || {results:{}};
-  S.me.name = name; S.me.tag = S.me.tag || tagFor();
-  saveLocal();
-  pushRow();
-  return true;
+/* ---------- profiel ---------- */
+async function createPlayer(name){
+  name = name.trim().slice(0,24); if(!name){ toast("Kies een naam"); return false; }
+  if(!API){ toast("Nog niet gekoppeld aan de server"); return false; }
+  try{
+    const r = await rpc("av_create_player", {p_name:name}); const row = Array.isArray(r) ? r[0] : r;
+    S.id = {player:row.player_id, secret:row.secret}; ls.set(ID_KEY, S.id);
+    await refresh(); return true;
+  }catch(e){ toast(errText(e)); return false; }
 }
+async function rename(name){
+  name = name.trim().slice(0,24); if(!name) return;
+  try{ await rpc("av_rename", {...auth(), p_name:name}); S.me.name = name; toast("Naam opgeslagen"); render(); }
+  catch(e){ toast(errText(e)); }
+}
+async function restore(code){
+  if(!API) return;
+  try{
+    const r = await rpc("av_restore", {p_recovery:code}); const row = Array.isArray(r) ? r[0] : r;
+    if(!row) throw new Error("Onbekende herstelcode");
+    S.id = {player:row.player_id, secret:row.secret}; ls.set(ID_KEY, S.id);
+    closeModal(); await refresh(); toast("Welkom terug, "+row.name+"!"); handlePendingJoin();
+  }catch(e){ toast(/herstelcode/i.test(errText(e)) ? "Deze herstelcode ken ik niet" : errText(e)); }
+}
+const fmtRec = r => String(r||"").replace(/(.{4})(?=.)/g,"$1-");
 function askName(){
-  const inp = el("input",{placeholder:"Bijv. Klopp's Kabouters", maxlength:24, value:(S.me&&S.me.name)||""});
-  const go = () => { if(setName(inp.value)){ closeModal(); render(); setTimeout(handlePendingJoin,300); } else inp.focus(); };
+  const inp = el("input",{placeholder:"Bijv. Klopp's Kabouters", maxlength:24});
+  const btn = el("button",{class:"btn"},"Start");
+  const go = async () => { btn.disabled = true; if(await createPlayer(inp.value)){ closeModal(); render(); handlePendingJoin(); } btn.disabled = false; };
+  btn.addEventListener("click", go);
   inp.addEventListener("keydown",e=>{ if(e.key==="Enter") go(); });
   openModal(el("div",{},
     el("h2",{text:"Kies je managernaam"}),
     el("p",{class:"note",style:"margin-bottom:14px",text:"Deze naam zie je terug in het klassement. Je kunt hem later aanpassen."}),
-    el("div",{class:"field"}, inp, el("button",{class:"btn",onclick:go},"Start")),
+    el("div",{class:"field"}, inp, btn),
+    el("p",{class:"note",style:"margin-top:10px"}, "Speelde je al eerder? ", el("button",{class:"linkbtn",onclick:askRestore},"Herstel je profiel met je herstelcode")),
     el("div",{style:"margin-top:18px"}, howTo())
   ), false);
   setTimeout(()=>inp.focus(),50);
 }
-
-/* ---------- stats ---------- */
-function streaks(results){
-  results = results||{};
-  let cur=0, d=S.today;
-  if(!(results[d]&&results[d].w)) d = prevDay(d);
-  while(results[d] && results[d].w){ cur++; d=prevDay(d); }
-  const days = Object.keys(results).sort(); let best=0, run=0, last=null;
-  for(const k of days){ if(results[k].w){ run = (last && prevDay(k)===last && results[last].w) ? run+1 : 1; best=Math.max(best,run); } else run=0; last=k; }
-  const played = days.length, won = days.filter(k=>results[k].w).length;
-  return {cur, best, played, won, pct: played?Math.round(100*won/played):0};
+function askRestore(){
+  const inp = el("input",{placeholder:"XXXX-XXXX-XXXX", maxlength:16, autocapitalize:"characters", style:"text-transform:uppercase"});
+  const go = () => restore(inp.value);
+  inp.addEventListener("keydown",e=>{ if(e.key==="Enter") go(); });
+  openModal(el("div",{},
+    el("h2",{text:"Profiel herstellen"}),
+    el("p",{class:"note",style:"margin-bottom:14px"},"Vul de herstelcode in die je op je vorige telefoon onder Profiel vond. Je punten, reeks en poules komen dan mee."),
+    el("div",{class:"field"}, inp, el("button",{class:"btn",onclick:go},"Herstel")),
+    el("div",{class:"row",style:"margin-top:14px"}, el("button",{class:"btn ghost",onclick:()=>{ closeModal(); if(!S.id) askName(); }},"Terug"))
+  ), false);
+  setTimeout(()=>inp.focus(),50);
 }
 
 /* ---------- modal ---------- */
@@ -430,16 +419,16 @@ function howTo(){
       el("li",{},el("b",{class:"chip",style:"background:var(--close)"},"Lichtblauw")," = dichtbij (±£1.0m, ±8% eigendom, ±10 ptn, ±3 GW-ptn)"),
       el("li",{},"Na je eerste gok kun je de Snoep PL-hint openen: zit de speler in een team van onze FPL-league (ja/nee)? Nog een keer tikken laat zien in hoeveel teams. Elke stap kost 5 punten."),
       el("li",{},"Score: 60 punten bij de eerste gok, 50, 40… tot 10 bij de zesde. Elke hintstap kost 5. Niet geraden = 0."),
-      el("li",{},"Het klassement telt per dag, per week (ma–zo) en per seizoen. Gelijk? Wie de langste huidige reeks 🔥 heeft, staat hoger."),
+      el("li",{},"Het klassement telt per dag, per week (ma–zo) en per seizoen. Wie een week de meeste punten haalt, wint een weekbeker 🏆; gelijk = allebei."),
       el("li",{},"Maak onder Klassement een poule en deel de code met je vrienden om onderling te vergelijken.")
     ),
-    el("p",{class:"note",style:"margin-top:8px"},"Het antwoord komt uit ~150 bekende assets en is nooit een herhaling. Nieuwe puzzel elke dag om 00:00 (Nederlandse tijd).")
+    el("p",{class:"note",style:"margin-top:8px"},"Het antwoord komt uit 240 bekende assets en is dit seizoen nooit een herhaling. Nieuwe puzzel elke dag om 00:00 (Nederlandse tijd).")
   );
 }
 
 /* ---------- render ---------- */
 function render(){
-  const dl = (DATA.deadlines || DATA0.deadlines || []).map(([gw,t])=>({gw, t:new Date(t)})).find(x=>x.t>new Date());
+  const dl = (DATA.deadlines || []).map(([gw,t])=>({gw, t:new Date(t)})).find(x=>x.t>new Date());
   const fmtDl = d => { const days=(d.t-new Date())/DAY; return d.t.toLocaleString("nl-NL",{timeZone:TZ,weekday:"short",hour:"2-digit",minute:"2-digit", ...(days>6?{day:"numeric",month:"short"}:{})}); };
   $("#sub").textContent = "Nr. "+(dayIndex(S.today)+1) + (dl ? " · GW"+dl.gw+"-deadline "+fmtDl(dl) : "");
   document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.tab===S.tab));
@@ -449,37 +438,30 @@ function render(){
   if(S.tab==="me") v.append(renderMe());
 }
 
-function tileFor(p, cmp, k){
-  const c = cmp[k], dirArrow = c.dir==="up"?"▲":c.dir==="down"?"▼":"";
-  let main;
-  if(k==="team"){ const s=TEAM[p.team].s; return el("div",{class:"tile "+c.cls}, el("span",{class:"club"},s), el("i",{class:"stripe",style:"background:"+(COLORS[s]||"#888")})); }
-  if(k==="pos") main = POS[p.pos];
-  if(k==="price") main = (p.price/10).toFixed(1);
-  if(k==="own") main = (p.own%1===0?p.own.toFixed(0):p.own.toFixed(1))+"%";
-  if(k==="pts") main = p.pts;
-  if(k==="gw") main = p.gw;
-  return el("div",{class:"tile "+c.cls}, el("span",{class:"num"},main), dirArrow && el("span",{class:"ar"},dirArrow));
+function tileFor(p, fb, k){
+  const c = fb[k], arrow = c.d>0 ? "▲" : c.d<0 ? "▼" : "";
+  if(k==="team"){ const s=teamS(p.team); return el("div",{class:"tile "+c.c}, el("span",{class:"club"},s), el("i",{class:"stripe",style:"background:"+(COLORS[s]||"#888")})); }
+  const main = k==="pos" ? POS[p.pos] : k==="price" ? (p.price/10).toFixed(1) : k==="own" ? fmtOwn(p.own) : p[k];
+  return el("div",{class:"tile "+c.c}, el("span",{class:"num"},main), arrow && el("span",{class:"ar"},arrow));
 }
 
-function knowledge(g){
-  const a = P[g.answer]; const out = [];
-  const guesses = g.guesses.map(c=>P[c]);
-  const teamHit = guesses.find(p=>p.team===a.team);
-  const notTeams = [...new Set(guesses.filter(p=>p.team!==a.team).map(p=>TEAM[p.team].s))];
-  out.push(["Club", teamHit ? TEAM[a.team].n : (notTeams.length ? "niet "+notTeams.join(", ") : "?")]);
-  const posHit = guesses.find(p=>p.pos===a.pos);
-  const notPos = [...new Set(guesses.filter(p=>p.pos!==a.pos).map(p=>POS[p.pos]))];
-  out.push(["Positie", posHit ? POS[a.pos] : (notPos.length ? "niet "+notPos.join(", ") : "?")]);
+// Wat je weet: afgeleid uit de gekleurde vakjes (zonder het antwoord te kennen)
+function knowledge(rows){
+  const out = [];
+  const tHit = rows.find(r=>r.fb.team.c==="exact");
+  const notT = [...new Set(rows.filter(r=>r.fb.team.c!=="exact").map(r=>teamS(r.team)))];
+  out.push(["Club", tHit ? teamN(tHit.team) : (notT.length ? "niet "+notT.join(", ") : "?")]);
+  const pHit = rows.find(r=>r.fb.pos.c==="exact");
+  const notP = [...new Set(rows.filter(r=>r.fb.pos.c!=="exact").map(r=>POS[r.pos]))];
+  out.push(["Positie", pHit ? POS[pHit.pos] : (notP.length ? "niet "+notP.join(", ") : "?")]);
   const range = (k, fmt) => {
-    let lo=-Infinity, hi=Infinity, loIn=false, hiIn=false, exact=null;
-    for(const p of guesses){ const d=a[k]-p[k];
-      if(Math.abs(d)<1e-9){ exact=p[k]; break; }
-      const close = Math.abs(d)<=TOL[k]+1e-9;
-      if(d>0){ if(p[k]>=lo){ lo=p[k]; loIn=false; } if(close && p[k]+TOL[k]<hi){ hi=p[k]+TOL[k]; hiIn=true; } }
-      else { if(p[k]<=hi){ hi=p[k]; hiIn=false; } if(close && p[k]-TOL[k]>lo){ lo=p[k]-TOL[k]; loIn=true; } }
-      if(!close){ if(d>0 && p[k]+TOL[k]>lo){ lo=p[k]+TOL[k]; loIn=false; } if(d<0 && p[k]-TOL[k]<hi){ hi=p[k]-TOL[k]; hiIn=false; } }
+    let lo=-Infinity, hi=Infinity, loIn=false, hiIn=false;
+    const setLo=(v,inc)=>{ if(v>lo || (v===lo && !inc)){ lo=v; loIn=inc; } }, setHi=(v,inc)=>{ if(v<hi || (v===hi && !inc)){ hi=v; hiIn=inc; } };
+    for(const r of rows){ const f=r.fb[k], v=+r[k], t=TOL[k];
+      if(f.c==="exact") return fmt(v);
+      if(f.d>0){ if(f.c==="close"){ setLo(v,false); setHi(v+t,true); } else setLo(v+t,false); }
+      else { if(f.c==="close"){ setHi(v,false); setLo(v-t,true); } else setHi(v-t,false); }
     }
-    if(exact!==null) return fmt(exact);
     if(lo===-Infinity && hi===Infinity) return "?";
     if(lo===-Infinity) return (hiIn?"≤ ":"< ")+fmt(hi);
     if(hi===Infinity) return (loIn?"≥ ":"> ")+fmt(lo);
@@ -492,99 +474,109 @@ function knowledge(g){
   return out;
 }
 
-
-function leagueText(a, level){
-  const L = LEAGUE; if(!L) return "";
-  const n = (L.picks[a.code]||[]).length, tail = " (teams van GW"+L.gw+")";
-  if(!n) return "Nee: hij zit in geen enkel team van "+L.name+tail+".";
-  if(level<2) return "Ja: hij zit in een team van "+L.name+tail+".";
-  return "Hij zit in "+n+" van de "+L.managers.length+" teams van "+L.name+tail+".";
+function leagueText(v){
+  const L = v.league || {}, nm = L.name || "Snoep PL", tail = L.gw ? " (teams van GW"+L.gw+")" : "";
+  if(!v.hint) return "";
+  if(!v.hint.yes) return "Nee: hij zit in geen enkel team van "+nm+tail+".";
+  if(v.hint.count==null) return "Ja: hij zit in een team van "+nm+tail+".";
+  return "Hij zit in "+v.hint.count+" van de "+(L.total||"?")+" teams van "+nm+tail+".";
 }
 
-function renderPlay(){
-  const g = game(), a = P[g.answer], st = status(g);
-  const box = el("div");
-  if(S.mode==="practice") box.append(el("div",{class:"banner"}, el("span",{},"Oefenronde, telt niet mee voor je reeks of het klassement."), el("button",{onclick:()=>{S.mode="daily";render();}},"Terug naar vandaag")));
-  else if(S.readOnlyNote) box.append(el("div",{class:"banner"}, el("span",{},S.readOnlyNote)));
-
-  if(!st.done){
-    const inp = el("input",{placeholder:"Zoek een speler…", autocomplete:"off", autocapitalize:"off", spellcheck:"false", value:S.q});
-    const sugg = el("div",{class:"sugg hide"});
-    const drawSugg = () => {
-      const q = norm(inp.value.trim()); S.q = inp.value; sugg.innerHTML="";
-      if(!q){ sugg.classList.add("hide"); return; }
-      const res = LIST.filter(p=>!g.guesses.includes(p.code) && (p.key.includes(q) || p.key.split(/[\s-]/).some(w=>w.startsWith(q)))).slice(0,8);
-      if(!res.length){ sugg.append(el("div",{class:"note",style:"padding:12px"},"Geen speler gevonden")); }
-      S.hi = Math.min(S.hi, Math.max(0,res.length-1));
-      res.forEach((p,i)=>sugg.append(el("button",{class:i===S.hi?"hi":"", onmousedown:e=>{e.preventDefault(); makeGuess(p.code);}},
-        el("span",{class:"nm"}, p.web, p.web!==p.full ? el("small",{},p.full) : null),
-        el("span",{class:"meta num"}, TEAM[p.team].s+" · "+POS[p.pos]+" · "+fmtPrice(p.price)))));
-      sugg.classList.remove("hide"); sugg._res = res;
-    };
-    inp.addEventListener("input",()=>{ S.hi=0; drawSugg(); });
-    inp.addEventListener("keydown",e=>{
-      const res = sugg._res||[];
-      if(e.key==="ArrowDown"){ S.hi=Math.min(res.length-1,S.hi+1); drawSugg(); e.preventDefault(); }
-      else if(e.key==="ArrowUp"){ S.hi=Math.max(0,S.hi-1); drawSugg(); e.preventDefault(); }
-      else if(e.key==="Enter" && res[S.hi]){ makeGuess(res[S.hi].code); }
-      else if(e.key==="Escape"){ sugg.classList.add("hide"); }
-    });
-    inp.addEventListener("blur",()=>setTimeout(()=>sugg.classList.add("hide"),120));
-    inp.addEventListener("focus",()=>{ if(inp.value) drawSugg(); });
-    box.append(el("div",{class:"searchbox"},
-      el("span",{html:""}), inp, sugg));
-    box.querySelector(".searchbox span").outerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-    if(S.q) setTimeout(drawSugg,0);
-  } else {
-    box.append(renderResult(g, st));
-  }
-
-  const pips = el("div",{class:"pips"}); for(let i=0;i<6;i++) pips.append(el("i",{class: i<st.n ? (st.won && i===st.n-1 ? "win":"used") : ""}));
-  const bd = el("div",{class:"board"}); box.append(bd);
-  bd.append(el("div",{class:"meter"}, el("span",{}, st.done ? (st.won?"Geraden in "+st.n+"/6":"Niet geraden") : "Poging "+(st.n+1)+" van 6"), pips));
-
-  bd.append(el("div",{class:"colhead"}, ["Club","Pos","Prijs","Eig.","Ptn","GW"+DATA.gw].map(t=>el("div",{},t))));
-  [...g.guesses].reverse().forEach(c=>{
-    const p = P[c]; const cmp = compare(p, a);
-    bd.append(el("div",{class:"guess"},
-      el("div",{class:"gname"}, p.web, el("span",{}, p.code===a.code ? "✓ raak" : "")),
-      el("div",{class:"tiles"}, ["team","pos","price","own","pts","gw"].map(k=>tileFor(p,cmp,k)))));
+function searchBox(v){
+  const inp = el("input",{placeholder:"Zoek een speler…", autocomplete:"off", autocapitalize:"off", spellcheck:"false", value:S.q, disabled:S.busy});
+  const sugg = el("div",{class:"sugg hide"});
+  const guessed = new Set(v.rows.map(r=>r.code));
+  const draw = () => {
+    const q = norm(inp.value.trim()); S.q = inp.value; sugg.innerHTML="";
+    if(!q){ sugg.classList.add("hide"); return; }
+    const res = LIST.filter(p=>!guessed.has(p.code) && (p.key.includes(q) || p.key.split(/[\s-]/).some(w=>w.startsWith(q)))).slice(0,8);
+    if(!res.length) sugg.append(el("div",{class:"note",style:"padding:12px"},"Geen speler gevonden"));
+    S.hi = Math.min(S.hi, Math.max(0,res.length-1));
+    res.forEach((p,i)=>sugg.append(el("button",{class:i===S.hi?"hi":"", onmousedown:e=>{e.preventDefault(); makeGuess(p.code);}},
+      el("span",{class:"nm"}, p.web, p.web!==p.full ? el("small",{},p.full) : null),
+      el("span",{class:"meta num"}, teamS(p.team)+" · "+POS[p.pos]+" · "+fmtPrice(p.price)))));
+    sugg.classList.remove("hide"); sugg._res = res;
+  };
+  inp.addEventListener("input",()=>{ S.hi=0; draw(); });
+  inp.addEventListener("keydown",e=>{
+    const res = sugg._res||[];
+    if(e.key==="ArrowDown"){ S.hi=Math.min(res.length-1,S.hi+1); draw(); e.preventDefault(); }
+    else if(e.key==="ArrowUp"){ S.hi=Math.max(0,S.hi-1); draw(); e.preventDefault(); }
+    else if(e.key==="Enter" && res[S.hi]) makeGuess(res[S.hi].code);
+    else if(e.key==="Escape") sugg.classList.add("hide");
   });
-  if(!st.done){ for(let i=st.n;i<6 && i<st.n+1;i++){ bd.append(el("div",{class:"guess empty"}, el("div",{class:"gname"}," "), el("div",{class:"tiles"}, [0,1,2,3,4,5].map(()=>el("div",{class:"tile"}))))); } }
-  bd.append(el("div",{class:"legend"}, el("span",{},el("b",{style:"background:var(--exact)"}),"Exact"), el("span",{},el("b",{style:"background:var(--close)"}),"Dichtbij"), el("span",{},el("b",{style:"background:var(--miss)"}),"Mis"), el("span",{},"▲▼ richting antwoord"), el("div",{style:"flex-basis:100%;text-align:center;margin-top:2px"},"Dichtbij = prijs ±£1.0m · eigendom ±8% · punten ±10 · GW ±3")));
-
-  if(!st.done){
-    const hints = el("div",{class:"hints",style:"grid-template-columns:1fr"});
-    const inN = LEAGUE ? (LEAGUE.picks[a.code]||[]).length : 0;
-    const spAvail = !!LEAGUE && st.n>=1 && (g.sp===0 || (g.sp===1 && inN>0));
-    let spBody;
-    if(!LEAGUE) spBody = "Nog niet beschikbaar: de Snoep PL-teams worden nog ingeladen.";
-    else if(st.n<1) spBody = "Komt vrij na je eerste gok";
-    else if(g.sp===0) spBody = "Zit deze speler in een team van Snoep PL? Tik om te openen";
-    else spBody = el("span",{}, leagueText(a, g.sp), g.sp===1 && inN>0 ? el("span",{style:"display:block;color:var(--mute);margin-top:4px"},"Tik nog een keer (−5) om te zien in hoeveel teams.") : null);
-    hints.append(el("button",{class:"hint wide"+(g.sp?" open":""), disabled: !spAvail, onclick:()=>{ if(spAvail){ g.sp++; persist(); render(); } }},
-      el("b",{}, "Snoep PL-hint"+(g.sp===0?" · −5":g.sp===1&&inN>0?" · nog een keer −5":"")),
-      spBody));
-    box.append(el("div",{class:"panel"}, el("h3",{},"Hint"), hints));
-    if(st.n){ const k = knowledge(g); box.append(el("div",{class:"panel"}, el("h3",{},"Wat je weet"), el("dl",{class:"know"}, k.flatMap(([t,v])=>[el("dt",{},t), el("dd",{class:"num"},v)])))); }
-  }
-  if(S.mode==="daily" && !st.done && !st.n) box.append(el("p",{class:"note",style:"text-align:center;margin-top:6px"}, "Liever eerst oefenen? ", el("button",{style:"text-decoration:underline;color:var(--link);font-weight:700",onclick:startPractice},"Speel een oefenronde")));
+  inp.addEventListener("blur",()=>setTimeout(()=>sugg.classList.add("hide"),120));
+  inp.addEventListener("focus",()=>{ if(inp.value) draw(); });
+  const box = el("div",{class:"searchbox"}, inp, sugg);
+  box.insertAdjacentHTML("afterbegin",'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>');
+  if(S.q) setTimeout(draw,0);
   return box;
 }
 
-function renderResult(g, st){
-  const a = P[g.answer], pts = scoreFor(st.n, nHints(g), st.won);
+function renderPlay(){
+  const box = el("div");
+  if(S.mode==="practice") box.append(el("div",{class:"banner"}, el("span",{},"Oefenronde, telt niet mee voor je reeks of het klassement."), el("button",{onclick:()=>{S.mode="daily";render();}},"Terug naar vandaag")));
+  const v = view();
+  if(!v){
+    if(S.err) box.append(el("div",{class:"banner"}, el("span",{},S.err), API && S.id ? el("button",{onclick:()=>{ S.loading=true; render(); refresh(); }},"Opnieuw") : null));
+    else box.append(el("div",{class:"panel",style:"text-align:center"}, el("p",{class:"note"}, S.loading ? "Puzzel laden…" : "Kies eerst een managernaam om te beginnen.")));
+    box.append(el("div",{class:"row",style:"margin-top:8px"}, el("button",{class:"btn ghost",onclick:startPractice},"Speel een oefenronde")));
+    return box;
+  }
+  if(S.err && !v.practice) box.append(el("div",{class:"banner"}, el("span",{},S.err)));
+  const n = v.rows.length;
+  if(!v.done) box.append(searchBox(v)); else box.append(renderResult(v));
+
+  const bd = el("div",{class:"board"}); box.append(bd);
+  const pips = el("div",{class:"pips"}); for(let i=0;i<6;i++) pips.append(el("i",{class: i<n ? (v.won && i===n-1 ? "win":"used") : ""}));
+  bd.append(el("div",{class:"meter"}, el("span",{}, v.done ? (v.won?"Geraden in "+n+"/6":"Niet geraden") : S.busy ? "Even checken…" : "Poging "+(n+1)+" van 6"), pips));
+  bd.append(el("div",{class:"colhead"}, ["Club","Pos","Prijs","Eig.","Ptn","GW"+DATA.gw].map(t=>el("div",{},t))));
+  [...v.rows].reverse().forEach(r=>{
+    const hit = KEYS.every(k=>r.fb[k].c==="exact");
+    bd.append(el("div",{class:"guess"},
+      el("div",{class:"gname"}, r.web, el("span",{}, hit ? "✓ raak" : "")),
+      el("div",{class:"tiles"}, KEYS.map(k=>tileFor(r,r.fb,k)))));
+  });
+  if(!v.done) bd.append(el("div",{class:"guess empty"}, el("div",{class:"gname"}," "), el("div",{class:"tiles"}, KEYS.map(()=>el("div",{class:"tile"})))));
+  bd.append(el("div",{class:"legend"}, el("span",{},el("b",{style:"background:var(--exact)"}),"Exact"), el("span",{},el("b",{style:"background:var(--close)"}),"Dichtbij"), el("span",{},el("b",{style:"background:var(--miss)"}),"Mis"), el("span",{},"▲▼ richting antwoord"),
+    el("div",{style:"flex-basis:100%;text-align:center;margin-top:2px"},"Dichtbij = prijs ±£1.0m · eigendom ±8% · punten ±10 · GW ±3")));
+
+  if(!v.done){
+    const hasL = !!(v.league && v.league.total);
+    const avail = hasL && n>=1 && !S.busy && (v.hints===0 || (v.hints===1 && v.hint && v.hint.yes));
+    let body;
+    if(!hasL) body = "Nog niet beschikbaar: de Snoep PL-teams worden nog ingeladen.";
+    else if(n<1) body = "Komt vrij na je eerste gok";
+    else if(v.hints===0) body = "Zit deze speler in een team van Snoep PL? Tik om te openen";
+    else body = el("span",{}, leagueText(v), v.hints===1 && v.hint && v.hint.yes ? el("span",{style:"display:block;color:var(--mute);margin-top:4px"},"Tik nog een keer (−5) om te zien in hoeveel teams.") : null);
+    const label = "Snoep PL-hint" + (v.hints===0 ? " · −5" : (v.hints===1 && v.hint && v.hint.yes) ? " · nog een keer −5" : "");
+    box.append(el("div",{class:"panel"}, el("h3",{},"Hint"),
+      el("div",{class:"hints",style:"grid-template-columns:1fr"},
+        el("button",{class:"hint wide"+(v.hints?" open":""), disabled:!avail, onclick:()=>{ if(avail) useHint(); }}, el("b",{},label), body))));
+    if(n) box.append(el("div",{class:"panel"}, el("h3",{},"Wat je weet"), el("dl",{class:"know"}, knowledge(v.rows).flatMap(([t,val])=>[el("dt",{},t), el("dd",{class:"num"},val)]))));
+  }
+  if(S.mode==="daily" && !v.done && !n) box.append(el("p",{class:"note",style:"text-align:center;margin-top:6px"}, "Liever eerst oefenen? ", el("button",{class:"linkbtn",onclick:startPractice},"Speel een oefenronde")));
+  return box;
+}
+
+function renderResult(v){
+  const a = v.answer, n = v.rows.length;
   const r = el("div",{class:"panel result"});
-  r.append(el("div",{class:"big num"}, String(pts), el("small",{}," ptn")));
-  r.append(el("div",{class:"ans"}, a.full));
-  r.append(el("div",{class:"sub"}, TEAM[a.team].n+" · "+POSNL[a.pos]+" · "+fmtPrice(a.price)+" · "+a.own+"% eigendom"));
-  if(S.mode==="daily"){
-    const s = streaks(S.me ? S.me.results : {[S.today]:{w:st.won}});
-    r.append(el("div",{class:"stats"}, [["Gespeeld",s.played],["Gewonnen",s.pct+"%"],["Reeks",s.cur],["Beste",s.best]].map(([t,v])=>el("div",{},el("b",{class:"num"},String(v)),el("span",{},t)))));
-    const share = el("button",{class:"btn",onclick:()=>copyShare(g,st)},"Kopieer resultaat");
-    r.append(el("div",{class:"row"}, share, el("button",{class:"btn ghost",onclick:()=>{S.tab="board";render();loadBoard();}},"Klassement"), el("button",{class:"btn ghost",onclick:startPractice},"Oefenronde")));
+  r.append(el("div",{class:"big num"}, String(v.points), el("small",{}," ptn")));
+  if(a){
+    const full = (P[a.code] && P[a.code].full) || a.web;
+    r.append(el("div",{class:"ans"}, full));
+    r.append(el("div",{class:"sub"}, teamN(a.team)+" · "+POSNL[a.pos]+" · "+fmtPrice(a.price)+" · "+fmtOwn(a.own)+" eigendom"));
+  }
+  if(!v.practice){
+    const s = v.stats || {played:0,won:0,streak:0,best:0};
+    const pct = s.played ? Math.round(100*s.won/s.played) : 0;
+    r.append(el("div",{class:"stats"}, [["Gespeeld",s.played],["Gewonnen",pct+"%"],["Reeks",s.streak],["Beste",s.best]].map(([t,val])=>el("div",{},el("b",{class:"num"},String(val)),el("span",{},t)))));
+    r.append(el("div",{class:"row"}, el("button",{class:"btn",onclick:()=>copyShare(v)},"Kopieer resultaat"),
+      el("button",{class:"btn ghost",onclick:()=>{S.tab="board";render();loadBoard();}},"Klassement"),
+      el("button",{class:"btn ghost",onclick:startPractice},"Oefenronde")));
     const cd = el("div",{class:"count num"}); r.append(cd);
-    const tick = () => { const now=new Date(); const parts=Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:TZ,hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(now).map(x=>[x.type,x.value])); let left = 86400-(+parts.hour*3600 + +parts.minute*60 + +parts.second); const h=Math.floor(left/3600), m=Math.floor(left%3600/60), sec=left%60; cd.textContent = "Nieuwe asset over "+h+":"+String(m).padStart(2,"0")+":"+String(sec).padStart(2,"0"); };
+    const tick = () => { const parts=Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:TZ,hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value])); const left = 86400-(+parts.hour*3600 + +parts.minute*60 + +parts.second); cd.textContent = "Nieuwe asset over "+Math.floor(left/3600)+":"+String(Math.floor(left%3600/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0"); };
     tick(); clearInterval(renderResult.t); renderResult.t = setInterval(()=>{ if(!document.body.contains(cd)) return clearInterval(renderResult.t); tick(); },1000);
   } else {
     r.append(el("div",{class:"row",style:"margin-top:16px"}, el("button",{class:"btn",onclick:startPractice},"Nog een oefenronde"), el("button",{class:"btn ghost",onclick:()=>{S.mode="daily";render();}},"Terug naar vandaag")));
@@ -592,140 +584,142 @@ function renderResult(g, st){
   return r;
 }
 
-function copyShare(g, st){
-  const a = P[g.answer];
-  const rows = g.guesses.map(c=>{ const cmp=compare(P[c],a); return ["team","pos","price","own","pts","gw"].map(k=>cmp[k].cls==="exact"?"🟩":cmp[k].cls==="close"?"🟦":"⬛").join(""); });
-  const txt = "Asset van de Dag #"+(dayIndex(S.today)+1)+" · "+(st.won?st.n:"X")+"/6"+(nHints(g)?" · "+nHints(g)+" hint"+(nHints(g)>1?"s":""):"")+" · "+scoreFor(st.n,nHints(g),st.won)+" ptn\n"+rows.join("\n");
-  const fallback = () => openModal(el("div",{}, el("h2",{text:"Kopieer je resultaat"}), el("textarea",{class:"copyarea",readonly:true}, txt)));
-  try{ navigator.clipboard.writeText(txt).then(()=>toast("Gekopieerd!"), fallback); }catch(e){ fallback(); }
-}
-
-function persist(){ if(S.mode!=="daily") return; saveLocal(); syncCurrent(); }
-function makeGuess(code){
-  const g = game(); if(status(g).done || g.guesses.includes(code)) return;
-  if(S.mode==="daily" && !S.me){ askName(); return; }
-  g.guesses.push(code); S.q=""; S.hi=0;
-  persist();
-  const st = status(g);
-  if(st.done) toast(st.won ? ["Topper!","Sterk!","Netjes!","Goed zo!","Op het nippertje!","Pfoe, net!"][st.n-1] : "Helaas: het was "+P[g.answer].web);
-  render();
-  if(!st.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
-}
-function startPractice(){
-  const today = S.daily.answer; let c;
-  do { c = POOL[Math.floor(Math.random()*POOL.length)]; } while((c===today || !P[c]) && POOL.length>1);
-  S.practice = newGame(c); S.mode = "practice"; S.tab="play"; S.q=""; render();
-}
-
-/* ---------- poules ---------- */
-const CODECH = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-const cleanCode = c => String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,6);
-function newCode(){ const a=new Uint32Array(6); crypto.getRandomValues(a); let c=""; for(const x of a) c+=CODECH[x%CODECH.length]; return c; }
-const canLeague = () => !!(S.db && S.uid && S.canWrite && S.me);
-const leagueName = code => (S.leagueInfo[code]||{}).name || ("Poule "+code);
-async function createLeague(name){
-  name = name.trim().slice(0,30);
-  if(!name){ toast("Geef je poule een naam"); return; }
-  if(!canLeague()){ toast("Poules werken pas als het klassement gekoppeld is"); return; }
-  if((S.me.leagues||[]).length>=20){ toast("Je zit al in 20 poules"); return; }
-  try{
-    let code=null; for(let i=0;i<6 && !code;i++){ const c=newCode(); if(!(await beGetLeague(c))) code=c; }
-    if(!code) throw new Error("geen vrije code");
-    await beCreateLeague(code, name);
-    addMyLeague(code, name); toast("Poule aangemaakt!"); showInvite(code);
-  }catch(e){ console.warn(e); toast("Aanmaken mislukt, probeer het nog eens"); }
-}
-async function joinLeague(raw){
-  const code = cleanCode(raw);
-  if(code.length!==6){ toast("Een poulecode heeft 6 tekens"); return; }
-  if(!canLeague()){ toast("Poules werken pas als het klassement gekoppeld is"); return; }
-  if((S.me.leagues||[]).includes(code)){ S.scope=code; S.tab="board"; render(); return; }
-  const L = await beGetLeague(code);
-  if(!L){ toast("Poule "+code+" niet gevonden"); return; }
-  addMyLeague(code, String(L.name||"").slice(0,30)); toast("Je zit nu in "+leagueName(code));
-}
-function addMyLeague(code, name){
-  S.me.leagues = [...new Set([...(S.me.leagues||[]), code])];
-  S.leagueInfo[code] = {name}; S.scope = code; S.tab = "board";
-  saveLocal(); beSaveMyLeagues(); render();
-}
-function leaveLeague(code){
-  openModal(el("div",{}, el("h2",{text:"Poule verlaten?"}),
-    el("p",{class:"note",style:"margin-bottom:14px"},"Je verdwijnt uit de stand van "+leagueName(code)+". Je punten blijven bewaard en met de code kun je altijd terugkomen."),
-    el("div",{class:"row"}, el("button",{class:"btn",onclick:()=>{ S.me.leagues=(S.me.leagues||[]).filter(c=>c!==code); S.scope="all"; saveLocal(); beSaveMyLeagues(); closeModal(); render(); toast("Poule verlaten"); }},"Verlaten"), el("button",{class:"btn ghost",onclick:closeModal},"Blijven"))), false);
-}
-async function loadLeagueNames(){
-  const need = ((S.me&&S.me.leagues)||[]).filter(c=>!S.leagueInfo[c]);
-  for(const c of need){ const L = await beGetLeague(c); S.leagueInfo[c] = {name: L ? String(L.name||"").slice(0,30) : "Poule "+c}; }
-  if(need.length) render();
-}
-function inviteText(code){
-  let t = "Doe mee met mijn poule \u201c"+leagueName(code)+"\u201d in Asset van de Dag, de dagelijkse FPL-puzzel! Poulecode: "+code;
-  t += INVITE_BASE ? "\n"+INVITE_BASE+"#poule-"+code : "\nOpen het spel, ga naar Klassement en vul de code in bij \u2018Doe mee met een poule\u2019.";
-  return t;
+function copyShare(v){
+  const n = v.rows.length;
+  const rows = v.rows.map(r=>KEYS.map(k=>r.fb[k].c==="exact"?"🟩":r.fb[k].c==="close"?"🟦":"⬛").join(""));
+  const txt = "Asset van de Dag #"+(dayIndex(S.today)+1)+" · "+(v.won?n:"X")+"/6"+(v.hints?" · "+v.hints+" hint"+(v.hints>1?"s":""):"")+" · "+v.points+" ptn\n"+rows.join("\n")+"\n"+location.origin+location.pathname;
+  copyText(txt);
 }
 function copyText(txt){
   const fallback = () => openModal(el("div",{}, el("h2",{text:"Kopieer de tekst"}), el("textarea",{class:"copyarea",readonly:true}, txt)));
   try{ navigator.clipboard.writeText(txt).then(()=>toast("Gekopieerd!"), fallback); }catch(e){ fallback(); }
 }
+
+const CHEERS = ["Topper!","Sterk!","Netjes!","Goed zo!","Op het nippertje!","Pfoe, net!"];
+async function makeGuess(code){
+  if(S.busy) return;
+  if(S.mode==="practice"){
+    const g = S.practice; if(g.guesses.includes(code) || view().done) return;
+    g.guesses.push(code); S.q=""; S.hi=0;
+    const v = view(); if(v.done) toast(v.won ? CHEERS[v.rows.length-1] : "Helaas: het was "+P[g.answer].web);
+    render(); if(!v.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
+    return;
+  }
+  if(!S.id){ askName(); return; }
+  if(!S.srv || S.srv.done) return;
+  S.busy = true; S.q = ""; S.hi = 0; render();
+  try{
+    if(dayStr()!==S.today){ await refresh(); toast("Er is een nieuwe puzzel!"); return; }
+    const r = await rpc("av_guess", {...auth(), p_code:code});
+    S.srv = {...S.srv, ...r}; S.err = null;
+    if(r.done){ toast(r.won ? CHEERS[r.rows.length-1] : "Helaas: het was "+r.answer.web); loadBoard(); }
+  }catch(e){ toast("Je gok kwam niet aan. Check je verbinding en probeer opnieuw."); }
+  S.busy = false; render();
+  if(S.srv && !S.srv.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
+}
+async function useHint(){
+  if(S.mode==="practice"){ S.practice.hints++; render(); return; }
+  S.busy = true; render();
+  try{ const r = await rpc("av_hint", auth()); S.srv = {...S.srv, ...r}; }
+  catch(e){ toast("De hint kwam niet aan. Probeer het opnieuw."); }
+  S.busy = false; render();
+}
+function startPractice(){
+  const pool = LIST.slice(0,240), today = S.srv && S.srv.answer ? S.srv.answer.code : null;
+  let c; do { c = pool[Math.floor(Math.random()*pool.length)].code; } while(c===today);
+  S.practice = {answer:c, guesses:[], hints:0}; S.mode = "practice"; S.tab="play"; S.q=""; render();
+}
+
+/* ---------- poules ---------- */
+const leagueName = code => ((S.leagues.find(l=>l.code===code))||{}).name || ("Poule "+code);
+const INVITE_BASE = location.origin + location.pathname;
+async function createLeague(name){
+  name = name.trim().slice(0,30);
+  if(!name){ toast("Geef je poule een naam"); return; }
+  if(!S.id){ askName(); return; }
+  try{ const code = await rpc("av_create_league", {...auth(), p_name:name}); await refresh(); S.scope = code; S.tab = "board"; render(); loadBoard(); showInvite(code); }
+  catch(e){ toast(errText(e)); }
+}
+async function joinLeague(raw){
+  const code = String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+  if(code.length!==6){ toast("Een poulecode heeft 6 tekens"); return; }
+  if(!S.id){ askName(); return; }
+  try{ const name = await rpc("av_join_league", {...auth(), p_code:code}); await refresh(); S.scope = code; S.tab = "board"; render(); loadBoard(); toast("Je zit nu in "+name); }
+  catch(e){ toast(errText(e)); }
+}
+function leaveLeague(code){
+  openModal(el("div",{}, el("h2",{text:"Poule verlaten?"}),
+    el("p",{class:"note",style:"margin-bottom:14px"},"Je verdwijnt uit de stand van "+leagueName(code)+". Je punten blijven bewaard en met de code kun je altijd terugkomen."),
+    el("div",{class:"row"}, el("button",{class:"btn",onclick:async()=>{ closeModal(); try{ await rpc("av_leave_league", {...auth(), p_code:code}); await refresh(); S.scope="all"; render(); loadBoard(); toast("Poule verlaten"); }catch(e){ toast(errText(e)); } }},"Verlaten"),
+      el("button",{class:"btn ghost",onclick:closeModal},"Blijven"))), false);
+}
+function inviteText(code){ return "Doe mee met mijn poule “"+leagueName(code)+"” in Asset van de Dag, de dagelijkse FPL-puzzel! Poulecode: "+code+"\n"+INVITE_BASE+"#poule-"+code; }
 function showInvite(code){
   openModal(el("div",{}, el("h2",{text:"Nodig je vrienden uit"}),
-    el("p",{class:"note",style:"margin-bottom:12px"},"Stuur deze code naar je vrienden. Zodra ze meedoen, zien jullie samen de stand van "+leagueName(code)+"."),
+    el("p",{class:"note",style:"margin-bottom:12px"},"Stuur de link of de code naar je vrienden. Zodra ze meedoen, zien jullie samen de stand van "+leagueName(code)+"."),
     el("div",{class:"bigcode num"}, code),
     el("div",{class:"row",style:"margin-top:14px"}, el("button",{class:"btn",onclick:()=>copyText(inviteText(code))},"Kopieer uitnodiging"))));
 }
-function handlePendingJoin(){
-  if(!S.pendingJoin || !S.me || !canLeague()) return;
+async function handlePendingJoin(){
+  if(!S.pendingJoin || !S.id || !S.me) return;
   const code = S.pendingJoin; S.pendingJoin = null;
   try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
-  if((S.me.leagues||[]).includes(code)){ S.scope=code; S.tab="board"; render(); return; }
-  beGetLeague(code).then(L=>{
-    if(!L){ toast("Poule "+code+" niet gevonden"); return; }
-    const nm = String(L.name||"").slice(0,30);
-    openModal(el("div",{}, el("h2",{text:"Je bent uitgenodigd!"}),
-      el("p",{class:"note",style:"margin-bottom:14px"},"Doe mee met poule \u201c"+nm+"\u201d en vergelijk elke dag je score met je vrienden."),
-      el("div",{class:"row"}, el("button",{class:"btn",onclick:()=>{ closeModal(); addMyLeague(code,nm); toast("Je zit nu in "+nm); }},"Doe mee"), el("button",{class:"btn ghost",onclick:closeModal},"Nee, bedankt"))), false);
-  });
+  if(S.leagues.some(l=>l.code===code)){ S.scope=code; S.tab="board"; render(); loadBoard(); return; }
+  let name = null; try{ name = await rpc("av_league_name", {p_code:code}); }catch(e){}
+  if(!name){ toast("Poule "+code+" niet gevonden"); return; }
+  openModal(el("div",{}, el("h2",{text:"Je bent uitgenodigd!"}),
+    el("p",{class:"note",style:"margin-bottom:14px"},"Doe mee met poule “"+name+"” en vergelijk elke dag je score met je vrienden."),
+    el("div",{class:"row"}, el("button",{class:"btn",onclick:()=>{ closeModal(); joinLeague(code); }},"Doe mee"), el("button",{class:"btn ghost",onclick:closeModal},"Nee, bedankt"))), false);
 }
-function readHashJoin(){ const m = location.hash.match(/^#poule-([A-Za-z0-9]{6})$/); if(m){ S.pendingJoin = cleanCode(m[1]); handlePendingJoin(); } }
 
-/* ---------- leaderboard ---------- */
-function boardRows(){
-  const wk = weekKey(S.today);
-  const rows = S.players.filter(p=>p && p.name && (S.scope==="all" || (Array.isArray(p.leagues) && p.leagues.includes(S.scope)))).map(p=>{
-    const res = p.results || {}; let pts=0, played=0, todayStr="";
-    for(const [d,r] of Object.entries(res)){
-      const inP = S.board==="today" ? d===S.today : S.board==="week" ? weekKey(d)===wk && d<=S.today : true;
-      if(inP){ pts += +r.p||0; played++; }
-    }
-    const t = res[S.today]; if(t) todayStr = t.w ? t.n+"/6" : "X/6";
-    return {id:p.id, name:String(p.name).slice(0,24), tag:p.tag, pts, played, streak:streaks(res).cur, todayStr};
-  }).filter(r=>r.played>0);
-  rows.sort((a,b)=>b.pts-a.pts || b.streak-a.streak || a.name.localeCompare(b.name));
-  let pos=0; rows.forEach((r,i)=>{ if(i===0 || r.pts!==rows[i-1].pts || r.streak!==rows[i-1].streak) pos=i+1; r.pos=pos; });
-  return rows;
+/* ---------- klassement ---------- */
+async function loadBoard(){
+  if(!API || !S.id) return;
+  const scope = S.scope;
+  S.boardLoading = true;
+  try{
+    const r = await rpc("av_board", {...auth(), p_scope: scope==="all" ? "ALL" : scope});
+    if(scope===S.scope){ S.rows = r || []; S.boardErr = null; }
+  }catch(e){ if(/niet in deze poule/.test(errText(e))){ S.scope="all"; } S.boardErr = "Het klassement kan nu niet worden geladen."; }
+  S.boardLoading = false;
+  if(S.tab==="board") render();
 }
 function renderBoard(){
   const box = el("div");
-  const mine = (S.me && S.me.leagues) || [];
-  if(S.scope!=="all" && !mine.includes(S.scope)) S.scope = "all";
+  if(S.scope!=="all" && !S.leagues.some(l=>l.code===S.scope)) S.scope = "all";
+  const pick = s => { if(S.scope!==s){ S.scope=s; S.rows=null; render(); loadBoard(); } };
   box.append(el("div",{class:"chips"},
-    el("button",{class:S.scope==="all"?"on":"", onclick:()=>{S.scope="all"; render();}},"Iedereen"),
-    mine.map(c=>el("button",{class:S.scope===c?"on":"", onclick:()=>{S.scope=c; render();}}, leagueName(c)))));
-  const seg = el("div",{class:"seg"}, [["today","Vandaag"],["week","Deze week"],["season","Seizoen"]].map(([k,t])=>el("button",{class:S.board===k?"on":"",onclick:()=>{S.board=k;render();}},t)));
-  box.append(el("div",{style:"text-align:center"},seg));
+    el("button",{class:S.scope==="all"?"on":"", onclick:()=>pick("all")},"Iedereen"),
+    S.leagues.map(l=>el("button",{class:S.scope===l.code?"on":"", onclick:()=>pick(l.code)}, l.name))));
+  box.append(el("div",{style:"text-align:center"}, el("div",{class:"seg"}, [["today","Vandaag"],["week","Deze week"],["season","Seizoen"]].map(([k,t])=>el("button",{class:S.board===k?"on":"",onclick:()=>{S.board=k;render();}},t)))));
   const panel = el("div",{class:"panel",style:"padding:6px 8px"});
-  if(!S.db){ panel.append(el("p",{class:"note",style:"padding:10px"}, S.boardErr || "Klassement laden…")); box.append(panel); return box; }
-  if(!S.boardLoaded && !S.players.length){ panel.append(el("p",{class:"note",style:"padding:10px"}, S.boardErr || "Klassement laden…")); box.append(panel); return box; }
-  const rows = boardRows();
-  const myDone = status(S.daily).done;
-  if(!rows.length){ panel.append(el("p",{class:"note",style:"padding:12px"}, S.board==="today" ? "Nog niemand heeft vandaag gespeeld. Wees de eerste!" : "Nog geen scores in deze periode.")); }
+  if(!API || !S.id){ panel.append(el("p",{class:"note",style:"padding:10px"}, !API ? "Het klassement is nog niet gekoppeld." : "Kies eerst een managernaam.")); box.append(panel); return box; }
+  if(!S.rows){ panel.append(el("p",{class:"note",style:"padding:10px"}, S.boardErr || "Klassement laden…")); box.append(panel); if(!S.boardLoading) loadBoard(); return box; }
+
+  // weekwinnaar van vorige week
+  const lw = Math.max(0, ...S.rows.map(r=>r.last_week_points||0));
+  if(lw>0){
+    const winners = S.rows.filter(r=>r.last_week_points===lw).map(r=>r.name);
+    box.insertBefore(el("div",{class:"winner"}, el("span",{class:"cup"},"🏆"), el("div",{}, el("b",{},"Weekwinnaar vorige week"), el("span",{}, winners.join(" & ")+" · "+lw+" ptn"))), box.children[1]);
+  }
+  const key = S.board==="today" ? "today_points" : S.board==="week" ? "week_points" : "season_points";
+  const myDone = !!(S.srv && S.srv.done);
+  let rows = S.rows.slice();
+  if(S.board==="today") rows = rows.filter(r=>r.today_played || r.is_me);
+  rows.sort((a,b)=>(b[key]??-1)-(a[key]??-1) || b.streak-a.streak || String(a.name).localeCompare(String(b.name)));
+  let pos=0; rows.forEach((r,i)=>{ if(i===0 || (r[key]??-1)!==(rows[i-1][key]??-1) || r.streak!==rows[i-1].streak) pos=i+1; r.pos=pos; });
+  if(!rows.length){ panel.append(el("p",{class:"note",style:"padding:12px"}, S.board==="today" ? "Nog niemand heeft vandaag gespeeld. Wees de eerste!" : "Nog geen scores.")); }
   else {
-    const t = el("table",{}, el("thead",{}, el("tr",{}, el("th",{},"#"), el("th",{},"Manager"), S.board==="today"?el("th",{class:"r"},"Gok"):el("th",{class:"r"},"Dagen"), el("th",{class:"r"},"Ptn"))));
+    const t = el("table",{}, el("thead",{}, el("tr",{}, el("th",{},"#"), el("th",{},"Manager"), S.board==="today"?el("th",{class:"r"},"Gok"):null, el("th",{class:"r"},"Ptn"))));
     const tb = el("tbody");
     rows.forEach(r=>{
-      const nameCell = el("td",{}, el("span",{},r.name), el("span",{class:"tag"},"#"+(r.tag||"")), r.streak>=2 ? el("span",{class:"fire"},"🔥"+r.streak) : null);
-      tb.append(el("tr",{class:r.id===S.uid?"me":""}, el("td",{class:"pos num"},String(r.pos)), nameCell, el("td",{class:"r num",style:"color:var(--mute)"}, S.board==="today"?r.todayStr:String(r.played)), el("td",{class:"r pts num"},String(r.pts))));
+      const val = r[key], medal = val>0 && r.pos<=3 ? ["🥇","🥈","🥉"][r.pos-1] : null;
+      const nameCell = el("td",{}, el("span",{},String(r.name)), el("span",{class:"tag"},"#"+(r.tag||"")),
+        r.cups>0 ? el("span",{class:"cups",title:r.cups+" keer weekwinnaar"},"🏆"+(r.cups>1?r.cups:"")) : null,
+        r.streak>=2 ? el("span",{class:"fire"},"🔥"+r.streak) : null);
+      const gok = S.board==="today" ? el("td",{class:"r num",style:"color:var(--mute)"}, r.today_n!=null ? (r.today_won ? r.today_n+"/6" : "X/6") : (r.today_played ? "✓" : "–")) : null;
+      tb.append(el("tr",{class:r.is_me?"me":""}, el("td",{class:"pos num"+(medal?" medal":"")}, medal || String(r.pos)), nameCell, gok,
+        el("td",{class:"r pts num"}, val==null ? (S.board==="today" && !r.today_played ? "–" : "?") : String(val))));
     });
     t.append(tb); panel.append(t);
   }
@@ -733,55 +727,61 @@ function renderBoard(){
   if(S.scope!=="all") box.append(el("div",{class:"panel leaguebar"},
     el("div",{}, el("div",{class:"lbl2"},"Poulecode"), el("div",{class:"code num"},S.scope)),
     el("div",{class:"row",style:"justify-content:flex-end"}, el("button",{class:"btn",onclick:()=>showInvite(S.scope)},"Nodig uit"), el("button",{class:"btn ghost",onclick:()=>leaveLeague(S.scope)},"Verlaat"))));
-  if(S.board==="today" && !myDone) box.append(el("p",{class:"note",style:"text-align:center"},"Speel de puzzel van vandaag om jezelf in de lijst te zien."));
-  box.append(el("p",{class:"note",style:"text-align:center;margin-top:8px"},"Week = maandag t/m zondag. Gelijke stand? De langste huidige reeks 🔥 wint; anders deel je de plek."));
-  if(S.readOnlyNote) box.append(el("div",{class:"banner",style:"margin-top:12px"}, el("span",{},S.readOnlyNote)));
-  // poules beheren
+  if(S.board==="today" && !myDone) box.append(el("p",{class:"note",style:"text-align:center"},"De uitslagen van vandaag zie je zodra je zelf klaar bent."));
+  box.append(el("p",{class:"note",style:"text-align:center;margin-top:8px"},"Week = maandag t/m zondag. Wie een week de meeste punten haalt, wint een weekbeker 🏆; gelijk = allebei. Gelijke stand? De langste reeks 🔥 staat hoger."));
+
   const nameIn = el("input",{placeholder:"Naam, bijv. Snoep PL", maxlength:30});
-  const codeIn = el("input",{placeholder:"Code, bijv. K7P2QX", maxlength:6, autocapitalize:"characters", style:"text-transform:uppercase"});
+  const codeIn = el("input",{placeholder:"Code, bijv. K7P2QX", maxlength:6, autocapitalize:"characters"});
   const mk = () => createLeague(nameIn.value), jn = () => joinLeague(codeIn.value);
   nameIn.addEventListener("keydown",e=>{ if(e.key==="Enter") mk(); });
   codeIn.addEventListener("keydown",e=>{ if(e.key==="Enter") jn(); });
-  const ok = canLeague();
   box.append(el("div",{class:"panel",style:"margin-top:14px"}, el("h3",{},"Poules"),
-    el("p",{class:"note",style:"margin-bottom:12px"}, ok ? "Maak een poule en deel de code met je vrienden. Dan zien jullie de onderlinge stand per dag, week en seizoen." : "Poules werken zodra het klassement gekoppeld is"+(S.me?"":" en je een managernaam hebt gekozen")+"."),
+    el("p",{class:"note",style:"margin-bottom:12px"},"Maak een poule en deel de code met je vrienden. Dan zien jullie de onderlinge stand per dag, week en seizoen, met weekbekers."),
     el("div",{class:"lbl2"},"Nieuwe poule"),
-    el("div",{class:"field",style:"margin-bottom:12px"}, nameIn, el("button",{class:"btn",disabled:!ok,onclick:mk},"Maak aan")),
+    el("div",{class:"field",style:"margin-bottom:12px"}, nameIn, el("button",{class:"btn",onclick:mk},"Maak aan")),
     el("div",{class:"lbl2"},"Doe mee met een poule"),
-    el("div",{class:"field"}, codeIn, el("button",{class:"btn ghost",disabled:!ok,onclick:jn},"Doe mee"))));
+    el("div",{class:"field"}, codeIn, el("button",{class:"btn ghost",onclick:jn},"Doe mee"))));
   return box;
 }
 
-/* ---------- profile ---------- */
+/* ---------- profiel-tab ---------- */
 function renderMe(){
   const box = el("div");
-  const s = streaks(S.me && S.me.results);
+  const s = (S.srv && S.srv.stats) || {played:0,won:0,streak:0,best:0};
+  const pct = s.played ? Math.round(100*s.won/s.played) : 0;
   box.append(el("div",{class:"panel"}, el("h3",{},"Jouw statistieken"),
-    el("div",{class:"stats",style:"margin:0"}, [["Gespeeld",s.played],["Gewonnen",s.pct+"%"],["Reeks",s.cur],["Beste",s.best]].map(([t,v])=>el("div",{style:"text-align:center"},el("b",{class:"num"},String(v)),el("span",{},t))))));
-  const inp = el("input",{value:(S.me&&S.me.name)||"", maxlength:24, placeholder:"Managernaam"});
-  const save = () => { if(setName(inp.value)){ toast("Naam opgeslagen"); render(); } };
-  inp.addEventListener("keydown",e=>{ if(e.key==="Enter") save(); });
-  box.append(el("div",{class:"panel"}, el("h3",{},"Managernaam"), el("div",{class:"field"}, inp, el("button",{class:"btn",onclick:save},"Opslaan")),
-    S.me ? el("p",{class:"note",style:"margin-top:8px"},"Je nummer #"+S.me.tag+" blijft hetzelfde.") : null));
+    el("div",{class:"stats",style:"margin:0"}, [["Gespeeld",s.played],["Gewonnen",pct+"%"],["Reeks",s.streak],["Beste",s.best]].map(([t,val])=>el("div",{style:"text-align:center"},el("b",{class:"num"},String(val)),el("span",{},t))))));
+  if(S.me){
+    const inp = el("input",{value:S.me.name||"", maxlength:24, placeholder:"Managernaam"});
+    const save = () => rename(inp.value);
+    inp.addEventListener("keydown",e=>{ if(e.key==="Enter") save(); });
+    box.append(el("div",{class:"panel"}, el("h3",{},"Managernaam"), el("div",{class:"field"}, inp, el("button",{class:"btn",onclick:save},"Opslaan")),
+      el("p",{class:"note",style:"margin-top:8px"},"Je nummer #"+S.me.tag+" blijft hetzelfde.")));
+    box.append(el("div",{class:"panel"}, el("h3",{},"Herstelcode"),
+      el("p",{class:"note",style:"margin-bottom:10px"},"Nieuwe telefoon of browser? Met deze code haal je je profiel, punten en poules terug. Bewaar hem goed, bijvoorbeeld in je notities, en deel hem met niemand."),
+      el("div",{class:"bigcode num",style:"font-size:24px"}, fmtRec(S.me.recovery)),
+      el("div",{class:"row",style:"margin-top:12px"}, el("button",{class:"btn",onclick:()=>copyText("Mijn herstelcode voor Asset van de Dag: "+fmtRec(S.me.recovery))},"Kopieer herstelcode"))));
+  } else if(API){
+    box.append(el("div",{class:"panel"}, el("h3",{},"Profiel"), el("div",{class:"row"}, el("button",{class:"btn",onclick:askName},"Kies een managernaam"), el("button",{class:"btn ghost",onclick:askRestore},"Profiel herstellen"))));
+  }
+  if(S.me) box.append(el("p",{class:"note",style:"text-align:center;margin-bottom:12px"}, "Ander profiel terugzetten? ", el("button",{class:"linkbtn",onclick:askRestore},"Profiel herstellen met een herstelcode")));
   box.append(el("div",{class:"panel"}, howTo()));
   box.append(el("div",{class:"row",style:"margin:6px 0 14px"}, el("button",{class:"btn ghost",onclick:startPractice},"Speel een oefenronde")));
   box.append(el("div",{class:"panel"}, el("h3",{},"Op je beginscherm"), el("p",{class:"note"},"Zet Asset van de Dag als app op je telefoon. iPhone: open de site in Safari, tik op de deel-knop en kies ‘Zet op beginscherm’. Android: open het menu in Chrome en kies ‘App installeren’.")));
-  box.append(el("p",{class:"note",style:"text-align:center"},"Speldata: FPL na GW"+DATA.gw+" (bijgewerkt "+DATA.updated+")."));
+  box.append(el("p",{class:"note",style:"text-align:center"},"Speldata: FPL na GW"+DATA.gw+" (bijgewerkt "+String(DATA.updated).slice(0,10)+")."));
   return box;
 }
 
 /* ---------- boot ---------- */
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{ S.tab=b.dataset.tab; render(); if(S.tab==="board") loadBoard(); }));
-window.addEventListener("hashchange", readHashJoin);
-{ const m = location.hash.match(/^#poule-([A-Za-z0-9]{6})$/); if(m) S.pendingJoin = cleanCode(m[1]); }
+window.addEventListener("hashchange",()=>{ const m = location.hash.match(/^#poule-([A-Za-z0-9]{6})$/); if(m){ S.pendingJoin = m[1].toUpperCase(); handlePendingJoin(); } });
 $("#helpBtn").addEventListener("click",()=>openModal(howTo()));
 function syncThemeLbl(){ $("#themeLbl").textContent = document.documentElement.dataset.theme==="dark" ? "dag" : "nacht"; }
 $("#themeBtn").addEventListener("click",()=>{ const t = document.documentElement.dataset.theme==="dark" ? "light" : "dark"; document.documentElement.dataset.theme=t; try{ localStorage.setItem("avdd:theme",t); }catch(e){} syncThemeLbl(); });
 syncThemeLbl();
-loadLocal();
-render();
-setInterval(()=>{ const d=dayStr(); if(d!==S.today){ S.today=d; S.mode="daily"; loadLocal(); if(S.me) S.daily.guesses=[]; render(); } }, 30000);
-initBackend();
+setInterval(()=>{ if(dayStr()!==S.today){ S.today=dayStr(); S.mode="daily"; S.rows=null; refresh(); } }, 30000);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && dayStr()!==S.today){ S.today=dayStr(); refresh(); } });
+boot();
 if("serviceWorker" in navigator) window.addEventListener("load", ()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
 </body>
