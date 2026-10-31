@@ -7,6 +7,19 @@
 <meta name="description" content="Raad elke dag de geheime FPL-asset in zes pogingen. Met klassement en poules voor je vrienden.">
 <meta property="og:title" content="Differentiale">
 <meta property="og:description" content="Raad elke dag de geheime FPL-asset in zes pogingen.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stinotorres.github.io/differentiale/">
+<meta property="og:site_name" content="Differentiale">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:image" content="https://stinotorres.github.io/differentiale/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Differentiale, de dagelijkse FPL-puzzel">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Differentiale">
+<meta name="twitter:description" content="Raad elke dag de geheime FPL-asset in zes pogingen.">
+<meta name="twitter:image" content="https://stinotorres.github.io/differentiale/og.jpg">
 <meta name="theme-color" content="#37003c">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -191,6 +204,8 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 .proud .eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--pink)}
 .proud h2{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 6px;color:var(--hd)}
 .proud p{font-size:16px;margin:0 0 4px}
+.proud.yday h2{font-size:26px}
+.proud.yday .row{margin-top:14px}
 .proud .pts{font-size:42px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;margin:6px 0 10px}
 .ballrain{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
 .ballrain span{position:absolute;top:-60px;animation:ballfall linear forwards}
@@ -377,6 +392,9 @@ function view(){
   return S.srv;
 }
 
+// Van welke afgeronde gameweek de cijfers zijn: de server is leidend, anders het databestand
+const gwNow = () => (S.mode!=="practice" && S.srv && S.srv.fpl_gw) || DATA.gw;
+
 /* ---------- opstarten ---------- */
 function applyGet(r){ S.srv = r; S.me = r.me; S.leagues = r.leagues || []; }
 async function refresh(){
@@ -399,6 +417,42 @@ async function boot(){
   if(!S.id){ S.loading=false; render(); askName(); return; }
   await refresh();
   handlePendingJoin();
+  maybeYesterday();
+}
+
+/* ---------- wie was het gisteren? ---------- */
+const YDAY_KEY = "avdd:yday";
+async function fetchYesterday(){
+  if(!API || !S.id) return null;
+  try{ return await rpc("av_yesterday", auth()); }catch(e){ return null; }
+}
+async function maybeYesterday(){
+  if(!S.srv || !(S.srv.day > 0) || ls.get(YDAY_KEY) === S.srv.day) return;
+  const y = await fetchYesterday(); if(!y || !y.answer) return;
+  if($("#modal").children.length) return;          // geen popup over een ander scherm heen
+  ls.set(YDAY_KEY, S.srv.day);
+  showYesterday(y);
+}
+async function openYesterday(){
+  const y = await fetchYesterday();
+  if(!y || !y.answer){ toast("Nog geen puzzel van gisteren"); return; }
+  showYesterday(y);
+}
+function showYesterday(y){
+  const a = y.answer, full = (P[a.code] && P[a.code].full) || a.web;
+  const mine = !y.played ? "Je speelde gisteren niet mee."
+    : y.won ? "Jij had hem in "+y.n+"/6 (+"+y.points+" ptn)."
+    : y.gave_up ? "Jij was gisteren een kleine speler 🏳️🤏"
+    : "Jij had hem niet in zes pogingen.";
+  const box = el("div",{class:"proud yday"});
+  box.insertAdjacentHTML("beforeend", shirtSVG(a));
+  box.append(el("div",{class:"eyebrow"},"Wie was het gisteren?"),
+    el("h2",{}, full),
+    el("p",{}, teamN(a.team)+" · "+POSNL[a.pos]+" · "+fmtPrice(a.price)+" · "+fmtOwn(a.own)+" eigendom"),
+    el("p",{class:"note",style:"margin-top:6px"}, mine),
+    el("div",{class:"row"}, el("button",{class:"btn",onclick:closeModal},"Naar de puzzel van vandaag")));
+  openModal(box, false);
+  const bx = document.querySelector(".modal .box"); if(bx) bx.classList.add("pop");
 }
 
 /* ---------- profiel ---------- */
@@ -523,7 +577,7 @@ function knowledge(rows){
   out.push(["Prijs", range("price", v=>fmtPrice(Math.max(0,v)))]);
   out.push(["Eigendom", range("own", v=>Math.max(0,+v.toFixed(1))+"%")]);
   out.push(["Seizoenspunten", range("pts", v=>String(v))]);
-  out.push(["GW"+DATA.gw+"-punten", range("gw", v=>String(v))]);
+  out.push(["GW"+gwNow()+"-punten", range("gw", v=>String(v))]);
   return out;
 }
 
@@ -583,7 +637,7 @@ function renderPlay(){
   const bd = el("div",{class:"board"}); box.append(bd);
   const pips = el("div",{class:"pips"}); for(let i=0;i<6;i++) pips.append(el("i",{class: i<n ? (v.won && i===n-1 ? "win":"used") : ""}));
   bd.append(el("div",{class:"meter"}, el("span",{}, v.done ? (v.won?"Geraden in "+n+"/6":v.gave_up?"Kleine speler 🏳️":"Niet geraden") : S.busy ? "Even checken…" : "Poging "+(n+1)+" van 6"), pips));
-  bd.append(el("div",{class:"colhead"}, ["Club","Pos","Prijs","Eig.","Ptn","GW"+DATA.gw].map(t=>el("div",{},t))));
+  bd.append(el("div",{class:"colhead"}, ["Club","Pos","Prijs","Eig.","Ptn","GW"+gwNow()].map(t=>el("div",{},t))));
   const seenKey = (v.practice ? "p"+S.practice.answer : "d"+S.today), seen = S.seen && S.seen.k===seenKey ? S.seen.n : 0;
   v.rows.forEach((r,ri)=>{
     const hit = KEYS.every(k=>r.fb[k].c==="exact"), isNew = ri >= seen;
@@ -618,6 +672,7 @@ function renderPlay(){
     if(n) box.append(el("div",{class:"panel"}, el("h3",{},"Wat je weet"), el("dl",{class:"know"}, knowledge(v.rows).flatMap(([t,val])=>[el("dt",{},t), el("dd",{class:"num"},val)]))));
   }
   if(S.mode==="daily" && !v.done && !n) box.append(el("p",{class:"note",style:"text-align:center;margin-top:6px"}, "Liever eerst oefenen? ", el("button",{class:"linkbtn",onclick:startPractice},"Speel een oefenronde")));
+  if(!v.practice && v.day > 0) box.append(el("p",{class:"note",style:"text-align:center;margin-top:6px"}, el("button",{class:"linkbtn",onclick:openYesterday},"Wie was het gisteren?")));
   return box;
 }
 
@@ -937,7 +992,7 @@ function renderMe(){
   box.append(el("div",{class:"panel"}, howTo()));
   box.append(el("div",{class:"row",style:"margin:6px 0 14px"}, el("button",{class:"btn ghost",onclick:startPractice},"Speel een oefenronde")));
   box.append(el("div",{class:"panel"}, el("h3",{},"Op je beginscherm"), el("p",{class:"note"},"Zet Differentiale als app op je telefoon. iPhone: open de site in Safari, tik op de deel-knop en kies ‘Zet op beginscherm’. Android: open het menu in Chrome en kies ‘App installeren’.")));
-  box.append(el("p",{class:"note",style:"text-align:center"},"Speldata: FPL na GW"+DATA.gw+" (bijgewerkt "+String(DATA.updated).slice(0,10)+")."));
+  box.append(el("p",{class:"note",style:"text-align:center"},"Speldata: FPL na GW"+gwNow()+" (bijgewerkt "+String(DATA.updated).slice(0,10)+")."));
   return box;
 }
 
@@ -948,8 +1003,8 @@ $("#helpBtn").addEventListener("click",()=>openModal(howTo()));
 function syncThemeLbl(){ $("#themeLbl").textContent = document.documentElement.dataset.theme==="dark" ? "dag" : "nacht"; }
 $("#themeBtn").addEventListener("click",()=>{ const t = document.documentElement.dataset.theme==="dark" ? "light" : "dark"; document.documentElement.dataset.theme=t; try{ localStorage.setItem("avdd:theme",t); }catch(e){} syncThemeLbl(); });
 syncThemeLbl();
-setInterval(()=>{ if(dayStr()!==S.today){ S.today=dayStr(); S.mode="daily"; S.rows=null; refresh(); } }, 30000);
-document.addEventListener("visibilitychange",()=>{ if(!document.hidden && dayStr()!==S.today){ S.today=dayStr(); refresh(); } });
+setInterval(()=>{ if(dayStr()!==S.today){ S.today=dayStr(); S.mode="daily"; S.rows=null; refresh().then(maybeYesterday); } }, 30000);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && dayStr()!==S.today){ S.today=dayStr(); refresh().then(maybeYesterday); } });
 boot();
 if("serviceWorker" in navigator) window.addEventListener("load", ()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>

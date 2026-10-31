@@ -2,10 +2,14 @@ name: FPL-data bijwerken
 
 on:
   schedule:
-    # alleen na de transferperiodes (UTC): 4 februari en 4 september
-    - cron: "17 12 4 2 *"
-    - cron: "17 12 4 9 *"
-  workflow_dispatch: {}
+    # elke 3 uur kijken of er een nieuwe gameweek is afgerond; zo niet, dan gebeurt er niets
+    - cron: "23 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Ook bijwerken als de gameweek niet is veranderd"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -22,6 +26,7 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          FORCE: ${{ inputs.force }}
         run: python3 scripts/update_data.py
       - name: Committen als er iets is veranderd
         run: |
