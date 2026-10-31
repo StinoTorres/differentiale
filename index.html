@@ -204,6 +204,7 @@ tr.me td:first-child{box-shadow:inset 4px 0 0 var(--green)}
 .proud .eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--pink)}
 .proud h2{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 6px;color:var(--hd)}
 .proud p{font-size:16px;margin:0 0 4px}
+.proud .managore{font-size:15px;font-weight:800;font-style:italic;color:var(--pink);margin:6px 0 2px}
 .proud.yday h2{font-size:26px}
 .proud.yday .row{margin-top:14px}
 .proud .pts{font-size:42px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;margin:6px 0 10px}
@@ -845,6 +846,7 @@ function celebrate(v){
   box.append(el("div",{class:"eyebrow"}, first ? "In één keer!" : "Geraden in "+n+"/6"),
     el("h2",{}, first ? "Wat een kenner." : n<=3 ? "Goed geraden!" : n<6 ? "Netjes!" : "Op het nippertje!"),
     el("p",{}, "Het was ", el("b",{}, full), " (" + teamN(a.team) + ")."),
+    el("p",{class:"managore"}, "Jij bent een echte managore ", el("span",{style:"white-space:nowrap"},"fantasia 🧙‍♂️")),
     el("div",{class:"pts num"}, (v.practice ? "Oefenronde" : "+"+v.points+" ptn")),
     el("div",{class:"row"}, !v.practice ? el("button",{class:"btn",onclick:()=>copyShare(v)},"📤 Deel resultaat") : null, el("button",{class:"btn ghost",onclick:closeModal},"Dank je")));
   openModal(box, false);
