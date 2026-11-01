@@ -660,7 +660,9 @@ function renderPlay(){
   }
   if(S.err && !v.practice) box.append(el("div",{class:"banner"}, el("span",{},S.err)));
   const n = v.rows.length;
-  if(!v.done) box.append(searchBox(v)); else box.append(renderResult(v));
+  if(!v.done) box.append(searchBox(v));
+  else if(S.hold){ const sb = searchBox(v), i = sb.querySelector("input"); if(i) i.disabled = true; box.append(sb); }
+  else box.append(renderResult(v));
 
   const bd = el("div",{class:"board"}); box.append(bd);
   const pips = el("div",{class:"pips"}); for(let i=0;i<6;i++) pips.append(el("i",{class: i<n ? (v.won && i===n-1 ? "win":"used") : ""}));
@@ -767,12 +769,25 @@ function copyText(txt){
 }
 
 const CHEERS = ["Topper!","Sterk!","Netjes!","Goed zo!","Op het nippertje!","Pfoe, net!"];
+// Eerst de tegels laten omdraaien (6 × 0,32 s + 0,55 s), dan pas de pop-up; het scorescherm komt pas als die dicht is
+const FLIP_MS = 2500;
+function holdThenReveal(won, pop, lostMsg){
+  S.hold = true; clearTimeout(S.holdT);
+  S.holdT = setTimeout(()=>{
+    if(won) pop();
+    else { S.hold = false; render(); toast(lostMsg); }
+  }, FLIP_MS);
+}
+function releaseHold(){
+  closeModal();
+  if(S.hold){ S.hold = false; render(); try{ window.scrollTo({top:0, behavior:"smooth"}); }catch(e){} }
+}
 async function makeGuess(code){
   if(S.busy) return;
   if(S.mode==="practice"){
     const g = S.practice; if(g.guesses.includes(code) || view().done) return;
     g.guesses.push(code); S.q=""; S.hi=0;
-    const v = view(); if(v.done){ if(v.won) setTimeout(()=>celebrate(view()), 2100); else setTimeout(()=>toast("Helaas: het was "+P[g.answer].web), 2100); }
+    const v = view(); if(v.done) holdThenReveal(v.won, ()=>celebrate(view()), "Helaas: het was "+P[g.answer].web);
     render(); if(!v.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
     return;
   }
@@ -783,7 +798,7 @@ async function makeGuess(code){
     if(dayStr()!==S.today){ await refresh(); toast("Er is een nieuwe puzzel!"); return; }
     const r = await rpc("av_guess", {...auth(), p_code:code});
     S.srv = {...S.srv, ...r}; S.err = null;
-    if(r.done){ if(r.won) setTimeout(()=>celebrate(S.srv), 2100); else setTimeout(()=>toast("Helaas: het was "+r.answer.web), 2100); loadBoard(); }
+    if(r.done){ holdThenReveal(r.won, ()=>celebrate(S.srv), "Helaas: het was "+r.answer.web); loadBoard(); }
   }catch(e){ toast("Je gok kwam niet aan. Check je verbinding en probeer opnieuw."); }
   S.busy = false; render();
   if(S.srv && !S.srv.done){ const i=document.querySelector(".searchbox input"); if(i) i.focus(); }
@@ -891,7 +906,7 @@ function celebrate(v){
     el("p",{}, "Het was ", el("b",{}, full), " (" + teamN(a.team) + ")."),
     el("p",{class:"managore"}, "Jij bent een echte managore ", el("span",{style:"white-space:nowrap"},"fantasia 🧙‍♂️")),
     el("div",{class:"pts num"}, (v.practice ? "Oefenronde" : "+"+v.points+" ptn")),
-    el("div",{class:"row"}, !v.practice ? el("button",{class:"btn",onclick:()=>copyShare(v)},"📤 Deel resultaat") : null, el("button",{class:"btn ghost",onclick:closeModal},"Dank je")));
+    el("div",{class:"row"}, !v.practice ? el("button",{class:"btn",onclick:()=>copyShare(v)},"📤 Deel resultaat") : null, el("button",{class:"btn ghost",onclick:releaseHold},"Dank je")));
   openModal(box, false);
   const bx = document.querySelector(".modal .box"); if(bx) bx.classList.add("pop");
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
