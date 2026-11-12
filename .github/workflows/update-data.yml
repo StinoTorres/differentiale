@@ -11,12 +11,17 @@ on:
         type: boolean
         default: false
 
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
 jobs:
   update:
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6

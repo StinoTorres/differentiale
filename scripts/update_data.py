@@ -12,19 +12,24 @@ from datetime import datetime, timezone
 LEAGUE_ID = int(os.environ.get("LEAGUE_ID", "57092"))
 API = "https://fantasy.premierleague.com/api"
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-UA = {"User-Agent": "Mozilla/5.0 (differentiale data updater)"}
+UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+      "Accept": "application/json, text/plain, */*", "Accept-Language": "nl-NL,nl;q=0.9,en;q=0.8"}
+
+
+class FetchError(Exception):
+    """FPL is tijdelijk niet bereikbaar (blokkade, onderhoud, time-out). De volgende run probeert het opnieuw."""
 
 
 def get(path):
-    for attempt in range(4):
+    for attempt in range(5):
         try:
             req = urllib.request.Request(API + path, headers=UA)
             with urllib.request.urlopen(req, timeout=30) as r:
                 return json.load(r)
-        except Exception:
-            if attempt == 3:
-                raise
-            time.sleep(3 * (attempt + 1))
+        except Exception as e:
+            if attempt == 4:
+                raise FetchError(f"{path}: {e}")
+            time.sleep(10 * (attempt + 1))
 
 
 def write(name, obj):
@@ -142,14 +147,6 @@ def main():
                 e["now_cost"], float(e["selected_by_percent"]), e["total_points"] - later.get(e["id"], 0), gw_pts.get(e["id"], 0),
                 e["goals_scored"], e["assists"], e["clean_sheets"], e["minutes"],
                 e.get("squad_number") or nums.get(e["code"])] for e in keep]
-    write("players.json", {
-        "gw": lgw,
-        "next": {"gw": nxt["id"], "deadline": nxt["deadline_time"]} if nxt else None,
-        "deadlines": [[e["id"], e["deadline_time"]] for e in events],
-        "updated": stamp,
-        "teams": [[t["id"], t["short_name"], t["name"]] for t in boot["teams"]],
-        "players": players,
-    })
     fpl = [[p[0], p[1], p[3], p[4], p[5], p[6], p[7], p[8]] for p in players]  # code, web, team, pos, price, own, pts, gw
     meta = {"fpl_gw": lgw}
     counts = None
@@ -165,24 +162,35 @@ def main():
         page += 1
     picks = {}
     for i, entry in enumerate(entries):
-        try:
-            data = get(f"/entry/{entry}/event/{lgw}/picks/")
-        except Exception as e:
-            print("Geen picks voor", entry, e); continue
+        data = get(f"/entry/{entry}/event/{lgw}/picks/")  # mislukt er één, dan de hele run later opnieuw
         for p in data["picks"]:
             c = code.get(p["element"])
             if c:
                 picks.setdefault(str(c), []).append(i)
         time.sleep(0.3)
-    write("league.json", {"name": st["league"]["name"], "league": LEAGUE_ID, "gw": lgw, "updated": stamp,
-                          "managers": [""] * len(entries), "picks": picks})
     counts = {k: len(set(v)) for k, v in picks.items()}
     meta.update({"league_name": st["league"]["name"], "league_total": len(entries), "league_gw": lgw})
 
+    # Eerst Supabase, dan pas de bestanden: mislukt Supabase, dan blijft data/players.json op de oude
+    # gameweek staan en probeert de volgende run het opnieuw (anders zou hij denken dat alles al klaar is).
     res = supabase_rpc("av_admin_load", {"p_fpl": fpl, "p_picks": counts, "p_meta": meta})
     if res is not None:
         print("Supabase:", res)
+    write("players.json", {
+        "gw": lgw,
+        "next": {"gw": nxt["id"], "deadline": nxt["deadline_time"]} if nxt else None,
+        "deadlines": [[e["id"], e["deadline_time"]] for e in events],
+        "updated": stamp,
+        "teams": [[t["id"], t["short_name"], t["name"]] for t in boot["teams"]],
+        "players": players,
+    })
+    write("league.json", {"name": st["league"]["name"], "league": LEAGUE_ID, "gw": lgw, "updated": stamp,
+                          "managers": [""] * len(entries), "picks": picks})
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except FetchError as e:
+        # Tijdelijke storing bij FPL: geen foutmelding (en dus geen mail), over 3 uur gewoon opnieuw
+        print(f"::warning::FPL tijdelijk niet bereikbaar, run overgeslagen: {e}")
